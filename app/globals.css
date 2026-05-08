@@ -3,6 +3,13 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  color-scheme: light;
+}
+
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -12,15 +19,104 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* Custom dark variant for class-based dark mode in Tailwind 4 */
+@variant dark (&:where(.dark, .dark *));
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  transition: background-color 0.3s, color 0.3s;
 }
+
+/* Smooth transitions for theme switching */
+* {
+  @apply transition-colors duration-200;
+}
+
+/* Code highlighting support */
+code {
+  @apply rounded bg-gray-100 px-2 py-1 text-sm font-mono dark:bg-gray-800;
+}
+
+pre {
+  @apply overflow-x-auto rounded-lg bg-gray-100 p-4 dark:bg-gray-800;
+}
+
+/* Print Styles for Branded PDF Export */
+@media print {
+  @page {
+    margin: 1cm;
+  }
+
+  header, 
+  footer, 
+  nav, 
+  button, 
+  .no-print,
+  .related-songs,
+  .advertisement,
+  .metronome-controls {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt;
+  }
+
+  .container {
+    width: 100% !important;
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Force white background for notes card */
+  .bg-card, .bg-muted\/20 {
+    background: white !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+
+  .font-mono {
+    font-size: 11pt !important;
+    line-height: 1.6 !important;
+    color: black !important;
+  }
+
+  /* Add Brand Header to Print */
+  .print-header {
+    display: block !important;
+    text-align: center;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #3b82f6;
+    padding-bottom: 1rem;
+  }
+
+  .print-header h1 {
+    font-size: 24pt;
+    font-weight: bold;
+    color: #3b82f6;
+    margin: 0;
+  }
+
+  .print-footer {
+    display: block !important;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 9pt;
+    color: #6b7280;
+    border-top: 1px solid #e5e7eb;
+    padding-top: 0.5rem;
+  }
+}
+
+/* Hide print elements by default on screen */
+.print-header, .print-footer {
+  display: none;
+}
+
