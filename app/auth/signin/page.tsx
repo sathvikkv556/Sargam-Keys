@@ -102,9 +102,9 @@ function SignInForm() {
                 </>
               ) : 'Sign In'}
             </Button>
-            <p className="text-xs text-center text-muted-foreground">
+            {/* <p className="text-xs text-center text-muted-foreground">
               Don't have credentials? Use the <code className="bg-muted px-1">/api/setup</code> route first.
-            </p>
+            </p> */}
           </CardFooter>
         </form>
       </Card>
