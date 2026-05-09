@@ -3,7 +3,7 @@ import { getSongs } from '@/lib/actions/song';
 import { getCategories } from '@/lib/actions/category';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://raagakeys.com';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://sargamkeys.com';
 
   const [songsResponse, categoriesResponse] = await Promise.all([
     getSongs({ status: 'Published' }, { limit: 1000 }),

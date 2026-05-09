@@ -1,4 +1,4 @@
-# Raagakeys - Piano Notes & Music Theory Learning Platform
+# SargamKeys - Piano Notes & Music Theory Learning Platform
 
 A production-ready Next.js 15 web application for learning piano notes, scales, chords, and music theory. Built with TypeScript, TailwindCSS, App Router, and MongoDB.
 
@@ -49,7 +49,7 @@ A production-ready Next.js 15 web application for learning piano notes, scales, 
 ## 📁 Project Structure
 
 ```
-raagakeys/
+sargamkeys/
 ├── app/                           # Next.js App Router
 │   ├── api/                      # API routes
 │   │   ├── health/              # Health check endpoint
@@ -99,7 +99,7 @@ raagakeys/
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd raagakeys
+   cd sargamkeys
    ```
 
 2. **Install dependencies**
@@ -178,7 +178,7 @@ Create a `.env.local` file with the following variables:
 
 ```env
 # MongoDB Connection
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/raagakeys?retryWrites=true&w=majority
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/sargamkeys?retryWrites=true&w=majority
 
 # API Configuration
 NEXT_PUBLIC_API_URL=http://localhost:3000
@@ -278,7 +278,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 For questions or issues:
 - Create an issue on GitHub
-- Email: contact@raagakeys.com
+- Email: contact@sargamkeys.com
 - Documentation: Check docs folder
 
 ## 🎓 Learning Resources

@@ -38,8 +38,17 @@ export default async function AdminLayout({ children }: { children: ReactNode })
       {/* Sidebar */}
       <aside className="fixed left-0 top-0 z-40 h-screen w-64 border-r bg-white dark:border-slate-800 dark:bg-slate-900">
         <div className="flex h-16 items-center border-b px-6 dark:border-slate-800">
-          <Link href="/" className="flex items-center gap-2 font-bold text-xl">
-            <span className="text-blue-600">🎹</span> Raagakeys
+          <Link href="/" className="flex items-center gap-3 group transition-all duration-300">
+            <div className="relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-blue-600 to-indigo-700 shadow-lg shadow-blue-500/20 group-hover:shadow-blue-500/40 transition-all">
+              <img 
+                src="/default.png" 
+                alt="SargamKeys Logo" 
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <span className="font-playfair text-lg font-black tracking-tight text-slate-900 dark:text-white leading-none">
+              SARGAMKEYS
+            </span>
           </Link>
         </div>
         <div className="flex flex-col justify-between h-[calc(100vh-64px)] p-4">

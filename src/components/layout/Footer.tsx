@@ -13,7 +13,7 @@ export function Footer() {
           {/* About */}
           <div>
             <h3 className="mb-4 font-semibold text-gray-900 dark:text-white">
-              Raagakeys
+              SargamKeys
             </h3>
             <p className="text-sm text-gray-600 dark:text-gray-400">
               Learn piano notes and music theory at your own pace. Perfect for
@@ -116,7 +116,7 @@ export function Footer() {
         {/* Copyright */}
         <div className="border-t border-gray-200 dark:border-gray-800 mt-8 pt-8">
           <p className="text-center text-sm text-gray-600 dark:text-gray-400">
-            &copy; {currentYear} Raagakeys. All rights reserved.
+            &copy; {currentYear} SargamKeys. All rights reserved.
           </p>
         </div>
       </div>

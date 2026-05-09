@@ -91,8 +91,11 @@ export default async function SongPage({ params }: PageProps) {
 
       {/* Print-only Branded Header */}
       <div className="print-header">
-        <h1>🎹 Raagakeys</h1>
-        <p className="text-sm">Learn Piano Notes & Music Theory • www.raagakeys.com</p>
+        <div className="flex items-center gap-2 mb-1">
+          <img src="/default.png" alt="SargamKeys" className="h-8 w-8 object-contain" />
+          <h1 className="text-2xl font-bold m-0">SargamKeys</h1>
+        </div>
+        <p className="text-sm">Learn Piano Notes & Music Theory • www.sargamkeys.com</p>
         <div className="mt-4 text-xl font-bold">{song.title}</div>
       </div>
 

@@ -28,9 +28,12 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "Raagakeys - Premium Piano Notes & Music Theory",
+  title: "SargamKeys - Premium Piano Notes & Music Theory",
   description: "Master piano notes, scales, chords, and music theory. Perfect for beginners to advanced musicians.",
   keywords: ["piano notes", "music theory", "scales", "chords", "piano lessons"],
+  icons: {
+    icon: "/default.png",
+  },
 };
 
 export default function RootLayout({

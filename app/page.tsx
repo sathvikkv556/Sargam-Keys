@@ -8,7 +8,7 @@ import { Search, Music, TrendingUp, Clock, Grid } from 'lucide-react';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Raagakeys - Premium Piano Notes & Music Theory Library',
+  title: 'SargamKeys - Premium Piano Notes & Music Theory Library',
   description: 'Master piano with accurate notes for Bollywood, Pop, and Classical songs. Explore comprehensive music theory guides, scales, and chords.',
   alternates: {
     canonical: '/',

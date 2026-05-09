@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const note = response.data;
   return {
-    title: `${note.title} | Music Theory | Raagakeys`,
+    title: `${note.title} | Music Theory | SargamKeys`,
     description: note.description,
   };
 }

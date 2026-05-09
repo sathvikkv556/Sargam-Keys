@@ -23,15 +23,15 @@ export function generateMetadata(seo: SEOMetadata): Metadata {
     openGraph: {
       title: seo.title,
       description: seo.description,
-      siteName: 'Raagakeys',
+      siteName: 'SargamKeys',
       type: (seo.ogType as any) || 'website',
-      images: seo.ogImage ? [{ url: seo.ogImage }] : [{ url: '/next.svg' }], // Replace with actual default OG image
+      images: seo.ogImage ? [{ url: seo.ogImage }] : [{ url: '/default.png' }], // Replace with actual default OG image
     },
     twitter: {
       card: 'summary_large_image',
       title: seo.title,
       description: seo.description,
-      images: seo.ogImage ? [seo.ogImage] : ['/next.svg'],
+      images: seo.ogImage ? [seo.ogImage] : ['/default.png'],
     },
   };
 }
@@ -40,9 +40,9 @@ export function generateMetadata(seo: SEOMetadata): Metadata {
  * Base SEO configuration
  */
 export const baseSEO: SEOMetadata = {
-  title: 'Raagakeys - Learn Piano Notes & Music Theory',
+  title: 'SargamKeys - Learn Piano Notes & Music Theory',
   description:
-    'Master piano notes, scales, chords, and music theory with Raagakeys. Perfect for beginners to advanced musicians.',
+    'Master piano notes, scales, chords, and music theory with SargamKeys. Perfect for beginners to advanced musicians.',
   keywords: [
     'piano notes',
     'music theory',
@@ -51,7 +51,7 @@ export const baseSEO: SEOMetadata = {
     'piano lessons',
     'learn piano',
   ],
-  author: 'Raagakeys',
+  author: 'SargamKeys',
   ogType: 'website',
 };
 

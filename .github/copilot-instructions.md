@@ -1,8 +1,7 @@
-# Copilot Instructions - Raagakeys Piano Notes Platform
+# Copilot Instructions - SargamKeys Piano Notes Platform
 
 ## Project Overview
-
-Raagakeys is a production-ready Next.js 15 piano notes and music theory learning platform. It provides comprehensive resources for learning piano scales, chords, progressions, techniques, and music theory.
+SargamKeys is a production-ready Next.js 15 piano notes and music theory learning platform. It provides comprehensive resources for learning piano scales, chords, progressions, techniques, and music theory.
 
 ## Technology Stack
 

@@ -13,17 +13,17 @@ export async function GET(req: NextRequest) {
 
     if (force) {
       console.log('Force resetting admin user...');
-      await User.deleteOne({ email: 'admin@raagakeys.com' });
+      await User.deleteOne({ email: 'admin@sargamkeys.com' });
     }
 
     // Check if admin already exists
-    const adminExists = await User.findOne({ email: 'admin@raagakeys.com' });
+    const adminExists = await User.findOne({ email: 'admin@sargamkeys.com' });
     
     if (adminExists && !force) {
       return NextResponse.json(
         { 
           message: 'Admin already exists.', 
-          email: 'admin@raagakeys.com',
+          email: 'admin@sargamkeys.com',
           hint: 'To recreate, visit /api/setup?force=true' 
         },
         { status: 200 }
@@ -33,7 +33,7 @@ export async function GET(req: NextRequest) {
     // Create default admin
     const admin = await User.create({
       name: 'Admin',
-      email: 'admin@raagakeys.com',
+      email: 'admin@sargamkeys.com',
       password: 'admin123',
       role: 'admin',
     });
@@ -62,7 +62,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({
       message: 'Setup successful!',
       credentials: {
-        email: 'admin@raagakeys.com',
+        email: 'admin@sargamkeys.com',
         password: 'admin123'
       },
       nextStep: 'Go to /admin and log in with these credentials.'

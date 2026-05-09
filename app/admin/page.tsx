@@ -34,7 +34,7 @@ export default async function AdminDashboard() {
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
-        <p className="text-muted-foreground">Welcome back! Here's what's happening on Raagakeys.</p>
+        <p className="text-muted-foreground">Welcome back! Here's what's happening on SargamKeys.</p>
       </div>
 
       {/* Stats Grid */}

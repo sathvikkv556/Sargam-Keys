@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Piano Notes Library | Bollywood, Pop & Classical | Raagakeys',
+  title: 'Piano Notes Library | Bollywood, Pop & Classical | SargamKeys',
   description: 'Browse our extensive library of piano notes and music theory guides. Learn to play your favorite songs with ease.',
   alternates: {
     canonical: '/notes',

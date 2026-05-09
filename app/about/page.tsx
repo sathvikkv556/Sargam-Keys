@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'About Raagakeys | Our Mission & Story',
-  description: 'Learn about Raagakeys, our mission to make piano learning accessible, and the technology behind our platform.',
+  title: 'About SargamKeys | Our Mission & Story',
+  description: 'Learn about SargamKeys, our mission to make piano learning accessible, and the technology behind our platform.',
   alternates: {
     canonical: '/about',
   },
@@ -14,7 +14,7 @@ export default function AboutPage() {
       {/* Header */}
       <div className="mb-12 text-center">
         <h1 className="mb-4 text-4xl font-bold text-gray-900 dark:text-white">
-          About Raagakeys
+          About SargamKeys
         </h1>
         <p className="text-lg text-gray-600 dark:text-gray-400">
           Learn the story behind our piano learning platform
@@ -29,7 +29,7 @@ export default function AboutPage() {
             Our Mission
           </h2>
           <p className="text-gray-700 dark:text-gray-300">
-            Raagakeys is dedicated to making piano music theory accessible to everyone. We believe that learning piano notes, scales, and music theory should be simple, structured, and enjoyable. Our mission is to provide comprehensive resources that help musicians at all levels master the fundamentals of piano and music theory.
+            SargamKeys is dedicated to making piano music theory accessible to everyone. We believe that learning piano notes, scales, and music theory should be simple, structured, and enjoyable. Our mission is to provide comprehensive resources that help musicians at all levels master the fundamentals of piano and music theory.
           </p>
         </section>
 
@@ -107,7 +107,7 @@ export default function AboutPage() {
             Built With Modern Technology
           </h2>
           <p className="mb-4 text-gray-700 dark:text-gray-300">
-            Raagakeys is built using cutting-edge web technologies:
+            SargamKeys is built using cutting-edge web technologies:
           </p>
           <ul className="grid gap-3 text-gray-700 dark:text-gray-300 sm:grid-cols-2">
             <li className="flex gap-2">
@@ -146,7 +146,7 @@ export default function AboutPage() {
             Have questions, suggestions, or want to contribute? We'd love to hear from you!
           </p>
           <a
-            href="mailto:contact@raagakeys.com"
+            href="mailto:contact@sargamkeys.com"
             className="inline-block rounded-lg bg-blue-600 px-6 py-2 text-white transition-colors hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
           >
             Contact Us

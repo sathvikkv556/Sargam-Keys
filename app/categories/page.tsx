@@ -4,7 +4,7 @@ import { Music, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'Piano Note Categories | Raagakeys',
+  title: 'Piano Note Categories | SargamKeys',
   description: 'Browse piano notes by category - Bollywood, Classical, Pop, Devotional and more.',
 };
 
