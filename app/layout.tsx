@@ -95,6 +95,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${montserrat.variable} antialiased`}
       >
+        <script src="https://quge5.com/88/tag.min.js" data-zone="238111" async data-cfasync="false"></script>
         <AuthProvider>
           <ClientThemeProvider>
             <div className="flex flex-col min-h-screen">
@@ -105,23 +106,6 @@ export default function RootLayout({
             <Toaster richColors closeButton position="top-right" />
           </ClientThemeProvider>
         </AuthProvider>
-        
-        {/* Service Worker Registration for Monetag */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              if ('serviceWorker' in navigator) {
-                window.addEventListener('load', function() {
-                  navigator.serviceWorker.register('/sw.js').then(function(reg) {
-                    console.log('SW registered:', reg.scope);
-                  }).catch(function(err) {
-                    console.error('SW registration failed:', err);
-                  });
-                });
-              }
-            `,
-          }}
-        />
       </body>
     </html>
   );
