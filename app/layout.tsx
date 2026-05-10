@@ -43,9 +43,17 @@ export const metadata: Metadata = {
     "easy keyboard notes",
   ],
   icons: {
-    icon: "/output-onlinepngtools.png",
-    apple: "/output-onlinepngtools.png",
+    icon: [
+      { url: "/output-onlinepngtools.png" },
+      { url: "/output-onlinepngtools.png", sizes: "32x32", type: "image/png" },
+      { url: "/output-onlinepngtools.png", sizes: "16x16", type: "image/png" },
+    ],
+    apple: [
+      { url: "/output-onlinepngtools.png", sizes: "180x180", type: "image/png" },
+    ],
+    shortcut: ["/output-onlinepngtools.png"],
   },
+  manifest: "/manifest.json",
   openGraph: {
     title: "SargamKeys",
     description:
@@ -97,6 +105,23 @@ export default function RootLayout({
             <Toaster richColors closeButton position="top-right" />
           </ClientThemeProvider>
         </AuthProvider>
+        
+        {/* Service Worker Registration for Monetag */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.register('/sw.js').then(function(reg) {
+                    console.log('SW registered:', reg.scope);
+                  }).catch(function(err) {
+                    console.error('SW registration failed:', err);
+                  });
+                });
+              }
+            `,
+          }}
+        />
       </body>
     </html>
   );

@@ -120,22 +120,30 @@ export async function getSongById(id: string): Promise<APIResponse<SongType>> {
   }
 }
 
-export const getSongBySlug = cache(async (slug: string, isAdmin: boolean = false): Promise<APIResponse<SongType>> => {
+export const getSongBySlug = cache(async (slug: string, isAdmin: boolean = false): Promise<APIResponse<SongType> & { notFound?: boolean }> => {
   try {
     await connectDB();
     const query = isAdmin ? { slug } : { slug, status: 'Published' };
     const song = await Song.findOne(query).populate('category');
     
-    if (!song) throw new Error('Song not found');
+    if (!song) {
+      return { success: false, error: 'Song not found', notFound: true };
+    }
     
     // Increment views only if not admin previewing
     if (!isAdmin) {
-      song.views += 1;
-      await song.save();
+      try {
+        song.views += 1;
+        await song.save();
+      } catch (saveError) {
+        console.error('Error incrementing views:', saveError);
+        // Don't fail the whole request if view increment fails
+      }
     }
     
     return { success: true, data: JSON.parse(JSON.stringify(song)) };
   } catch (error: any) {
+    console.error('getSongBySlug error:', error);
     return { success: false, error: error.message };
   }
 });

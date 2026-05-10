@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const response = await getSongBySlug(slug, isAdmin);
   
   if (!response.success || !response.data) {
-    return { title: 'Song Not Found' };
+    return { title: response.notFound ? 'Song Not Found' : 'Error' };
   }
 
   const song = response.data;
@@ -52,7 +52,34 @@ export default async function SongPage({ params }: PageProps) {
   const response = await getSongBySlug(slug, isAdmin);
 
   if (!response.success || !response.data) {
-    notFound();
+    if (response.notFound) {
+      notFound();
+    }
+    
+    return (
+      <div className="container mx-auto px-4 py-20 text-center">
+        <h1 className="text-2xl font-bold text-red-600 mb-4">Error Loading Page</h1>
+        <p className="text-muted-foreground mb-8">
+          {response.error || 'A temporary error occurred while fetching the song notes. Please try refreshing the page.'}
+        </p>
+        <div className="flex justify-center gap-4">
+          <a 
+            href="/notes"
+            className="px-4 py-2 border rounded-md hover:bg-muted transition-colors"
+          >
+            Back to Library
+          </a>
+          <button 
+            onClick={() => {
+              if (typeof window !== 'undefined') window.location.reload();
+            }}
+            className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:opacity-90 transition-opacity"
+          >
+            Refresh Page
+          </button>
+        </div>
+      </div>
+    );
   }
 
   const song = response.data;
