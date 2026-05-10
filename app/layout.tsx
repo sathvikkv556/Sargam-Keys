@@ -29,15 +29,12 @@ const montserrat = Montserrat({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://sargamkeys.in"),
-
   title: {
     default: "SargamKeys - Piano Notes & Keyboard Notes",
     template: "%s | SargamKeys",
   },
-
   description:
     "Learn piano notes, keyboard notes, Bollywood songs, Hindi songs, and music theory with SargamKeys.",
-
   keywords: [
     "piano notes",
     "keyboard notes",
@@ -45,21 +42,15 @@ export const metadata: Metadata = {
     "bollywood piano notes",
     "easy keyboard notes",
   ],
-
   icons: {
     icon: "/default.png",
   },
-
   openGraph: {
     title: "SargamKeys",
-
     description:
       "Learn piano notes and keyboard notes for Bollywood and Hindi songs.",
-
     url: "https://sargamkeys.in",
-
     siteName: "SargamKeys",
-
     images: [
       {
         url: "/default.png",
@@ -67,29 +58,45 @@ export const metadata: Metadata = {
         height: 630,
       },
     ],
-
     locale: "en_US",
-
     type: "website",
   },
-
   twitter: {
     card: "summary_large_image",
-
     title: "SargamKeys",
-
-    description:
-      "Learn piano notes and keyboard notes for Hindi songs.",
-
+    description: "Learn piano notes and keyboard notes for Hindi songs.",
     images: ["/default.png"],
   },
-
   robots: {
     index: true,
     follow: true,
   },
-
   verification: {
     google: "your-google-verification-code",
   },
 };
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${montserrat.variable} antialiased`}
+      >
+        <AuthProvider>
+          <ClientThemeProvider>
+            <div className="flex flex-col min-h-screen">
+              <Header />
+              <main className="flex-grow">{children}</main>
+              <Footer />
+            </div>
+            <Toaster richColors closeButton position="top-right" />
+          </ClientThemeProvider>
+        </AuthProvider>
+      </body>
+    </html>
+  );
+}
