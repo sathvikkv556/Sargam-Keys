@@ -43,7 +43,8 @@ export const metadata: Metadata = {
     "easy keyboard notes",
   ],
   icons: {
-    icon: "/default.png",
+    icon: "/output-onlinepngtools.png",
+    apple: "/output-onlinepngtools.png",
   },
   openGraph: {
     title: "SargamKeys",
