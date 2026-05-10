@@ -28,38 +28,68 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "SargamKeys - Premium Piano Notes & Music Theory",
-  description: "Master piano notes, scales, chords, and music theory. Perfect for beginners to advanced musicians.",
-  keywords: ["piano notes", "music theory", "scales", "chords", "piano lessons"],
+  metadataBase: new URL("https://sargamkeys.in"),
+
+  title: {
+    default: "SargamKeys - Piano Notes & Keyboard Notes",
+    template: "%s | SargamKeys",
+  },
+
+  description:
+    "Learn piano notes, keyboard notes, Bollywood songs, Hindi songs, and music theory with SargamKeys.",
+
+  keywords: [
+    "piano notes",
+    "keyboard notes",
+    "hindi piano notes",
+    "bollywood piano notes",
+    "easy keyboard notes",
+  ],
+
   icons: {
     icon: "/default.png",
   },
+
+  openGraph: {
+    title: "SargamKeys",
+
+    description:
+      "Learn piano notes and keyboard notes for Bollywood and Hindi songs.",
+
+    url: "https://sargamkeys.in",
+
+    siteName: "SargamKeys",
+
+    images: [
+      {
+        url: "/default.png",
+        width: 1200,
+        height: 630,
+      },
+    ],
+
+    locale: "en_US",
+
+    type: "website",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+
+    title: "SargamKeys",
+
+    description:
+      "Learn piano notes and keyboard notes for Hindi songs.",
+
+    images: ["/default.png"],
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+  },
+
   verification: {
-    google: "your-code-here",
+    google: "your-google-verification-code",
   },
 };
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${montserrat.variable} h-full antialiased`}
-      suppressHydrationWarning
-    >
-      <body className="flex min-h-screen flex-col bg-white dark:bg-gray-900 font-sans">
-        <AuthProvider>
-          <ClientThemeProvider>
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
-            <Toaster position="top-center" richColors />
-          </ClientThemeProvider>
-        </AuthProvider>
-      </body>
-    </html>
-  );
-}

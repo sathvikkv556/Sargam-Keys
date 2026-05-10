@@ -10,28 +10,64 @@ interface SEOMetadata {
   canonical?: string;
 }
 
+const siteUrl = 'https://sargamkeys.in';
+
 /**
  * Generates Next.js metadata for SEO
  */
 export function generateMetadata(seo: SEOMetadata): Metadata {
+  const canonicalUrl = seo.canonical
+    ? `${siteUrl}${seo.canonical}`
+    : siteUrl;
+
   return {
+    metadataBase: new URL(siteUrl),
+
     title: seo.title,
+
     description: seo.description,
+
     keywords: seo.keywords,
+
     authors: seo.author ? [{ name: seo.author }] : undefined,
-    alternates: seo.canonical ? { canonical: seo.canonical } : undefined,
+
+    alternates: {
+      canonical: canonicalUrl,
+    },
+
     openGraph: {
       title: seo.title,
       description: seo.description,
+      url: canonicalUrl,
       siteName: 'SargamKeys',
       type: (seo.ogType as any) || 'website',
-      images: seo.ogImage ? [{ url: seo.ogImage }] : [{ url: '/default.png' }], // Replace with actual default OG image
+
+      images: [
+        {
+          url: seo.ogImage || `${siteUrl}/default.png`,
+          width: 1200,
+          height: 630,
+          alt: seo.title,
+        },
+      ],
     },
+
     twitter: {
       card: 'summary_large_image',
       title: seo.title,
       description: seo.description,
-      images: seo.ogImage ? [seo.ogImage] : ['/default.png'],
+      images: [seo.ogImage || `${siteUrl}/default.png`],
+    },
+
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
     },
   };
 }
@@ -40,18 +76,23 @@ export function generateMetadata(seo: SEOMetadata): Metadata {
  * Base SEO configuration
  */
 export const baseSEO: SEOMetadata = {
-  title: 'SargamKeys - Learn Piano Notes & Music Theory',
+  title: 'SargamKeys - Piano Notes & Keyboard Notes',
+
   description:
-    'Master piano notes, scales, chords, and music theory with SargamKeys. Perfect for beginners to advanced musicians.',
+    'Learn easy piano notes, keyboard notes, Bollywood songs, Hindi songs, and music theory on SargamKeys.',
+
   keywords: [
     'piano notes',
+    'keyboard notes',
+    'hindi piano notes',
+    'bollywood piano notes',
+    'easy keyboard notes',
     'music theory',
-    'scales',
-    'chords',
-    'piano lessons',
     'learn piano',
   ],
+
   author: 'SargamKeys',
+
   ogType: 'website',
 };
 
@@ -65,10 +106,17 @@ export function createPageMetadata(
   canonical?: string
 ): Metadata {
   return generateMetadata({
-    title: `${pageTitle} | ${baseSEO.title}`,
+    title: pageTitle,
+
     description: pageDescription,
-    keywords: [...(baseSEO.keywords || []), ...(pageKeywords || [])],
+
+    keywords: [
+      ...(baseSEO.keywords || []),
+      ...(pageKeywords || []),
+    ],
+
     author: baseSEO.author,
+
     canonical,
   });
 }

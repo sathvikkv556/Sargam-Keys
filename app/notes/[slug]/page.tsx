@@ -13,11 +13,11 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 
 interface PageProps {
-  params: Promise<{ slug: string }>;
+  params: { slug: string };
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { slug } = await params;
+ const { slug } = params;
   const session = await getServerSession(authOptions);
   const isAdmin = (session?.user as any)?.role === 'admin';
   const response = await getSongBySlug(slug, isAdmin);
@@ -45,7 +45,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function SongPage({ params }: PageProps) {
-  const { slug } = await params;
+  const { slug } = params;
   const session = await getServerSession(authOptions);
   const isAdmin = (session?.user as any)?.role === 'admin';
   
