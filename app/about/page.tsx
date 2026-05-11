@@ -143,7 +143,7 @@ export default function AboutPage() {
             Get in Touch
           </h2>
           <p className="mb-6 text-gray-700 dark:text-gray-300">
-            Have questions, suggestions, or want to contribute? We'd love to hear from you!
+            Have questions, suggestions, or want to contribute? We&apos;d love to hear from you!
           </p>
           <a
             href="mailto:contact@sargamkeys.com"

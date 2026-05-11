@@ -36,13 +36,8 @@ export function Header() {
           <div className="flex items-center gap-1">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3 group transition-all duration-300">
-              <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 shadow-lg shadow-blue-500/20 group-hover:shadow-blue-500/40 group-hover:scale-105 transition-all">
-                <img 
-                  src="/default.png" 
-                  alt="SargamKeys Logo" 
-                  className="h-full w-full object-cover"
-                />
-                <div className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full border-2 border-white bg-green-500 dark:border-gray-900" />
+              <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl shadow-lg shadow-blue-500/20 group-hover:shadow-blue-500/40 group-hover:scale-105 transition-all">
+                <img src="/logo.svg" alt="SargamKeys Logo" className="h-full w-full object-cover" />
               </div>
               <div className="flex flex-col">
                 <span className="font-playfair text-xl font-black tracking-tight text-gray-900 dark:text-white leading-none group-hover:text-blue-600 transition-colors">

@@ -6,6 +6,7 @@ import { AuthProvider } from "@/components/AuthProvider";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Toaster } from "sonner";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,15 +44,8 @@ export const metadata: Metadata = {
     "easy keyboard notes",
   ],
   icons: {
-    icon: [
-      { url: "/output-onlinepngtools.png" },
-      { url: "/output-onlinepngtools.png", sizes: "32x32", type: "image/png" },
-      { url: "/output-onlinepngtools.png", sizes: "16x16", type: "image/png" },
-    ],
-    apple: [
-      { url: "/output-onlinepngtools.png", sizes: "180x180", type: "image/png" },
-    ],
-    shortcut: ["/output-onlinepngtools.png"],
+    icon: "/icon.svg",
+    apple: "/logo.svg",
   },
   manifest: "/manifest.json",
   openGraph: {
@@ -62,7 +56,7 @@ export const metadata: Metadata = {
     siteName: "SargamKeys",
     images: [
       {
-        url: "/default.png",
+        url: "/logo.svg",
         width: 1200,
         height: 630,
       },
@@ -74,7 +68,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "SargamKeys",
     description: "Learn piano notes and keyboard notes for Hindi songs.",
-    images: ["/default.png"],
+    images: ["/logo.svg"],
   },
   robots: {
     index: true,
@@ -92,6 +86,24 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Monetag Vignette Ad Script */}
+        <Script
+          id="monetag-vignette"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `(function(s){s.dataset.zone='10992930',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))`
+          }}
+        />
+        {/* Monetag Additional Ad Script */}
+        <Script
+          id="monetag-tag"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `(function(s){s.dataset.zone='10992975',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))`
+          }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${montserrat.variable} antialiased`}
       >

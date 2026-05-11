@@ -123,10 +123,15 @@ export async function getSongById(id: string): Promise<APIResponse<SongType>> {
 export const getSongBySlug = cache(async (slug: string, isAdmin: boolean = false): Promise<APIResponse<SongType> & { notFound?: boolean }> => {
   try {
     await connectDB();
-    const query = isAdmin ? { slug } : { slug, status: 'Published' };
+    
+    // Normalize slug: remove trailing slashes and convert to lowercase
+    const normalizedSlug = slug.replace(/\/$/, '').toLowerCase();
+    
+    const query = isAdmin ? { slug: normalizedSlug } : { slug: normalizedSlug, status: 'Published' };
     const song = await Song.findOne(query).populate('category');
     
     if (!song) {
+      console.log(`Song not found for slug: ${normalizedSlug}`);
       return { success: false, error: 'Song not found', notFound: true };
     }
     

@@ -15,15 +15,9 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 
-interface SongNotesProps {
-  initialNotes: string;
-  categoryName?: string;
-  tags?: string[];
-}
-
 const NOTES_ORDER = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
-export function SongNotes({ initialNotes, categoryName, tags }: SongNotesProps) {
+export function SongNotes({ initialNotes }: { initialNotes: string }) {
   const [notes, setNotes] = useState(initialNotes || '');
   const [fontSize, setFontSize] = useState(16);
   const [copied, setCopied] = useState(false);
