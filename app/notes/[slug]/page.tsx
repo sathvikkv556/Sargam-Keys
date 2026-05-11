@@ -226,8 +226,6 @@ export default async function SongPage({ params }: PageProps) {
             </h2>
             <SongNotes 
               initialNotes={song.notes} 
-              categoryName={typeof song.category === 'object' ? (song.category as any).name : undefined}
-              tags={song.tags}
             />
           </div>
 
