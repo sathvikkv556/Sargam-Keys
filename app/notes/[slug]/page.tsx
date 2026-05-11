@@ -14,6 +14,9 @@ import { authOptions } from '@/lib/auth';
 import { connectDB } from '@/lib/db';
 import Song from '@/models/Song';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
@@ -33,34 +36,41 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const session = await getServerSession(authOptions);
-  const isAdmin = (session?.user as any)?.role === 'admin';
-  const response = await getSongBySlug(slug, isAdmin);
   
-  if (!response.success || !response.data) {
-    return { title: response.notFound ? 'Song Not Found' : 'Error' };
+  try {
+    const session = await getServerSession(authOptions);
+    const isAdmin = (session?.user as any)?.role === 'admin';
+    const response = await getSongBySlug(slug, isAdmin);
+    
+    if (!response.success || !response.data) {
+      return { title: response.notFound ? 'Song Not Found' : 'Error' };
+    }
+
+    const song = response.data;
+    const seo = createPageMetadata(
+      song.seoTitle || song.title,
+      song.seoDescription || `Learn how to play ${song.title} on piano with our easy-to-follow notes.`,
+      song.seoKeywords || [song.title, 'piano notes', song.movie || ''],
+      `/notes/${song.slug}`
+    );
+
+    return {
+      ...seo,
+      openGraph: {
+        ...seo.openGraph,
+        type: 'article',
+        images: song.thumbnail ? [{ url: song.thumbnail }] : undefined,
+      },
+    };
+  } catch (error) {
+    console.error('Metadata generation error:', error);
+    return { title: 'SargamKeys' };
   }
-
-  const song = response.data;
-  const seo = createPageMetadata(
-    song.seoTitle || song.title,
-    song.seoDescription || `Learn how to play ${song.title} on piano with our easy-to-follow notes.`,
-    song.seoKeywords || [song.title, 'piano notes', song.movie || ''],
-    `/notes/${song.slug}`
-  );
-
-  return {
-    ...seo,
-    openGraph: {
-      ...seo.openGraph,
-      type: 'article',
-      images: song.thumbnail ? [{ url: song.thumbnail }] : undefined,
-    },
-  };
 }
 
 export default async function SongPage({ params }: PageProps) {
   const { slug } = await params;
+  
   const session = await getServerSession(authOptions);
   const isAdmin = (session?.user as any)?.role === 'admin';
   
