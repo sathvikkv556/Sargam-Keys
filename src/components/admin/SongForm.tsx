@@ -69,6 +69,19 @@ export function SongForm({ initialData, categories }: SongFormProps) {
   });
 
   const thumbnail = watch('thumbnail');
+  const title = watch('title');
+  const movie = watch('movie');
+
+  const generateSEO = () => {
+    if (!title) {
+      toast.error('Please enter a song title first');
+      return;
+    }
+    const moviePart = movie ? ` (${movie})` : '';
+    setValue('seoTitle', `${title} Piano Notes${moviePart} - Easy for Beginners`);
+    setValue('seoDescription', `Learn how to play ${title}${movie ? ` from the movie ${movie}` : ''} on piano with our easy-to-follow notes. Perfect for beginners and keyboard players.`);
+    toast.success('SEO metadata generated');
+  };
 
   const onSubmit = async (data: any) => {
     setLoading(true);
@@ -152,8 +165,16 @@ export function SongForm({ initialData, categories }: SongFormProps) {
           </Card>
 
           <Card>
-            <CardHeader>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle>SEO Settings</CardTitle>
+              <Button 
+                type="button" 
+                variant="outline" 
+                size="sm"
+                onClick={generateSEO}
+              >
+                Generate SEO
+              </Button>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid gap-2">

@@ -49,7 +49,7 @@ export function SearchPageClient() {
           { title: { $regex: debouncedQuery, $options: 'i' } },
           { movie: { $regex: debouncedQuery, $options: 'i' } },
           { singer: { $regex: debouncedQuery, $options: 'i' } },
-          { tags: { $in: [new RegExp(debouncedQuery, 'i')] } }
+          { tags: { $regex: debouncedQuery, $options: 'i' } }
         ];
       }
       if (category) filter.category = category;

@@ -47,10 +47,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     }
 
     const song = response.data;
+    const moviePart = song.movie ? ` (${song.movie})` : '';
+    const pageTitle = song.seoTitle || `${song.title} Piano Notes${moviePart} - Easy for Beginners`;
+    const pageDescription = song.seoDescription || `Learn how to play ${song.title}${song.movie ? ` from the movie ${song.movie}` : ''} on piano with our easy-to-follow notes. Perfect for beginners and keyboard players.`;
+
     const seo = createPageMetadata(
-      song.seoTitle || song.title,
-      song.seoDescription || `Learn how to play ${song.title} on piano with our easy-to-follow notes.`,
-      song.seoKeywords || [song.title, 'piano notes', song.movie || ''],
+      pageTitle,
+      pageDescription,
+      song.seoKeywords || [song.title, 'piano notes', song.movie || '', 'keyboard notes', 'sargam notes'],
       `/notes/${song.slug}`
     );
 
