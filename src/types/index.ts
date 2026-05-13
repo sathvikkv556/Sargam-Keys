@@ -52,6 +52,18 @@ export interface Category {
   updatedAt: string;
 }
 
+export interface Comment {
+  _id: string;
+  songId: string | Song;
+  userName: string;
+  userEmail?: string;
+  content: string;
+  status: 'Pending' | 'Approved' | 'Spam';
+  isAdmin: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface User {
   _id: string;
   name: string;

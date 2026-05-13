@@ -37,7 +37,7 @@ export function Header() {
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3 group transition-all duration-300">
               <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl shadow-lg shadow-blue-500/20 group-hover:shadow-blue-500/40 group-hover:scale-105 transition-all">
-                <img src="/logo.svg" alt="SargamKeys Logo" className="h-full w-full object-cover" />
+                <img src="/logo.jpg" alt="SargamKeys Logo" className="h-full w-full object-cover" />
               </div>
               <div className="flex flex-col">
                 <span className="font-playfair text-xl font-black tracking-tight text-gray-900 dark:text-white leading-none group-hover:text-blue-600 transition-colors">

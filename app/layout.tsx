@@ -44,8 +44,8 @@ export const metadata: Metadata = {
     "easy keyboard notes",
   ],
   icons: {
-    icon: "/icon.svg",
-    apple: "/logo.svg",
+    icon: "/logo.jpg",
+    apple: "/logo.jpg",
   },
   manifest: "/manifest.json",
   openGraph: {
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     siteName: "SargamKeys",
     images: [
       {
-        url: "/logo.svg",
+        url: "/logo.jpg",
         width: 1200,
         height: 630,
       },
@@ -68,7 +68,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "SargamKeys",
     description: "Learn piano notes and keyboard notes for Hindi songs.",
-    images: ["/logo.svg"],
+    images: ["/logo.jpg"],
   },
   robots: {
     index: true,
@@ -87,21 +87,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Monetag Vignette Ad Script */}
+        {/* Google AdSense Script Placeholder */}
+        {/* Replace 'pub-0000000000000000' with your actual Publisher ID once you get it */}
         <Script
-          id="monetag-vignette"
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0000000000000000"
+          crossOrigin="anonymous"
           strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `(function(s){s.dataset.zone='10992930',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))`
-          }}
-        />
-        {/* Monetag Additional Ad Script */}
-        <Script
-          id="monetag-tag"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `(function(s){s.dataset.zone='10992975',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))`
-          }}
         />
       </head>
       <body
@@ -117,23 +109,6 @@ export default function RootLayout({
             <Toaster richColors closeButton position="top-right" />
           </ClientThemeProvider>
         </AuthProvider>
-
-        {/* Service Worker Registration for Monetag */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              if ('serviceWorker' in navigator) {
-                window.addEventListener('load', function() {
-                  navigator.serviceWorker.register('/sw.js').then(function(reg) {
-                    console.log('SW registered:', reg.scope);
-                  }).catch(function(err) {
-                    console.error('SW registration failed:', err);
-                  });
-                });
-              }
-            `,
-          }}
-        />
       </body>
     </html>
   );

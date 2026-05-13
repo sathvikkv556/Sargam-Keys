@@ -146,7 +146,7 @@ export default function AboutPage() {
             Have questions, suggestions, or want to contribute? We&apos;d love to hear from you!
           </p>
           <a
-            href="mailto:contact@sargamkeys.com"
+            href="mailto:ksathvik485@gmail.com"
             className="inline-block rounded-lg bg-blue-600 px-6 py-2 text-white transition-colors hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
           >
             Contact Us

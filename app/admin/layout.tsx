@@ -10,7 +10,8 @@ import {
   LogOut,
   PlusCircle,
   Home,
-  Menu
+  Menu,
+  MessageSquare
 } from 'lucide-react';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
@@ -21,6 +22,7 @@ const sidebarItems = [
   { icon: Music, label: 'Song Library', href: '/admin/songs' },
   { icon: PlusCircle, label: 'Add New Song', href: '/admin/songs/new' },
   { icon: Grid, label: 'Categories', href: '/admin/categories' },
+  { icon: MessageSquare, label: 'Comments', href: '/admin/comments' },
   { icon: BarChart3, label: 'Analytics', href: '/admin/analytics' },
   { icon: Users, label: 'Team', href: '/admin/users' },
   { icon: Settings, label: 'Site Settings', href: '/admin/settings' },
@@ -41,7 +43,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
           <Link href="/" className="flex items-center gap-3 group transition-all duration-300">
             <div className="relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-blue-600 to-indigo-700 shadow-lg shadow-blue-500/20 group-hover:shadow-blue-500/40 transition-all">
               <img 
-                src="/default.png" 
+                src="/logo.jpg" 
                 alt="SargamKeys Logo" 
                 className="h-full w-full object-cover"
               />

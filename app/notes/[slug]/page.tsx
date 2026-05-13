@@ -9,6 +9,7 @@ import { Separator } from '@/components/ui/separator';
 import { Music, Mic, Film, Scale, Key as MusicKey } from 'lucide-react';
 import { createPageMetadata } from '@/lib/seo';
 import { SongActions } from '@/components/SongActions';
+import { CommentSection } from '@/components/CommentSection';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { connectDB } from '@/lib/db';
@@ -48,13 +49,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
     const song = response.data;
     const moviePart = song.movie ? ` (${song.movie})` : '';
-    const pageTitle = song.seoTitle || `${song.title} Piano Notes${moviePart} - Easy for Beginners`;
-    const pageDescription = song.seoDescription || `Learn how to play ${song.title}${song.movie ? ` from the movie ${song.movie}` : ''} on piano with our easy-to-follow notes. Perfect for beginners and keyboard players.`;
+    const pageTitle = song.seoTitle || `${song.title} Piano Notes${moviePart} - ${song.scale} Scale`;
+    const pageDescription = song.seoDescription || `Learn how to play ${song.title}${song.movie ? ` from the movie ${song.movie}` : ''} on piano with our easy-to-follow notes in ${song.scale} scale. Perfect for beginners and keyboard players.`;
 
     const seo = createPageMetadata(
       pageTitle,
       pageDescription,
-      song.seoKeywords || [song.title, 'piano notes', song.movie || '', 'keyboard notes', 'sargam notes'],
+      song.seoKeywords || [song.title, 'piano notes', song.movie || '', 'keyboard notes', 'sargam notes', `${song.scale} scale`],
       `/notes/${song.slug}`
     );
 
@@ -148,7 +149,7 @@ export default async function SongPage({ params }: PageProps) {
       {/* Print-only Branded Header */}
       <div className="print-header">
         <div className="flex items-center gap-2 mb-1">
-          <img src="/logo.svg" alt="SargamKeys" className="h-8 w-8 object-contain" />
+          <img src="/logo.jpg" alt="SargamKeys" className="h-8 w-8 object-contain" />
           <h1 className="text-2xl font-bold m-0">SargamKeys</h1>
         </div>
         <p className="text-sm">Learn Piano Notes & Music Theory • www.sargamkeys.in</p>
@@ -265,6 +266,9 @@ export default async function SongPage({ params }: PageProps) {
               </div>
             </div>
           )}
+
+          {/* Comment Section */}
+          <CommentSection songId={song._id} isAdmin={isAdmin} />
         </div>
 
         {/* Sidebar */}
