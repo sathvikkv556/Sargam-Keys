@@ -17,11 +17,27 @@ import { toast } from 'sonner';
 
 const NOTES_ORDER = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
+const SARGAM_MAP: Record<string, string> = {
+  'C': 'Sa',
+  'C#': 're',
+  'D': 'Re',
+  'D#': 'ga',
+  'E': 'Ga',
+  'F': 'Ma',
+  'F#': 'ma',
+  'G': 'Pa',
+  'G#': 'dha',
+  'A': 'Dha',
+  'A#': 'ni',
+  'B': 'Ni'
+};
+
 export function SongNotes({ initialNotes }: { initialNotes: string }) {
   const [notes, setNotes] = useState(initialNotes || '');
   const [fontSize, setFontSize] = useState(16);
   const [copied, setCopied] = useState(false);
   const [transposeCount, setTransposeCount] = useState(0);
+  const [isSargam, setIsSargam] = useState(false);
   
   // Metronome State
   const [isPlaying, setIsPlaying] = useState(false);
@@ -71,8 +87,58 @@ export function SongNotes({ initialNotes }: { initialNotes: string }) {
     };
   }, [bpm]);
 
+  const getDisplayNotes = () => {
+    if (!isSargam) return notes;
+
+    const noteRegex = /[A-G][#b]?/g;
+    return notes.replace(noteRegex, (match) => {
+      let normalized = match;
+      if (match.endsWith('b')) {
+        const base = match[0];
+        const flatIndex = NOTES_ORDER.indexOf(base);
+        let sharpIndex = (flatIndex - 1) % 12;
+        if (sharpIndex < 0) sharpIndex += 12;
+        normalized = NOTES_ORDER[sharpIndex];
+      }
+      return SARGAM_MAP[normalized] || match;
+    });
+  };
+
+  const displayNotes = getDisplayNotes();
+
+  const renderHighlightedNotes = (text: string) => {
+    if (!text) return null;
+
+    // Regex to match Western notes (A-G with optional # or b)
+    // or Sargam notes (Sa, re, Re, ga, Ga, Ma, ma, Pa, dha, Dha, ni, Ni)
+    const regex = isSargam 
+      ? /(Sa|re|Re|ga|Ga|Ma|ma|Pa|dha|Dha|ni|Ni)/g
+      : /([A-G][#b]?)/g;
+
+    const parts = text.split(regex);
+    
+    return parts.map((part, i) => {
+      // Check if this part is a note
+      const isNote = isSargam 
+        ? Object.values(SARGAM_MAP).includes(part)
+        : NOTES_ORDER.includes(part) || (part.length === 2 && part[1] === 'b' && NOTES_ORDER.includes(part[0]));
+      
+      if (isNote) {
+        return (
+          <span 
+            key={i} 
+            className="px-0.5 mx-[1px] rounded bg-sky-400/10 dark:bg-sky-400/20 text-sky-800 dark:text-sky-200 font-bold transition-colors"
+          >
+            {part}
+          </span>
+        );
+      }
+      return <span key={i}>{part}</span>;
+    });
+  };
+
   const handleCopy = () => {
-    navigator.clipboard.writeText(notes);
+    navigator.clipboard.writeText(displayNotes);
     setCopied(true);
     toast.success('Notes copied to clipboard');
     setTimeout(() => setCopied(false), 2000);
@@ -195,13 +261,31 @@ export function SongNotes({ initialNotes }: { initialNotes: string }) {
         </div>
       </div>
 
+      {/* Sargam Conversion Button */}
+      <div className="mb-6">
+        <Button
+          variant="outline"
+          className="w-full bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20 border-orange-200 dark:border-orange-800 text-orange-700 dark:text-orange-400 font-bold py-6 hover:from-orange-100 hover:to-amber-100 dark:hover:from-orange-900/30 dark:hover:to-amber-900/30 transition-all shadow-md group"
+          onClick={() => setIsSargam(!isSargam)}
+        >
+          <div className="flex flex-col items-center">
+            <span className="text-lg">
+              {isSargam ? 'Switch to Western (C D E)' : 'Convert to Sargam (Sa Re Ga)'}
+            </span>
+            <span className="text-[10px] font-normal opacity-70 uppercase tracking-widest mt-1 group-hover:tracking-[0.2em] transition-all">
+              {isSargam ? 'Classical ↔ Modern' : 'Western ↔ Indian Classical'}
+            </span>
+          </div>
+        </Button>
+      </div>
+
       {/* Notes Display */}
       <div className="relative">
         <div 
           className="whitespace-pre-wrap font-mono leading-relaxed transition-all min-h-[200px] bg-slate-50/50 dark:bg-slate-900/50 rounded-lg p-4 md:p-6"
           style={{ fontSize: `${fontSize}px` }}
         >
-          {notes}
+          {renderHighlightedNotes(displayNotes)}
         </div>
       </div>
 

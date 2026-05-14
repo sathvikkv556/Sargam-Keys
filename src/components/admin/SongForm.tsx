@@ -21,7 +21,7 @@ const songSchema = z.object({
   singer: z.string().optional(),
   album: z.string().optional(),
   composer: z.string().optional(),
-  lyrics: z.string().min(10, 'Lyrics must be at least 10 characters'),
+  lyrics: z.string().optional(),
   notes: z.string().min(10, 'Notes must be at least 10 characters'),
   chords: z.string().optional(),
   difficulty: z.enum(['Beginner', 'Intermediate', 'Advanced']),
@@ -65,6 +65,7 @@ export function SongForm({ initialData, categories }: SongFormProps) {
           featured: false,
           thumbnail: '',
           chords: '',
+          lyrics: '',
         },
   });
 
@@ -78,8 +79,11 @@ export function SongForm({ initialData, categories }: SongFormProps) {
       return;
     }
     const moviePart = movie ? ` (${movie})` : '';
-    setValue('seoTitle', `${title} Piano Notes${moviePart} - Easy for Beginners`);
-    setValue('seoDescription', `Learn how to play ${title}${movie ? ` from the movie ${movie}` : ''} on piano with our easy-to-follow notes. Perfect for beginners and keyboard players.`);
+    const scale = watch('scale');
+    const scalePart = scale ? ` in ${scale} scale` : '';
+
+    setValue('seoTitle', `${title} Piano Notes${moviePart} - Sargam, Flute & Guitar`);
+    setValue('seoDescription', `Learn how to play ${title}${movie ? ` from the movie ${movie}` : ''} on piano, flute, and guitar${scalePart}. Get accurate Sargam notes, western notations, and easy-to-follow guides for ${title}.`);
     toast.success('SEO metadata generated');
   };
 

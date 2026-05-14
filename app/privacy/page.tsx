@@ -68,13 +68,7 @@ export default function PrivacyPage() {
         <section>
           <h2 className="text-2xl font-bold">6. Our Advertising Partners</h2>
           <p>
-            Some of advertisers on our site may use cookies and web beacons. Our advertising partners include:
-          </p>
-          <ul className="list-disc pl-6">
-            <li>Google AdSense</li>
-          </ul>
-          <p>
-            Each of our advertising partners has their own Privacy Policy for their policies on user data.
+            We do not currently use third-party advertising services that collect user data.
           </p>
         </section>
 

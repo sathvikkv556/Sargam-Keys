@@ -5,8 +5,10 @@ import { cache } from 'react';
 import { connectDB } from '@/lib/db';
 import Song from '@/models/Song';
 import Category from '@/models/Category';
+import Analytics from '@/models/Analytics';
 import { Song as SongType, APIResponse } from '@/types';
 import { slugify } from '@/lib/utils';
+import { headers } from 'next/headers';
 
 export async function createSong(data: Partial<SongType>): Promise<APIResponse<SongType>> {
   try {
@@ -135,13 +137,25 @@ export const getSongBySlug = cache(async (slug: string, isAdmin: boolean = false
       return { success: false, error: 'Song not found', notFound: true };
     }
     
-    // Increment views only if not admin previewing
-    if (!isAdmin) {
+    // Increment views only if not admin previewing AND in production
+    if (!isAdmin && process.env.NODE_ENV === 'production') {
       try {
+        // Increment global counter
         song.views += 1;
         await song.save();
+
+        // Log individual view for analytics
+        const headersList = await headers();
+        const ip = headersList.get('x-forwarded-for') || 'unknown';
+        const userAgent = headersList.get('user-agent') || 'unknown';
+        
+        await Analytics.create({
+          songId: song._id,
+          ip,
+          userAgent,
+        });
       } catch (saveError) {
-        console.error('Error incrementing views:', saveError);
+        console.error('Error incrementing views or logging analytics:', saveError);
         // Don't fail the whole request if view increment fails
       }
     }

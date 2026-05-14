@@ -22,7 +22,7 @@ export interface Song {
   album?: string;
   singer?: string;
   composer?: string;
-  lyrics: string;
+  lyrics?: string;
   notes: string;
   chords?: string;
   difficulty: Difficulty;

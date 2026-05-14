@@ -7,7 +7,7 @@ export interface ISong extends Document {
   album?: string;
   singer?: string;
   composer?: string;
-  lyrics: string;
+  lyrics?: string;
   notes: string;
   chords?: string;
   difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
@@ -34,7 +34,7 @@ const songSchema = new Schema<ISong>(
     album: { type: String, trim: true },
     singer: { type: String, trim: true },
     composer: { type: String, trim: true },
-    lyrics: { type: String, required: true },
+    lyrics: { type: String },
     notes: { type: String, required: true },
     chords: { type: String },
     difficulty: {
