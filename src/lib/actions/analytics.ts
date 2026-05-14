@@ -15,11 +15,20 @@ export async function getOverallStats(): Promise<APIResponse<any>> {
     const thisMonthStart = new Date(now.getFullYear(), now.getMonth(), 1);
     const thisYearStart = new Date(now.getFullYear(), 0, 1);
 
-    const [totalViews, todayViews, monthViews, yearViews] = await Promise.all([
+    const [totalViews, todayViews, monthViews, yearViews, sourceStats] = await Promise.all([
       Analytics.countDocuments({}),
       Analytics.countDocuments({ timestamp: { $gte: todayStart } }),
       Analytics.countDocuments({ timestamp: { $gte: thisMonthStart } }),
       Analytics.countDocuments({ timestamp: { $gte: thisYearStart } }),
+      Analytics.aggregate([
+        {
+          $group: {
+            _id: '$source',
+            count: { $sum: 1 },
+          },
+        },
+        { $sort: { count: -1 } },
+      ]),
     ]);
 
     return {
@@ -29,8 +38,29 @@ export async function getOverallStats(): Promise<APIResponse<any>> {
         todayViews,
         monthViews,
         yearViews,
+        sourceStats,
       },
     };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}
+
+export async function getTrafficSourceStats(): Promise<APIResponse<any>> {
+  try {
+    await connectDB();
+
+    const stats = await Analytics.aggregate([
+      {
+        $group: {
+          _id: '$source',
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { count: -1 } },
+    ]);
+
+    return { success: true, data: stats };
   } catch (error: any) {
     return { success: false, error: error.message };
   }

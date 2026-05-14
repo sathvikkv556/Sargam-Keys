@@ -5,6 +5,8 @@ export interface IAnalytics extends Document {
   timestamp: Date;
   ip?: string; // Optional: to prevent double counting if needed
   userAgent?: string;
+  referrer?: string;
+  source?: string;
 }
 
 const analyticsSchema = new Schema<IAnalytics>(
@@ -13,6 +15,8 @@ const analyticsSchema = new Schema<IAnalytics>(
     timestamp: { type: Date, default: Date.now, index: true },
     ip: { type: String },
     userAgent: { type: String },
+    referrer: { type: String },
+    source: { type: String, default: 'direct', index: true },
   },
   { timestamps: false }
 );

@@ -7,7 +7,10 @@ import {
   ArrowUpRight,
   Music,
   Clock,
-  Activity
+  Activity,
+  Search,
+  Globe,
+  Share2
 } from 'lucide-react';
 import { 
   getOverallStats, 
@@ -37,7 +40,7 @@ export default async function AnalyticsPage() {
     getRecentViews(15)
   ]);
 
-  const stats = statsResponse.success ? statsResponse.data : { totalViews: 0, todayViews: 0, monthViews: 0, yearViews: 0 };
+  const stats = statsResponse.success ? statsResponse.data : { totalViews: 0, todayViews: 0, monthViews: 0, yearViews: 0, sourceStats: [] };
   const timeline = timelineResponse.success ? timelineResponse.data : [];
   const mostClicked = mostClickedResponse.success ? mostClickedResponse.data : [];
   const hourly = hourlyResponse.success ? hourlyResponse.data : [];
@@ -206,6 +209,39 @@ export default async function AnalyticsPage() {
           </div>
         </div>
       </div>
+
+      {/* Traffic Sources */}
+      <div className="rounded-xl border bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <div className="mb-6">
+          <h2 className="text-xl font-bold flex items-center gap-2">
+            <Globe className="h-5 w-5 text-indigo-500" />
+            Traffic Sources Breakdown
+          </h2>
+          <p className="text-sm text-slate-400">Where your visitors are coming from</p>
+        </div>
+        
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {stats.sourceStats?.map((source: any) => (
+            <div key={source._id || 'unknown'} className="flex items-center justify-between rounded-lg border border-slate-100 p-4 dark:border-slate-800">
+              <div className="flex items-center gap-3">
+                <SourceIcon source={source._id} />
+                <span className="text-sm font-medium capitalize">{source._id || 'Direct'}</span>
+              </div>
+              <div className="text-right">
+                <span className="text-lg font-bold">{source.count}</span>
+                <p className="text-[10px] text-slate-500">
+                  {stats.totalViews > 0 ? ((source.count / stats.totalViews) * 100).toFixed(1) : 0}%
+                </p>
+              </div>
+            </div>
+          ))}
+          {(!stats.sourceStats || stats.sourceStats.length === 0) && (
+            <div className="col-span-full py-8 text-center text-slate-400 italic border rounded-lg border-dashed">
+              No traffic source data available yet.
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
@@ -225,4 +261,24 @@ function StatCard({ title, value, icon: Icon, color, bgColor }: any) {
     </div>
   );
 }
+
+function SourceIcon({ source }: { source: string }) {
+  switch (source) {
+    case 'google':
+      return <Search className="h-4 w-4 text-blue-500" />;
+    case 'facebook':
+      return <Share2 className="h-4 w-4 text-blue-600" />;
+    case 'twitter':
+      return <Share2 className="h-4 w-4 text-sky-500" />;
+    case 'youtube':
+      return <Music className="h-4 w-4 text-red-600" />;
+    case 'direct':
+      return <ArrowUpRight className="h-4 w-4 text-slate-500" />;
+    case 'internal':
+      return <Music className="h-4 w-4 text-emerald-500" />;
+    default:
+      return <Globe className="h-4 w-4 text-slate-400" />;
+  }
+}
+
 
