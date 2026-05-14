@@ -19,7 +19,7 @@ import {
   getHourlyStatsToday,
   getRecentViews
 } from '@/lib/actions/analytics';
-import Link from 'next/link';
+import AnalyticsChart from '@/components/admin/AnalyticsChart';
 
 export const metadata: Metadata = {
   title: 'Analytics | Admin Dashboard',
@@ -46,8 +46,6 @@ export default async function AnalyticsPage() {
   const hourly = hourlyResponse.success ? hourlyResponse.data : [];
   const recent = recentResponse.success ? recentResponse.data : [];
 
-  // Find max for scaling charts
-  const maxViews = Math.max(...timeline.map((d: any) => d.count), 1);
   const maxHourly = Math.max(...hourly.map((d: any) => d.count), 1);
 
   return (
@@ -66,37 +64,8 @@ export default async function AnalyticsPage() {
         </div>
       </div>
 
-      {/* Summary Cards */}
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard 
-          title="Today's Clicks" 
-          value={stats.todayViews} 
-          icon={TrendingUp} 
-          color="text-blue-600"
-          bgColor="bg-blue-50 dark:bg-blue-900/20"
-        />
-        <StatCard 
-          title="This Month" 
-          value={stats.monthViews} 
-          icon={Calendar} 
-          color="text-orange-600"
-          bgColor="bg-orange-50 dark:bg-orange-900/20"
-        />
-        <StatCard 
-          title="This Year" 
-          value={stats.yearViews} 
-          icon={BarChart3} 
-          color="text-green-600"
-          bgColor="bg-green-50 dark:bg-green-900/20"
-        />
-        <StatCard 
-          title="Total Clicks" 
-          value={stats.totalViews} 
-          icon={Eye} 
-          color="text-purple-600"
-          bgColor="bg-purple-50 dark:bg-purple-900/20"
-        />
-      </div>
+      {/* Main Analytics Chart (GSC Style) */}
+      <AnalyticsChart timeline={timeline} stats={stats} />
 
       <div className="grid gap-8 lg:grid-cols-3">
         {/* Hourly Trend (Today) */}
@@ -166,28 +135,6 @@ export default async function AnalyticsPage() {
       </div>
 
       <div className="grid gap-8 lg:grid-cols-2">
-        {/* Daily Comparison (30 Days) */}
-        <div className="rounded-xl border bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-          <div className="mb-6">
-            <h2 className="text-xl font-bold">Traffic Growth (Last 30 Days)</h2>
-          </div>
-          
-          <div className="flex h-48 items-end gap-2 overflow-x-auto pb-2">
-            {timeline.map((day: any, i: number) => (
-              <div key={i} className="group relative flex flex-1 flex-col items-center min-w-[12px]">
-                <div 
-                  className="w-full rounded-t-sm bg-slate-300 dark:bg-slate-700 transition-all group-hover:bg-blue-500"
-                  style={{ height: `${(day.count / maxViews) * 100}%` }}
-                >
-                  <div className="absolute -top-8 left-1/2 -translate-x-1/2 rounded bg-slate-900 px-2 py-1 text-[10px] text-white opacity-0 transition-opacity group-hover:opacity-100 whitespace-nowrap z-10">
-                    {day.count} views ({day._id.day}/{day._id.month})
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
         {/* Top Performers */}
         <div className="rounded-xl border bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
           <div className="mb-6">
@@ -208,54 +155,35 @@ export default async function AnalyticsPage() {
             ))}
           </div>
         </div>
-      </div>
 
-      {/* Traffic Sources */}
-      <div className="rounded-xl border bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-        <div className="mb-6">
-          <h2 className="text-xl font-bold flex items-center gap-2">
-            <Globe className="h-5 w-5 text-indigo-500" />
-            Traffic Sources Breakdown
-          </h2>
-          <p className="text-sm text-slate-400">Where your visitors are coming from</p>
-        </div>
-        
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {stats.sourceStats?.map((source: any) => (
-            <div key={source._id || 'unknown'} className="flex items-center justify-between rounded-lg border border-slate-100 p-4 dark:border-slate-800">
-              <div className="flex items-center gap-3">
-                <SourceIcon source={source._id} />
-                <span className="text-sm font-medium capitalize">{source._id || 'Direct'}</span>
+        {/* Traffic Sources Breakdown */}
+        <div className="rounded-xl border bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <div className="mb-6">
+            <h2 className="text-xl font-bold flex items-center gap-2">
+              <Globe className="h-5 w-5 text-indigo-500" />
+              Traffic Sources
+            </h2>
+          </div>
+          
+          <div className="space-y-3">
+            {stats.sourceStats?.map((source: any) => (
+              <div key={source._id || 'unknown'} className="flex items-center justify-between p-2 rounded hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                <div className="flex items-center gap-3">
+                  <SourceIcon source={source._id} />
+                  <span className="text-sm font-medium capitalize">{source._id || 'Direct'}</span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <div className="w-32 h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden hidden sm:block">
+                    <div 
+                      className="h-full bg-indigo-500" 
+                      style={{ width: `${stats.totalViews > 0 ? (source.count / stats.totalViews) * 100 : 0}%` }}
+                    ></div>
+                  </div>
+                  <span className="text-sm font-bold w-12 text-right">{source.count}</span>
+                </div>
               </div>
-              <div className="text-right">
-                <span className="text-lg font-bold">{source.count}</span>
-                <p className="text-[10px] text-slate-500">
-                  {stats.totalViews > 0 ? ((source.count / stats.totalViews) * 100).toFixed(1) : 0}%
-                </p>
-              </div>
-            </div>
-          ))}
-          {(!stats.sourceStats || stats.sourceStats.length === 0) && (
-            <div className="col-span-full py-8 text-center text-slate-400 italic border rounded-lg border-dashed">
-              No traffic source data available yet.
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function StatCard({ title, value, icon: Icon, color, bgColor }: any) {
-  return (
-    <div className="rounded-xl border bg-white p-6 shadow-sm transition-all hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
-      <div className="flex items-center gap-4">
-        <div className={`rounded-lg ${bgColor} p-3`}>
-          <Icon className={`h-6 w-6 ${color}`} />
-        </div>
-        <div>
-          <p className="text-sm font-medium text-slate-500">{title}</p>
-          <h3 className="text-2xl font-bold">{value.toLocaleString()}</h3>
+            ))}
+          </div>
         </div>
       </div>
     </div>

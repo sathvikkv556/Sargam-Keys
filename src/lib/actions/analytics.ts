@@ -10,16 +10,22 @@ export async function getOverallStats(): Promise<APIResponse<any>> {
   try {
     await connectDB();
 
-    const now = new Date();
-    const todayStart = new Date(now.setHours(0, 0, 0, 0));
-    const thisMonthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-    const thisYearStart = new Date(now.getFullYear(), 0, 1);
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+
+    const monthStart = new Date();
+    monthStart.setDate(1);
+    monthStart.setHours(0, 0, 0, 0);
+
+    const yearStart = new Date();
+    yearStart.setMonth(0, 1);
+    yearStart.setHours(0, 0, 0, 0);
 
     const [totalViews, todayViews, monthViews, yearViews, sourceStats] = await Promise.all([
       Analytics.countDocuments({}),
       Analytics.countDocuments({ timestamp: { $gte: todayStart } }),
-      Analytics.countDocuments({ timestamp: { $gte: thisMonthStart } }),
-      Analytics.countDocuments({ timestamp: { $gte: thisYearStart } }),
+      Analytics.countDocuments({ timestamp: { $gte: monthStart } }),
+      Analytics.countDocuments({ timestamp: { $gte: yearStart } }),
       Analytics.aggregate([
         {
           $group: {
@@ -73,22 +79,25 @@ export async function getViewsByTimeframe(timeframe: 'day' | 'month' | 'year' = 
     let groupBy: any;
     let limit = 30;
 
+    // Use server's timezone for grouping to match "Today" definition
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
+
     if (timeframe === 'day') {
       groupBy = {
-        year: { $year: '$timestamp' },
-        month: { $month: '$timestamp' },
-        day: { $dayOfMonth: '$timestamp' },
+        year: { $year: { date: '$timestamp', timezone } },
+        month: { $month: { date: '$timestamp', timezone } },
+        day: { $dayOfMonth: { date: '$timestamp', timezone } },
       };
       limit = 30;
     } else if (timeframe === 'month') {
       groupBy = {
-        year: { $year: '$timestamp' },
-        month: { $month: '$timestamp' },
+        year: { $year: { date: '$timestamp', timezone } },
+        month: { $month: { date: '$timestamp', timezone } },
       };
       limit = 12;
     } else {
       groupBy = {
-        year: { $year: '$timestamp' },
+        year: { $year: { date: '$timestamp', timezone } },
       };
       limit = 5;
     }
@@ -104,7 +113,32 @@ export async function getViewsByTimeframe(timeframe: 'day' | 'month' | 'year' = 
       { $limit: limit },
     ]);
 
-    return { success: true, data: stats.reverse() };
+    let formattedData = stats.reverse();
+
+    // Fill in gaps for 'day' timeframe to ensure continuous 30 days
+    if (timeframe === 'day') {
+      const now = new Date();
+      const last30Days = [];
+      for (let i = 29; i >= 0; i--) {
+        const d = new Date(now);
+        d.setDate(d.getDate() - i);
+        const year = d.getFullYear();
+        const month = d.getMonth() + 1;
+        const day = d.getDate();
+
+        const existing = formattedData.find(
+          (s: any) => s._id.year === year && s._id.month === month && s._id.day === day
+        );
+
+        last30Days.push({
+          _id: { year, month, day },
+          count: existing ? existing.count : 0,
+        });
+      }
+      formattedData = last30Days;
+    }
+
+    return { success: true, data: formattedData };
   } catch (error: any) {
     return { success: false, error: error.message };
   }
@@ -114,8 +148,10 @@ export async function getHourlyStatsToday(): Promise<APIResponse<any>> {
   try {
     await connectDB();
 
-    const now = new Date();
-    const todayStart = new Date(now.setHours(0, 0, 0, 0));
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
 
     const stats = await Analytics.aggregate([
       {
@@ -125,7 +161,7 @@ export async function getHourlyStatsToday(): Promise<APIResponse<any>> {
       },
       {
         $group: {
-          _id: { $hour: '$timestamp' },
+          _id: { $hour: { date: '$timestamp', timezone } },
           count: { $sum: 1 },
         },
       },
