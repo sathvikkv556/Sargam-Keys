@@ -87,16 +87,16 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-      </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${montserrat.variable} antialiased`}
-      >
         <Script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7760317183284359"
           crossOrigin="anonymous"
           strategy="afterInteractive"
         />
+      </head>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${montserrat.variable} antialiased`}
+      >
         <AuthProvider>
           <ClientThemeProvider>
             <div className="flex flex-col min-h-screen">
