@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import Link from 'next/link';
 import { 
   BarChart3, 
   TrendingUp, 
@@ -10,16 +11,19 @@ import {
   Activity,
   Search,
   Globe,
-  Share2
+  Share2,
+  ChevronRight
 } from 'lucide-react';
 import { 
   getOverallStats, 
   getViewsByTimeframe, 
   getMostClickedSongs,
   getHourlyStatsToday,
-  getRecentViews
+  getRecentViews,
+  getAllSongsAnalytics
 } from '@/lib/actions/analytics';
 import AnalyticsChart from '@/components/admin/AnalyticsChart';
+import AnalyticsSongList from '@/components/admin/AnalyticsSongList';
 
 export const metadata: Metadata = {
   title: 'Analytics | Admin Dashboard',
@@ -31,13 +35,15 @@ export default async function AnalyticsPage() {
     timelineResponse, 
     mostClickedResponse,
     hourlyResponse,
-    recentResponse
+    recentResponse,
+    allSongsResponse
   ] = await Promise.all([
     getOverallStats(),
     getViewsByTimeframe('day'),
-    getMostClickedSongs(10),
+    getMostClickedSongs(12), 
     getHourlyStatsToday(),
-    getRecentViews(15)
+    getRecentViews(15),
+    getAllSongsAnalytics()
   ]);
 
   const stats = statsResponse.success ? statsResponse.data : { totalViews: 0, todayViews: 0, monthViews: 0, yearViews: 0, sourceStats: [] };
@@ -45,6 +51,7 @@ export default async function AnalyticsPage() {
   const mostClicked = mostClickedResponse.success ? mostClickedResponse.data : [];
   const hourly = hourlyResponse.success ? hourlyResponse.data : [];
   const recent = recentResponse.success ? recentResponse.data : [];
+  const allSongs = allSongsResponse.success ? allSongsResponse.data : [];
 
   const maxHourly = Math.max(...hourly.map((d: any) => d.count), 1);
 
@@ -117,14 +124,23 @@ export default async function AnalyticsPage() {
                     <Music className="h-3 w-3 text-slate-500" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium truncate leading-tight">{item.songId?.title || 'Unknown Song'}</p>
+                    {item.songId ? (
+                      <Link 
+                        href={`/admin/analytics/song/${item.songId._id}`}
+                        className="text-sm font-medium truncate leading-tight hover:text-blue-600 transition-colors block"
+                      >
+                        {item.songId.title}
+                      </Link>
+                    ) : (
+                      <p className="text-sm font-medium truncate leading-tight">Unknown Song</p>
+                    )}
                     <div className="mt-1 flex items-center gap-2 text-[10px] text-slate-500">
                       <span className="flex items-center gap-1">
                         <Clock className="h-2.5 w-2.5" />
                         {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </span>
                       <span>•</span>
-                      <span className="font-mono opacity-60">IP: {item.ip.split(',')[0]}</span>
+                      <span className="font-mono opacity-60">IP: {item.ip?.split(',')[0] || 'Unknown'}</span>
                     </div>
                   </div>
                 </div>
@@ -137,21 +153,27 @@ export default async function AnalyticsPage() {
       <div className="grid gap-8 lg:grid-cols-2">
         {/* Top Performers */}
         <div className="rounded-xl border bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-          <div className="mb-6">
-            <h2 className="text-xl font-bold">Top Performing Notes</h2>
+          <div className="mb-6 flex items-center justify-between">
+            <h2 className="text-xl font-bold">Song Performance</h2>
+            <span className="text-xs text-slate-400">Click a song for details</span>
           </div>
           
           <div className="grid gap-4 sm:grid-cols-2">
-            {mostClicked.slice(0, 6).map((item: any, i: number) => (
-              <div key={item._id} className="flex items-center gap-3 rounded-lg border border-slate-100 p-3 dark:border-slate-800">
-                <div className="flex h-8 w-8 items-center justify-center rounded bg-blue-50 text-blue-600 dark:bg-blue-900/20 text-xs font-bold">
+            {mostClicked.map((item: any, i: number) => (
+              <Link 
+                key={item._id} 
+                href={`/admin/analytics/song/${item._id}`}
+                className="flex items-center gap-3 rounded-lg border border-slate-100 p-3 hover:border-blue-200 hover:bg-blue-50/30 transition-all dark:border-slate-800 dark:hover:border-blue-900/40 dark:hover:bg-blue-900/10 group"
+              >
+                <div className="flex h-8 w-8 items-center justify-center rounded bg-slate-50 text-slate-400 group-hover:bg-blue-100 group-hover:text-blue-600 dark:bg-slate-800 dark:text-slate-500 dark:group-hover:bg-blue-900/30 dark:group-hover:text-blue-400 text-xs font-bold transition-colors">
                   #{i + 1}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-bold">{item.title}</p>
-                  <p className="text-[10px] text-slate-500">{item.clickCount} views</p>
+                  <p className="truncate text-sm font-bold group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors">{item.title}</p>
+                  <p className="text-[10px] text-slate-500">{item.clickCount.toLocaleString()} views</p>
                 </div>
-              </div>
+                <ChevronRight className="h-4 w-4 text-slate-300 group-hover:text-blue-400 transition-colors" />
+              </Link>
             ))}
           </div>
         </div>
@@ -186,6 +208,9 @@ export default async function AnalyticsPage() {
           </div>
         </div>
       </div>
+
+      {/* All Songs Searchable List */}
+      <AnalyticsSongList songs={allSongs} />
     </div>
   );
 }

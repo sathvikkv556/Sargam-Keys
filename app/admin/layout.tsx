@@ -29,11 +29,6 @@ const sidebarItems = [
 ];
 
 export default async function AdminLayout({ children }: { children: ReactNode }) {
-  // Strictly block admin access in production
-  if (process.env.NODE_ENV === 'production') {
-    redirect('/');
-  }
-
   const session = await getServerSession(authOptions);
 
   if (!session || (session.user as any).role !== 'admin') {
