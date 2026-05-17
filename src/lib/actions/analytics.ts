@@ -5,6 +5,7 @@ import Analytics from '@/models/Analytics';
 import Song from '@/models/Song';
 import { APIResponse } from '@/types';
 import mongoose from 'mongoose';
+import { headers } from 'next/headers';
 
 const APP_TIMEZONE = process.env.NEXT_PUBLIC_TIMEZONE || 'Asia/Kolkata';
 
