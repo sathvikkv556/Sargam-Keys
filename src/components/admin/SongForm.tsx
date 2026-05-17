@@ -12,8 +12,10 @@ import { Song, Category } from '@/types';
 import { createSong, updateSong } from '@/lib/actions/song';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ImageUpload } from './ImageUpload';
+import { detectScale } from '@/lib/detectScale';
+import { Wand2, Sparkles } from 'lucide-react';
 
 const songSchema = z.object({
   title: z.string().min(2, 'Title must be at least 2 characters'),
@@ -72,6 +74,40 @@ export function SongForm({ initialData, categories }: SongFormProps) {
   const thumbnail = watch('thumbnail');
   const title = watch('title');
   const movie = watch('movie');
+  const notes = watch('notes');
+  const currentScale = watch('scale');
+
+  useEffect(() => {
+    // Auto-detect only if scale is not set and notes are provided
+    if (notes && notes.length > 20 && !currentScale) {
+      const detected = detectScale(notes);
+      if (detected && detected.score > 0.8) { // Only auto-fill if high confidence
+        setValue('scale', detected.scale);
+        setValue('key', detected.key);
+        toast.info(`Auto-detected Scale: ${detected.scale}`, {
+          description: "Based on the notes you entered."
+        });
+      }
+    }
+  }, [notes, currentScale, setValue]);
+
+  const handleAutoDetectScale = () => {
+    if (!notes || notes.length < 10) {
+      toast.error('Please enter some notes first');
+      return;
+    }
+
+    const detected = detectScale(notes);
+    if (detected && detected.score > 0.5) {
+      setValue('scale', detected.scale);
+      setValue('key', detected.key);
+      toast.success(`Detected ${detected.scale} (${Math.round(detected.score * 100)}% match)`, {
+        description: "Scale and Key have been updated automatically."
+      });
+    } else {
+      toast.error('Could not confidently detect scale. Please set manually.');
+    }
+  };
 
   const generateSEO = () => {
     if (!title) {
@@ -196,8 +232,18 @@ export function SongForm({ initialData, categories }: SongFormProps) {
         {/* Sidebar Settings */}
         <div className="space-y-6">
           <Card>
-            <CardHeader>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle>Attributes</CardTitle>
+              <Button 
+                type="button" 
+                variant="ghost" 
+                size="sm"
+                className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 p-0 h-auto gap-1"
+                onClick={handleAutoDetectScale}
+              >
+                <Wand2 className="h-3 w-3" />
+                <span className="text-[10px] font-bold uppercase tracking-wider">Auto-Detect</span>
+              </Button>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid gap-2">

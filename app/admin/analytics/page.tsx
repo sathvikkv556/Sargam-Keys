@@ -1,10 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { 
-  BarChart3, 
   TrendingUp, 
-  Calendar, 
-  Eye, 
   ArrowUpRight,
   Music,
   Clock,
@@ -20,10 +17,14 @@ import {
   getMostClickedSongs,
   getHourlyStatsToday,
   getRecentViews,
-  getAllSongsAnalytics
+  getAllSongsAnalytics,
+  getAdvancedStats
 } from '@/lib/actions/analytics';
 import AnalyticsChart from '@/components/admin/AnalyticsChart';
 import AnalyticsSongList from '@/components/admin/AnalyticsSongList';
+
+import { formatDate, formatTime } from '@/lib/utils';
+import { Users, Timer, BarChart } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Analytics | Admin Dashboard',
@@ -36,14 +37,16 @@ export default async function AnalyticsPage() {
     mostClickedResponse,
     hourlyResponse,
     recentResponse,
-    allSongsResponse
+    allSongsResponse,
+    advancedResponse
   ] = await Promise.all([
     getOverallStats(),
     getViewsByTimeframe('day'),
     getMostClickedSongs(12), 
     getHourlyStatsToday(),
     getRecentViews(15),
-    getAllSongsAnalytics()
+    getAllSongsAnalytics(),
+    getAdvancedStats()
   ]);
 
   const stats = statsResponse.success ? statsResponse.data : { totalViews: 0, todayViews: 0, monthViews: 0, yearViews: 0, sourceStats: [] };
@@ -52,6 +55,7 @@ export default async function AnalyticsPage() {
   const hourly = hourlyResponse.success ? hourlyResponse.data : [];
   const recent = recentResponse.success ? recentResponse.data : [];
   const allSongs = allSongsResponse.success ? allSongsResponse.data : [];
+  const advanced = advancedResponse.success ? advancedResponse.data : { avgDuration: 0, bounceRate: 0, totalSessions: 0 };
 
   const maxHourly = Math.max(...hourly.map((d: any) => d.count), 1);
 
@@ -68,6 +72,49 @@ export default async function AnalyticsPage() {
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
           </span>
           Live Monitoring Active
+        </div>
+      </div>
+
+      {/* High-Class Session Metrics */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="rounded-xl border bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <div className="flex items-center gap-3 text-slate-500 mb-2">
+            <Users className="h-4 w-4 text-blue-500" />
+            <span className="text-xs font-bold uppercase tracking-wider">Total Sessions</span>
+          </div>
+          <div className="text-3xl font-bold">{advanced.totalSessions.toLocaleString()}</div>
+          <p className="text-[10px] text-slate-400 mt-1">Unique visitor sessions logged</p>
+        </div>
+
+        <div className="rounded-xl border bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <div className="flex items-center gap-3 text-slate-500 mb-2">
+            <Timer className="h-4 w-4 text-emerald-500" />
+            <span className="text-xs font-bold uppercase tracking-wider">Avg. Stay Time</span>
+          </div>
+          <div className="text-3xl font-bold">
+            {Math.floor(advanced.avgDuration / 60)}m {Math.floor(advanced.avgDuration % 60)}s
+          </div>
+          <p className="text-[10px] text-slate-400 mt-1">Average time spent per page</p>
+        </div>
+
+        <div className="rounded-xl border bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <div className="flex items-center gap-3 text-slate-500 mb-2">
+            <BarChart className="h-4 w-4 text-orange-500" />
+            <span className="text-xs font-bold uppercase tracking-wider">Bounce Rate</span>
+          </div>
+          <div className="text-3xl font-bold">{advanced.bounceRate.toFixed(1)}%</div>
+          <p className="text-[10px] text-slate-400 mt-1">Single-page session percentage</p>
+        </div>
+
+        <div className="rounded-xl border bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <div className="flex items-center gap-3 text-slate-500 mb-2">
+            <TrendingUp className="h-4 w-4 text-purple-500" />
+            <span className="text-xs font-bold uppercase tracking-wider">Pages / Session</span>
+          </div>
+          <div className="text-3xl font-bold">
+            {(stats.totalViews / Math.max(advanced.totalSessions, 1)).toFixed(2)}
+          </div>
+          <p className="text-[10px] text-slate-400 mt-1">Average depth of exploration</p>
         </div>
       </div>
 
@@ -137,7 +184,7 @@ export default async function AnalyticsPage() {
                     <div className="mt-1 flex items-center gap-2 text-[10px] text-slate-500">
                       <span className="flex items-center gap-1">
                         <Clock className="h-2.5 w-2.5" />
-                        {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        {formatTime(item.timestamp)}
                       </span>
                       <span>•</span>
                       <span className="font-mono opacity-60">IP: {item.ip?.split(',')[0] || 'Unknown'}</span>

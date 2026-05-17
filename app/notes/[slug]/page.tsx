@@ -10,6 +10,7 @@ import { Music, Mic, Film, Scale, Key as MusicKey } from 'lucide-react';
 import { createPageMetadata } from '@/lib/seo';
 import { SongActions } from '@/components/SongActions';
 import { CommentSection } from '@/components/CommentSection';
+import AnalyticsTracker from '@/components/AnalyticsTracker';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { connectDB } from '@/lib/db';
@@ -136,6 +137,8 @@ export default async function SongPage({ params }: PageProps) {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      {/* Analytics Tracking */}
+      <AnalyticsTracker songId={song._id.toString()} />
       {/* Draft Warning for Admins */}
       {song.status === 'Draft' && (
         <div className="mb-6 rounded-lg bg-yellow-50 p-4 border border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-900/30">

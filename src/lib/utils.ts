@@ -29,7 +29,19 @@ export const slugify = (text: string): string => {
 };
 
 /**
- * Formats date to readable string
+ * Formats time to readable string in application timezone
+ */
+export const formatTime = (date: Date | string): string => {
+  const dateObj = typeof date === 'string' ? new Date(date) : date;
+  return dateObj.toLocaleTimeString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone: process.env.NEXT_PUBLIC_TIMEZONE || 'Asia/Kolkata',
+  });
+};
+
+/**
+ * Formats date to readable string in application timezone
  */
 export const formatDate = (date: Date | string): string => {
   const dateObj = typeof date === 'string' ? new Date(date) : date;
@@ -37,6 +49,7 @@ export const formatDate = (date: Date | string): string => {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
+    timeZone: process.env.NEXT_PUBLIC_TIMEZONE || 'Asia/Kolkata',
   });
 };
 
