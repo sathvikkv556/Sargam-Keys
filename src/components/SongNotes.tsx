@@ -109,19 +109,28 @@ export function SongNotes({ initialNotes }: { initialNotes: string }) {
   const renderHighlightedNotes = (text: string) => {
     if (!text) return null;
 
-    // Regex to match Western notes (A-G with optional # or b)
+    // Regex to match Western notes (A-G with optional # or b, followed by optional digit)
     // or Sargam notes (Sa, re, Re, ga, Ga, Ma, ma, Pa, dha, Dha, ni, Ni)
     const regex = isSargam 
       ? /(Sa|re|Re|ga|Ga|Ma|ma|Pa|dha|Dha|ni|Ni)/g
-      : /([A-G][#b]?)/g;
+      : /([A-G][#b]?\d?)/g;
 
     const parts = text.split(regex);
     
     return parts.map((part, i) => {
       // Check if this part is a note
-      const isNote = isSargam 
-        ? Object.values(SARGAM_MAP).includes(part)
-        : NOTES_ORDER.includes(part) || (part.length === 2 && part[1] === 'b' && NOTES_ORDER.includes(part[0]));
+      let isNote = false;
+      
+      if (isSargam) {
+        isNote = Object.values(SARGAM_MAP).includes(part);
+      } else {
+        // Handle Western notes with or without octaves
+        const baseNote = part.replace(/\d/, '');
+        const hasOctave = /\d/.test(part);
+        
+        isNote = NOTES_ORDER.includes(baseNote) || 
+                 (baseNote.length === 2 && baseNote[1] === 'b' && NOTES_ORDER.includes(baseNote[0]));
+      }
       
       if (isNote) {
         return (
