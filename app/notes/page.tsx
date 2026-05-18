@@ -1,10 +1,14 @@
 import { getSongs } from '@/lib/actions/song';
 import { getNotes } from '@/lib/actions/note';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { Card, CardContent } from '@/components/ui/card';
 import { SongCard } from '@/components/SongCard';
 import { NoteCard } from '@/components/cards/NoteCard';
 import { Button } from '@/components/ui/button';
 import { Music, BookOpen, Sparkles } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import Link from 'next/link';
 
 import { Metadata } from 'next';
 
@@ -71,6 +75,26 @@ export default async function AllNotesPage() {
         </TabsContent>
 
         <TabsContent value="theory" className="space-y-8">
+          <Card className="rounded-3xl border-none bg-gradient-to-br from-blue-600 to-purple-700 text-white overflow-hidden">
+            <CardContent className="p-8 md:p-12 relative">
+              <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 blur-3xl opacity-20 pointer-events-none">
+                <div className="aspect-square h-[400px] rounded-full bg-white" />
+              </div>
+              <div className="relative z-10 max-w-2xl">
+                <Badge className="mb-4 bg-white/20 text-white border-white/20 hover:bg-white/30">New Course</Badge>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">Music Theory: Zero to Hero</h2>
+                <p className="text-blue-100 text-lg mb-8">
+                  Our comprehensive, step-by-step path to mastering the piano. Learn chords, scales, and improvisation in a modern Notion-style interface.
+                </p>
+                <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50 rounded-full px-8" asChild>
+                  <Link href="/music-theory">Start Course</Link>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Separator className="my-8" />
+
           {notes.length > 0 ? (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {notes.map((note) => (
