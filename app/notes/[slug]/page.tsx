@@ -11,6 +11,7 @@ import { createPageMetadata } from '@/lib/seo';
 import { SongActions } from '@/components/SongActions';
 import { CommentSection } from '@/components/CommentSection';
 import AnalyticsTracker from '@/components/AnalyticsTracker';
+import { AdBanner } from '@/components/common/AdBanner';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { connectDB } from '@/lib/db';
@@ -278,8 +279,9 @@ export default async function SongPage({ params }: PageProps) {
         <div className="space-y-8">
           <div className="sticky top-24 space-y-8">
             {/* Ad Placeholder */}
-            <div className="h-[300px] w-full bg-muted/50 rounded-xl flex items-center justify-center border-2 border-dashed">
-              <span className="text-muted-foreground">Advertisement</span>
+            <div className="flex flex-col items-center justify-center gap-2">
+              <span className="text-muted-foreground font-medium uppercase tracking-widest text-[10px]">Advertisement</span>
+              <AdBanner adKey="5902f1f8db9c3e8e891852c621b7f9fa" height={250} width={300} />
             </div>
 
             {/* Related Songs */}

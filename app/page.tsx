@@ -4,8 +4,9 @@ import { getCategories } from '@/lib/actions/category';
 import { SongCard } from '@/components/SongCard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Search, Music, TrendingUp, Clock, Grid } from 'lucide-react';
+import { Grid, Clock, TrendingUp, Music, Search } from 'lucide-react';
 import { Metadata } from 'next';
+import { AdBanner } from '@/components/common/AdBanner';
 
 export const metadata: Metadata = {
   title: 'SargamKeys - Premium Piano Notes & Music Theory Library',
@@ -134,9 +135,14 @@ export default async function HomePage() {
 
       {/* Ad Placeholder */}
       <section className="container mx-auto px-4">
-        <div className="h-[200px] w-full bg-muted/50 rounded-xl flex flex-col items-center justify-center border-2 border-dashed gap-2">
-          <span className="text-muted-foreground font-medium uppercase tracking-widest text-xs">Advertisement</span>
-          <div className="h-10 w-48 bg-muted rounded animate-pulse" />
+        <div className="flex flex-col items-center justify-center gap-2">
+          <span className="text-muted-foreground font-medium uppercase tracking-widest text-[10px]">Advertisement</span>
+          <div className="hidden md:block">
+            <AdBanner adKey="a68e4f2aac739253ca980317b9643826" height={90} width={728} />
+          </div>
+          <div className="md:hidden">
+            <AdBanner adKey="dbfc58175e3dacb79ad0de521f47f571" height={50} width={320} />
+          </div>
         </div>
       </section>
 
