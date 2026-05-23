@@ -93,16 +93,6 @@ export default function RootLayout({
           crossOrigin="anonymous"
           strategy="afterInteractive"
         />
-        <Script
-          async
-          data-cfasync="false"
-          src="https://pl29418313.effectivecpmnetwork.com/6aa54cbfe81da50764bd200356ec8a93/invoke.js"
-          strategy="afterInteractive"
-        />
-        <Script
-          src="https://pl29418314.effectivecpmnetwork.com/24/ac/41/24ac41d1fe524774abb9ee291efe4819.js"
-          strategy="afterInteractive"
-        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${montserrat.variable} antialiased`}
@@ -114,7 +104,6 @@ export default function RootLayout({
               <main className="flex-grow">{children}</main>
               <Footer />
             </div>
-            <div id="container-6aa54cbfe81da50764bd200356ec8a93"></div>
             <Toaster richColors closeButton position="top-right" />
           </ClientThemeProvider>
         </AuthProvider>

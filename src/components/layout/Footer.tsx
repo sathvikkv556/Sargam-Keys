@@ -98,7 +98,7 @@ export function Footer() {
                   href="/terms"
                   className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
                 >
-                  Terms of Service
+                  Terms & Conditions
                 </Link>
               </li>
               <li>
@@ -107,6 +107,14 @@ export function Footer() {
                   className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
                 >
                   Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/disclaimer"
+                  className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                >
+                  Disclaimer
                 </Link>
               </li>
             </ul>
