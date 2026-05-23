@@ -6,7 +6,7 @@ import { SongCard } from '@/components/SongCard';
 import { PianoScale } from '@/components/PianoScale';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Music, Mic, Film, Scale, Key as MusicKey } from 'lucide-react';
+import { Music, Mic, Film, Scale, Key as MusicKey, BookOpen, ChevronRight } from 'lucide-react';
 import { createPageMetadata } from '@/lib/seo';
 import { SongActions } from '@/components/SongActions';
 import { CommentSection } from '@/components/CommentSection';
@@ -15,9 +15,60 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { connectDB } from '@/lib/db';
 import Song from '@/models/Song';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
+
+// Helper to get theory recommendations based on song attributes
+function getTheoryRecommendations(song: any) {
+  const recommendations = [];
+  
+  // Basic recommendation for all songs
+  recommendations.push({
+    id: 'meet-your-keyboard',
+    title: 'Meet Your Keyboard',
+    description: 'New to piano? Start here to understand the layout.'
+  });
+
+  // Scale-based recommendations
+  if (song.scale.toLowerCase().includes('major')) {
+    recommendations.push({
+      id: 'major-scales-intro',
+      title: 'Mastering Major Scales',
+      description: `Learn the theory behind the ${song.scale} scale.`
+    });
+  } else if (song.scale.toLowerCase().includes('minor')) {
+    recommendations.push({
+      id: 'natural-minor-scales',
+      title: 'Minor Scale Secrets',
+      description: `Understand the emotional ${song.scale} used in this song.`
+    });
+  }
+
+  // Chord recommendations if the song has chords
+  if (song.chords) {
+    recommendations.push({
+      id: 'triads-101',
+      title: 'Understanding Chords',
+      description: 'Learn how to play the chords used in this melody.'
+    });
+  }
+
+  // Category specific (e.g. Bollywood)
+  const categoryName = typeof song.category === 'object' ? (song.category as any).name : '';
+  if (categoryName.toLowerCase().includes('bollywood')) {
+    recommendations.push({
+      id: 'bollywood-scale-secrets',
+      title: 'Bollywood Piano Secrets',
+      description: 'Master the specific scales and glides used in Indian hits.'
+    });
+  }
+
+  return recommendations.slice(0, 3); // Return top 3
+}
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -277,6 +328,37 @@ export default async function SongPage({ params }: PageProps) {
         {/* Sidebar */}
         <div className="space-y-8">
           <div className="sticky top-24 space-y-8">
+            {/* Music Theory Recommendations */}
+            <Card className="border-blue-200 bg-blue-50/30 dark:border-blue-900/30 dark:bg-blue-900/10">
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <BookOpen className="h-5 w-5 text-blue-600" />
+                  Master the Theory
+                </CardTitle>
+                <CardDescription>
+                  Improve your playing with these related lessons
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {getTheoryRecommendations(song).map((theory) => (
+                  <Link 
+                    key={theory.id} 
+                    href={`/music-theory/${theory.id}`}
+                    className="group block rounded-lg border bg-card p-3 transition-all hover:border-blue-400 hover:shadow-sm"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold group-hover:text-blue-600">{theory.title}</span>
+                      <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-blue-600 transition-transform group-hover:translate-x-1" />
+                    </div>
+                    <p className="mt-1 text-xs text-muted-foreground line-clamp-2">{theory.description}</p>
+                  </Link>
+                ))}
+                <Button asChild variant="outline" className="w-full mt-2 border-blue-200 hover:bg-blue-50">
+                  <Link href="/music-theory">View Full Course</Link>
+                </Button>
+              </CardContent>
+            </Card>
+
             {/* Related Songs */}
             {relatedResponse.success && relatedResponse.data && relatedResponse.data.songs.length > 0 && (
               <div className="space-y-4">

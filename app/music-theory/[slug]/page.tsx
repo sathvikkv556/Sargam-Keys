@@ -10,15 +10,38 @@ import {
   Play, 
   Trophy, 
   Target,
-  BookOpen
+  BookOpen,
+  Music
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { lessons } from '@/lib/music-theory-data';
+import { getSongs } from '@/lib/actions/song';
+import { SongCard } from '@/components/SongCard';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
+}
+
+// Helper to get song recommendations based on lesson
+async function getSongPracticeRecommendations(lessonId: string) {
+  let query: any = { status: 'Published' };
+  
+  if (lessonId === 'major-scales-intro' || lessonId === 'melody-construction') {
+    query.scale = { $regex: /major/i };
+  } else if (lessonId === 'natural-minor-scales' || lessonId === 'harmonic-minor-scales') {
+    query.scale = { $regex: /minor/i };
+  } else if (lessonId === 'bollywood-scale-secrets') {
+    // We don't have a direct raag field, but we can search categories or tags if needed
+    // For now, let's just get some popular bollywood songs
+    query.tags = { $in: ['Bollywood', 'Hindi'] };
+  } else if (lessonId === 'triads-101' || lessonId === 'chord-progressions') {
+    query.chords = { $exists: true, $ne: '' };
+  }
+
+  const response = await getSongs(query, { limit: 3, sort: { views: -1 } });
+  return response.success ? response.data?.songs || [] : [];
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -241,6 +264,35 @@ export default async function LessonPage({ params }: PageProps) {
               }
             })}
           </div>
+
+          {/* Practice with Songs (New Section) */}
+          {await (async () => {
+            const recommendedSongs = await getSongPracticeRecommendations(slug);
+            if (recommendedSongs.length === 0) return null;
+            
+            return (
+              <div className="mt-20 space-y-8">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div className="space-y-1">
+                    <h2 className="text-3xl font-bold flex items-center gap-3">
+                      <Music className="h-8 w-8 text-blue-600" />
+                      Apply Your Knowledge
+                    </h2>
+                    <p className="text-muted-foreground">Practice what you just learned with these songs</p>
+                  </div>
+                  <Button variant="outline" asChild>
+                    <Link href="/notes">Browse All Songs</Link>
+                  </Button>
+                </div>
+                
+                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {recommendedSongs.map((song: any) => (
+                    <SongCard key={song._id.toString()} song={song} />
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
 
           {/* Next Lesson Footer */}
           {lesson.nextLessonId && (
