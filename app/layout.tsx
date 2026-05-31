@@ -90,7 +90,7 @@ export default function RootLayout({
         <meta name="google-adsense-account" content="ca-pub-7760317183284359" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${montserrat.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${montserrat.variable} antialiased overflow-x-hidden`}
       >
         <AuthProvider>
           <ClientThemeProvider>

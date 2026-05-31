@@ -3,9 +3,11 @@ import { getSongs } from '@/lib/actions/song';
 import { getCategories } from '@/lib/actions/category';
 import { SongCard } from '@/components/SongCard';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Grid, Clock, TrendingUp, Music, Search } from 'lucide-react';
+import { Clock, TrendingUp, Music } from 'lucide-react';
 import { Metadata } from 'next';
+import { MusicTheoryFeature } from '@/components/MusicTheoryFeature';
+import { InteractiveHero } from '@/components/ui/InteractiveHero';
+import { TiltCard } from '@/components/ui/TiltCard';
 
 export const metadata: Metadata = {
   title: 'SargamKeys - Premium Piano Notes & Music Theory Library',
@@ -27,127 +29,117 @@ export default async function HomePage() {
   const categories = categoriesResponse.success ? categoriesResponse.data || [] : [];
 
   return (
-    <div className="flex flex-col gap-12 pb-12">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-blue-600 to-blue-800 px-4 py-20 text-white dark:from-blue-900 dark:to-slate-950">
-        <div className="container mx-auto max-w-4xl text-center">
-          <h1 className="mb-6 text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
-            Master Your Favorite Songs on Piano
-          </h1>
-          <p className="mb-10 text-lg text-blue-100 sm:text-xl">
-            Access thousands of accurate piano notes, scales, and music theory guides.
-          </p>
-          
-          <form action="/search" className="relative mx-auto max-w-2xl">
-            <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
-            <Input 
-              name="q"
-              placeholder="Search for songs, movies, or singers..." 
-              className="h-14 pl-12 pr-32 text-lg text-black dark:text-white rounded-full bg-white dark:bg-slate-900 border-none shadow-xl"
-            />
-            <Button type="submit" className="absolute right-2 top-1/2 h-10 -translate-y-1/2 rounded-full px-6 bg-blue-600 hover:bg-blue-700">
-              Search
-            </Button>
-          </form>
+    <div className="flex flex-col gap-0 pb-12">
+      {/* Ultra-Premium Interactive Hero */}
+      <InteractiveHero />
 
-          <div className="mt-8 flex flex-wrap justify-center gap-4 text-sm font-medium">
-            <span>Popular:</span>
-            <Link href="/search?q=Bollywood" className="hover:underline">Bollywood</Link>
-            <Link href="/search?q=Classical" className="hover:underline">Classical</Link>
-            <Link href="/search?q=Pop" className="hover:underline">Pop</Link>
-          </div>
-        </div>
-
-        {/* Decorative elements */}
-        <div className="absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-blue-500/20 blur-3xl" />
-        <div className="absolute -right-24 -top-24 h-64 w-64 rounded-full bg-purple-500/20 blur-3xl" />
-      </section>
-
-      {/* Trending Songs */}
+      {/* Trending Songs Section */}
       {trendingSongs.length > 0 && (
-        <section className="container mx-auto px-4">
-          <div className="mb-8 flex items-center justify-between">
-            <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight md:text-3xl">
-              <TrendingUp className="h-6 w-6 text-orange-500" />
-              Trending Songs
-            </h2>
-            <Button variant="ghost" asChild>
-              <Link href="/notes?sort=views">View All</Link>
-            </Button>
-          </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {trendingSongs.map((song) => (
-              <SongCard key={song._id} song={song} />
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* Categories */}
-      {categories.length > 0 && (
-        <section className="bg-muted/30 py-12">
+        <section className="py-32 bg-white dark:bg-slate-950 overflow-hidden">
           <div className="container mx-auto px-4">
-            <div className="mb-8 flex items-center justify-between">
-              <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight md:text-3xl">
-                <Grid className="h-6 w-6 text-blue-500" />
-                Browse by Category
-              </h2>
-              <Button variant="ghost" asChild>
-                <Link href="/categories">All Categories</Link>
+            <div className="mb-16 flex items-end justify-between">
+              <div className="space-y-4">
+                <div className="flex items-center gap-2 text-blue-600 font-black tracking-[0.2em] uppercase text-xs">
+                  <TrendingUp className="h-4 w-4" />
+                  <span>The Most Played</span>
+                </div>
+                <h2 className="text-4xl md:text-6xl font-black tracking-tight">Trending Notes</h2>
+              </div>
+              <Button variant="outline" asChild className="rounded-full h-12 px-8 border-2 font-bold hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all">
+                <Link href="/notes?sort=views">Catalog</Link>
               </Button>
             </div>
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-              {categories.slice(0, 6).map((category) => (
-                <Link 
-                  key={category._id} 
-                  href={`/categories/${category.slug}`}
-                  className="group flex flex-col items-center justify-center rounded-xl border bg-card p-6 text-center transition-all hover:border-primary hover:shadow-md"
-                >
-                  <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                    <Music className="h-6 w-6" />
-                  </div>
-                  <span className="font-semibold">{category.name}</span>
-                </Link>
+            <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+              {trendingSongs.map((song) => (
+                <SongCard key={song._id} song={song} />
               ))}
             </div>
           </div>
         </section>
       )}
 
+      {/* Flagship Music Theory Section */}
+      <div className="bg-slate-50 dark:bg-slate-900/20">
+        <MusicTheoryFeature />
+      </div>
+
       {/* Latest Uploads */}
-      <section className="container mx-auto px-4">
-        <div className="mb-8 flex items-center justify-between">
-          <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight md:text-3xl">
-            <Clock className="h-6 w-6 text-green-500" />
-            Latest Uploads
-          </h2>
-          <Button variant="ghost" asChild>
-            <Link href="/notes">View All</Link>
-          </Button>
-        </div>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {latestSongs.map((song) => (
-            <SongCard key={song._id} song={song} />
-          ))}
+      <section className="py-32 bg-white dark:bg-slate-950">
+        <div className="container mx-auto px-4">
+          <div className="mb-16 flex items-end justify-between">
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 text-indigo-600 font-black tracking-[0.2em] uppercase text-xs">
+                <Clock className="h-4 w-4" />
+                <span>New Arrivals</span>
+              </div>
+              <h2 className="text-4xl md:text-6xl font-black tracking-tight">Freshly Composed</h2>
+            </div>
+            <Button variant="ghost" asChild className="rounded-full h-12 px-8 font-bold hover:bg-slate-100 dark:hover:bg-white/5">
+              <Link href="/notes">See All New</Link>
+            </Button>
+          </div>
+          <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+            {latestSongs.map((song) => (
+              <SongCard key={song._id} song={song} />
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="container mx-auto px-4 py-12">
-        <div className="rounded-3xl bg-slate-900 px-8 py-16 text-center text-white dark:bg-blue-900/20 dark:border dark:border-blue-500/20">
-          <h2 className="mb-4 text-3xl font-bold md:text-4xl">Want to contribute?</h2>
-          <p className="mx-auto mb-8 max-w-2xl text-slate-300">
-            Join our community and share your piano notes with thousands of learners worldwide.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Button size="lg" className="bg-white text-slate-900 hover:bg-slate-100">
-              Submit Piano Notes
-            </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-              Learn More
-            </Button>
+      {/* Categories Grid - High Fidelity */}
+      {categories.length > 0 && (
+        <section className="py-32 bg-slate-950 text-white relative overflow-hidden">
+          {/* Decorative Background for Category Section */}
+          <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/10 rounded-full blur-[120px]" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-600/10 rounded-full blur-[120px]" />
+
+          <div className="container mx-auto px-4 text-center mb-20 relative z-10">
+             <h2 className="text-4xl md:text-7xl font-black tracking-tighter mb-6">Explore Genres</h2>
+             <p className="text-slate-400 text-xl max-w-2xl mx-auto">From Bollywood classics to modern pop hits, find notes for every mood.</p>
           </div>
-        </div>
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+              {categories.slice(0, 6).map((category) => (
+                <TiltCard key={category._id}>
+                  <Link 
+                    href={`/categories/${category.slug}`}
+                    className="group relative flex flex-col items-center justify-center rounded-[2.5rem] border border-white/5 bg-white/5 p-10 text-center transition-all hover:border-blue-500/50 hover:bg-white/10 overflow-hidden backdrop-blur-xl h-full"
+                  >
+                    <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-3xl bg-white/5 text-white group-hover:bg-blue-600 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-2xl">
+                      <Music className="h-10 w-10" />
+                    </div>
+                    <span className="font-black text-xl tracking-tight uppercase">{category.name}</span>
+                  </Link>
+                </TiltCard>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Ultra-Premium CTA Section */}
+      <section className="container mx-auto px-4 py-32 overflow-hidden">
+        <TiltCard>
+          <div className="relative rounded-[4rem] bg-slate-50 dark:bg-slate-900 overflow-hidden px-10 py-24 text-center text-slate-900 dark:text-white border border-slate-200 dark:border-white/10 shadow-3xl">
+            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 dark:invert" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-blue-600/5 rounded-full blur-[150px]" />
+            
+            <div className="relative z-10 max-w-4xl mx-auto space-y-10">
+              <h2 className="text-5xl md:text-8xl font-black tracking-tighter leading-none">Share Your <br/>Musical Magic</h2>
+              <p className="mx-auto max-w-2xl text-slate-600 dark:text-slate-400 text-2xl leading-relaxed">
+                Be part of the largest community of piano enthusiasts. Contribute your <span className="text-blue-600 dark:text-blue-400 font-bold">free</span> notes and inspire millions.
+              </p>
+              <div className="flex flex-wrap justify-center gap-8 pt-6">
+                <Button size="lg" className="h-20 px-14 rounded-full bg-blue-600 text-white hover:bg-blue-700 hover:scale-105 active:scale-95 text-xl font-black transition-all shadow-2xl shadow-blue-600/20">
+                  Submit Now
+                </Button>
+                <Button size="lg" variant="outline" className="h-20 px-14 rounded-full border-2 border-slate-200 dark:border-white/20 text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-white/10 text-xl font-black backdrop-blur-xl transition-all">
+                  Guide
+                </Button>
+              </div>
+            </div>
+          </div>
+        </TiltCard>
       </section>
     </div>
   );

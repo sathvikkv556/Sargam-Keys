@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Music } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { TiltCard } from '@/components/ui/TiltCard';
 
 interface SongCardProps {
   song: Song;
@@ -20,13 +21,8 @@ export function SongCard({ song }: SongCardProps) {
     : 'Uncategorized';
   
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.4 }}
-    >
-      <Card className="overflow-hidden transition-all hover:shadow-xl group border-muted h-full">
+    <TiltCard>
+      <Card className="overflow-hidden transition-all hover:shadow-2xl group border-muted h-full bg-card/50 backdrop-blur-sm">
         <Link href={`/notes/${song.slug}`}>
           <div className="relative aspect-video w-full overflow-hidden bg-muted">
             {song.thumbnail ? (
@@ -71,6 +67,6 @@ export function SongCard({ song }: SongCardProps) {
           </div>
         </CardContent>
       </Card>
-    </motion.div>
+    </TiltCard>
   );
 }

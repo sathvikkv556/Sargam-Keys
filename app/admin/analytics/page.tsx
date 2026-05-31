@@ -18,13 +18,14 @@ import {
   getHourlyStatsToday,
   getRecentViews,
   getAllSongsAnalytics,
-  getAdvancedStats
+  getAdvancedStats,
+  getTheoryAnalytics
 } from '@/lib/actions/analytics';
 import AnalyticsChart from '@/components/admin/AnalyticsChart';
 import AnalyticsSongList from '@/components/admin/AnalyticsSongList';
 
 import { formatDate, formatTime } from '@/lib/utils';
-import { Users, Timer, BarChart } from 'lucide-react';
+import { Users, Timer, BarChart, BookOpen } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Analytics | Admin Dashboard',
@@ -38,7 +39,8 @@ export default async function AnalyticsPage() {
     hourlyResponse,
     recentResponse,
     allSongsResponse,
-    advancedResponse
+    advancedResponse,
+    theoryResponse
   ] = await Promise.all([
     getOverallStats(),
     getViewsByTimeframe('day'),
@@ -46,7 +48,8 @@ export default async function AnalyticsPage() {
     getHourlyStatsToday(),
     getRecentViews(15),
     getAllSongsAnalytics(),
-    getAdvancedStats()
+    getAdvancedStats(),
+    getTheoryAnalytics()
   ]);
 
   const stats = statsResponse.success ? statsResponse.data : { totalViews: 0, todayViews: 0, monthViews: 0, yearViews: 0, sourceStats: [] };
@@ -56,6 +59,7 @@ export default async function AnalyticsPage() {
   const recent = recentResponse.success ? recentResponse.data : [];
   const allSongs = allSongsResponse.success ? allSongsResponse.data : [];
   const advanced = advancedResponse.success ? advancedResponse.data : { avgDuration: 0, bounceRate: 0, totalSessions: 0 };
+  const theoryStats = theoryResponse.success ? theoryResponse.data : [];
 
   const maxHourly = Math.max(...hourly.map((d: any) => d.count), 1);
 
@@ -178,8 +182,13 @@ export default async function AnalyticsPage() {
                       >
                         {item.songId.title}
                       </Link>
+                    ) : item.theorySlug ? (
+                      <p className="text-sm font-medium truncate leading-tight flex items-center gap-1.5">
+                        <BookOpen className="h-3 w-3 text-indigo-500" />
+                        Theory: {item.theorySlug}
+                      </p>
                     ) : (
-                      <p className="text-sm font-medium truncate leading-tight">Unknown Song</p>
+                      <p className="text-sm font-medium truncate leading-tight">Unknown Item</p>
                     )}
                     <div className="mt-1 flex items-center gap-2 text-[10px] text-slate-500">
                       <span className="flex items-center gap-1">
@@ -258,6 +267,56 @@ export default async function AnalyticsPage() {
 
       {/* All Songs Searchable List */}
       <AnalyticsSongList songs={allSongs} />
+
+      {/* Music Theory Course Performance */}
+      <div className="rounded-xl border bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <div className="mb-6">
+          <h2 className="text-xl font-bold flex items-center gap-2">
+            <BookOpen className="h-5 w-5 text-indigo-500" />
+            Theory Course Performance
+          </h2>
+          <p className="text-sm text-slate-400">Lesson-by-lesson engagement tracking</p>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-slate-50 dark:bg-slate-800/50 text-[10px] font-bold uppercase tracking-wider text-slate-500 border-b dark:border-slate-800">
+                <th className="px-6 py-3">Lesson Slug</th>
+                <th className="px-6 py-3 text-right">Total Clicks</th>
+                <th className="px-6 py-3 text-right">Avg. Duration</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y dark:divide-slate-800">
+              {theoryStats.length === 0 ? (
+                <tr>
+                  <td colSpan={3} className="px-6 py-12 text-center text-slate-400 italic">
+                    No theory activity logged yet
+                  </td>
+                </tr>
+              ) : (
+                theoryStats.map((item: any) => (
+                  <tr key={item._id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                    <td className="px-6 py-4">
+                      <span className="text-sm font-medium font-mono">{item._id}</span>
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <span className="text-sm font-bold text-indigo-600 dark:text-indigo-400">
+                        {item.clickCount.toLocaleString()}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <span className="text-sm text-slate-500">
+                        {Math.floor((item.avgDuration || 0) / 60)}m {Math.floor((item.avgDuration || 0) % 60)}s
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }

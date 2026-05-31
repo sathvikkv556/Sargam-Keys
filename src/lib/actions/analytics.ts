@@ -405,12 +405,16 @@ export async function getSongAnalytics(songId: string, timeframe: 'day' | 'month
   }
 }
 
-export async function logPageView(songId: string, source?: string, sessionId?: string): Promise<APIResponse<string>> {
+export async function logPageView(id: string, source?: string, sessionId?: string): Promise<APIResponse<string>> {
   try {
     await connectDB();
 
-    if (!mongoose.Types.ObjectId.isValid(songId)) {
-      throw new Error('Invalid song ID');
+    const isTheory = id.startsWith('theory_');
+    const theorySlug = isTheory ? id.replace('theory_', '') : null;
+    const songId = !isTheory && mongoose.Types.ObjectId.isValid(id) ? new mongoose.Types.ObjectId(id) : null;
+
+    if (!theorySlug && !songId) {
+      throw new Error('Invalid ID provided for analytics');
     }
 
     const headersList = await headers();
@@ -421,18 +425,24 @@ export async function logPageView(songId: string, source?: string, sessionId?: s
     // Auto-generate session ID if not provided
     const finalSessionId = sessionId || `sess_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
 
-    // Increment global song views
-    await Song.findByIdAndUpdate(songId, { $inc: { views: 1 } });
+    // Increment global song views if it's a song
+    if (songId) {
+      await Song.findByIdAndUpdate(songId, { $inc: { views: 1 } });
+    }
 
-    const analytics = await Analytics.create({
-      songId: new mongoose.Types.ObjectId(songId),
+    const analyticsData: any = {
       sessionId: finalSessionId,
       ip,
       userAgent,
       referrer,
       source: source || 'direct',
       timestamp: new Date(),
-    });
+    };
+
+    if (songId) analyticsData.songId = songId;
+    if (theorySlug) analyticsData.theorySlug = theorySlug;
+
+    const analytics = await Analytics.create(analyticsData);
 
     return { success: true, data: analytics._id.toString() };
   } catch (error: any) {
@@ -488,6 +498,28 @@ export async function updateDuration(analyticsId: string, duration: number, isEx
     });
 
     return { success: true };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}
+
+export async function getTheoryAnalytics(): Promise<APIResponse<any>> {
+  try {
+    await connectDB();
+
+    const stats = await Analytics.aggregate([
+      { $match: { theorySlug: { $exists: true, $ne: null } } },
+      {
+        $group: {
+          _id: '$theorySlug',
+          clickCount: { $sum: 1 },
+          avgDuration: { $avg: '$duration' }
+        },
+      },
+      { $sort: { clickCount: -1 } },
+    ]);
+
+    return { success: true, data: stats };
   } catch (error: any) {
     return { success: false, error: error.message };
   }

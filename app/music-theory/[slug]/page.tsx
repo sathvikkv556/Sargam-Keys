@@ -19,6 +19,7 @@ import { Separator } from '@/components/ui/separator';
 import { lessons } from '@/lib/music-theory-data';
 import { getSongs } from '@/lib/actions/song';
 import { SongCard } from '@/components/SongCard';
+import AnalyticsTracker from '@/components/AnalyticsTracker';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -64,6 +65,7 @@ export default async function LessonPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-white dark:bg-zinc-950 pb-20">
+      <AnalyticsTracker songId={`theory_${slug}`} />
       {/* Lesson Header */}
       <div className="border-b bg-slate-50/50 dark:bg-zinc-900/50 sticky top-0 z-10 backdrop-blur-md">
         <div className="container mx-auto px-4 py-4">

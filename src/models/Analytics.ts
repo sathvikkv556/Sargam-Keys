@@ -1,7 +1,8 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IAnalytics extends Document {
-  songId: mongoose.Types.ObjectId;
+  songId?: mongoose.Types.ObjectId;
+  theorySlug?: string;
   timestamp: Date;
   sessionId: string; // To group views into sessions
   duration?: number; // Time spent in seconds
@@ -14,7 +15,8 @@ export interface IAnalytics extends Document {
 
 const analyticsSchema = new Schema<IAnalytics>(
   {
-    songId: { type: Schema.Types.ObjectId, ref: 'Song', required: true, index: true },
+    songId: { type: Schema.Types.ObjectId, ref: 'Song', required: false, index: true },
+    theorySlug: { type: String, required: false, index: true },
     timestamp: { type: Date, default: Date.now, index: true },
     sessionId: { type: String, index: true },
     duration: { type: Number, default: 0 },
@@ -30,5 +32,6 @@ const analyticsSchema = new Schema<IAnalytics>(
 // Compound index for session and song based queries
 analyticsSchema.index({ sessionId: 1, timestamp: 1 });
 analyticsSchema.index({ songId: 1, timestamp: -1 });
+analyticsSchema.index({ theorySlug: 1, timestamp: -1 });
 
 export default mongoose.models.Analytics || mongoose.model<IAnalytics>('Analytics', analyticsSchema);
