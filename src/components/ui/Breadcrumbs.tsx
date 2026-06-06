@@ -37,7 +37,7 @@ export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
     });
 
   const allItems = [
-    { label: 'Home', href: '/', icon: <Home className="h-4 w-4" /> },
+    { label: 'Home', href: '/', icon: <Home className="h-4 w-4" />, active: pathname === '/' },
     ...generatedItems
   ];
 

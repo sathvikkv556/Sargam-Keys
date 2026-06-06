@@ -121,7 +121,7 @@ export default async function CategoryPage({ params }: PageProps) {
         <div className="flex flex-col items-center justify-center py-20 text-center">
           <Music className="mb-4 h-12 w-12 text-muted-foreground" />
           <h2 className="text-2xl font-bold">No songs found</h2>
-          <p className="text-muted-foreground">We haven't added any songs to this category yet. Check back soon!</p>
+          <p className="text-muted-foreground">We haven&apos;t added any songs to this category yet. Check back soon!</p>
         </div>
       )}
     </div>

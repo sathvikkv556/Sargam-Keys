@@ -131,7 +131,7 @@ export default async function SongAnalyticsPage({ params }: Props) {
           <div className="rounded-xl border bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
             <div className="mb-2 text-slate-500 flex items-center gap-2">
               <TrendingUp className="h-4 w-4" />
-              <span className="text-xs font-bold uppercase tracking-wider">Today's Clicks</span>
+              <span className="text-xs font-bold uppercase tracking-wider">Today&apos;s Clicks</span>
             </div>
             <div className="text-3xl font-bold">{timeline[timeline.length - 1]?.count || 0}</div>
           </div>

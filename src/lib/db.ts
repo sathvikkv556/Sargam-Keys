@@ -6,7 +6,7 @@ import '@/models/Song';
 import '@/models/Note';
 import '@/models/User';
 
-let cached: { conn: Connection | null; promise: Promise<Connection> | null } = {
+const cached: { conn: Connection | null; promise: Promise<Connection> | null } = {
   conn: null,
   promise: null,
 };

@@ -32,7 +32,7 @@ export default function AboutPage() {
             <div className="flex-1 space-y-6">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-sm font-bold uppercase tracking-wider">
                 <Music className="h-4 w-4" />
-                <span>Founder's Story</span>
+                <span>Founder&apos;s Story</span>
               </div>
               <h2 className="text-3xl md:text-5xl font-black tracking-tight">Introduction</h2>
               <div className="prose prose-lg dark:prose-invert text-slate-600 dark:text-slate-400">
