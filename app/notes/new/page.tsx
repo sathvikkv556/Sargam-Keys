@@ -5,6 +5,9 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Submit Piano Notes - SargamKeys',
   description: 'Contribute your piano notes to the SargamKeys community. Share Bollywood, Pop, or Classical song notes.',
+  alternates: {
+    canonical: '/notes/new',
+  },
 };
 
 export default async function SubmitNotesPage() {

@@ -23,6 +23,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${note.title} | Music Theory | SargamKeys`,
     description: note.description,
+    alternates: {
+      canonical: `/theory/${id}`,
+    },
   };
 }
 

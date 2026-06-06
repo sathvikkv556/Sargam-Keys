@@ -53,6 +53,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${lesson.title} | Music Theory | SargamKeys`,
     description: lesson.goal,
+    alternates: {
+      canonical: `/music-theory/${slug}`,
+    },
   };
 }
 

@@ -5,7 +5,10 @@ import Link from 'next/link';
 
 export const metadata = {
   title: 'Piano Note Categories | SargamKeys',
-  description: 'Browse piano notes by category - Bollywood, Classical, Pop, Devotional and more.',
+  description: 'Browse our collection of free piano notes by category. Find the best notations for Bollywood, Classical, Pop, Devotional, and more at SargamKeys.',
+  alternates: {
+    canonical: '/categories',
+  },
 };
 
 export default async function CategoriesPage() {

@@ -16,7 +16,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Piano Notes Library | Bollywood, Pop & Classical | SargamKeys',
-  description: 'Browse our extensive library of piano notes and music theory guides. Learn to play your favorite songs with ease.',
+  description: 'Explore thousands of free piano notes, keyboard notations, and music theory guides for Bollywood, Pop, and Classical songs. Learn to play your favorite hits with ease at SargamKeys.',
   alternates: {
     canonical: '/notes',
   },

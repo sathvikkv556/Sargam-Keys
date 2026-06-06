@@ -22,7 +22,10 @@ import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
 
 export const metadata: Metadata = {
   title: 'Music Theory: Zero to Hero | Piano Course | SargamKeys',
-  description: 'Master the piano from absolute zero with our structured, Notion-style learning path. Chords, scales, rhythm, and more.',
+  description: 'Master piano and music theory from absolute zero. Learn chords, scales, rhythm, and more with our structured "Zero to Hero" piano course at SargamKeys.',
+  alternates: {
+    canonical: '/music-theory',
+  },
 };
 
 const curriculum = [

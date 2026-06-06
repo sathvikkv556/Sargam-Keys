@@ -1,12 +1,10 @@
 import Link from 'next/link';
-import { Music, Mail, Play, Shield, MapPin } from 'lucide-react';
+import { Music, Mail, Play } from 'lucide-react';
 
 /**
  * Footer component with links and copyright
  */
 export function Footer() {
-  const currentYear = new Date().getFullYear();
-
   const footerLinks = [
     {
       title: 'Resources',
@@ -31,6 +29,7 @@ export function Footer() {
         { label: 'Privacy Policy', href: '/privacy' },
         { label: 'Terms & Conditions', href: '/terms' },
         { label: 'Disclaimer', href: '/disclaimer' },
+        { label: 'DMCA Policy', href: '/dmca' },
       ],
     },
   ];
@@ -96,18 +95,8 @@ export function Footer() {
 
         <div className="mt-16 pt-8 border-t border-slate-200 dark:border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="text-xs font-medium text-slate-500">
-            &copy; {currentYear} SargamKeys. All rights reserved.
+            &copy; 2026 SargamKeys. All rights reserved.
           </p>
-          <div className="flex items-center gap-8 text-[10px] font-bold uppercase tracking-widest text-slate-400">
-             <div className="flex items-center gap-2">
-               <MapPin className="h-3 w-3" />
-               <span>India</span>
-             </div>
-             <div className="flex items-center gap-2">
-               <Shield className="h-3 w-3" />
-               <span>SSL Secure</span>
-             </div>
-          </div>
         </div>
       </div>
     </footer>

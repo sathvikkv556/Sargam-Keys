@@ -73,6 +73,9 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  alternates: {
+    canonical: "/",
+  },
   verification: {
     google: "your-google-verification-code",
   },

@@ -11,7 +11,7 @@ import { TiltCard } from '@/components/ui/TiltCard';
 
 export const metadata: Metadata = {
   title: 'SargamKeys - Premium Piano Notes & Music Theory Library',
-  description: 'Master piano with accurate notes for Bollywood, Pop, and Classical songs. Explore comprehensive music theory guides, scales, and chords.',
+  description: 'Master the piano with free, accurate notes for Bollywood, Pop, and Classical songs. Explore comprehensive music theory guides, scales, chords, and keyboard notations at SargamKeys.',
   alternates: {
     canonical: '/',
   },

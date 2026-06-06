@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'About SargamKeys | Our Mission & Story',
-  description: 'Learn about SargamKeys, founded by Sathvik KV, and our mission to make piano learning accessible and beginner-friendly.',
+  description: 'Discover the story behind SargamKeys. Founded by Sathvik KV, we are on a mission to provide the world\'s best free piano notes and keyboard notations for learners everywhere.',
   alternates: {
     canonical: '/about',
   },
