@@ -17,7 +17,7 @@ const siteUrl = 'https://sargamkeys.in';
  */
 export function generateMetadata(seo: SEOMetadata): Metadata {
   const canonicalUrl = seo.canonical
-    ? `${siteUrl}${seo.canonical}`
+    ? `${siteUrl}${seo.canonical.startsWith('/') ? seo.canonical : `/${seo.canonical}`}`
     : siteUrl;
 
   return {

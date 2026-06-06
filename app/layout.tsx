@@ -6,7 +6,6 @@ import { AuthProvider } from "@/components/AuthProvider";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Toaster } from "sonner";
-import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -77,6 +76,9 @@ export const metadata: Metadata = {
   verification: {
     google: "your-google-verification-code",
   },
+  other: {
+    "google-adsense-account": "ca-pub-7760317183284359",
+  },
 };
 
 export default function RootLayout({
@@ -84,10 +86,53 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const websiteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "SargamKeys",
+    "url": "https://sargamkeys.in",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://sargamkeys.in/search?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  };
+
+  const orgJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "SargamKeys",
+    "url": "https://sargamkeys.in",
+    "logo": "https://sargamkeys.in/logo.jpg",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "email": "ksathvik485@gmail.com",
+      "contactType": "customer service"
+    },
+    "sameAs": [
+      "https://www.youtube.com/@Sathvik_Keys"
+    ]
+  };
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <meta name="google-adsense-account" content="ca-pub-7760317183284359" />
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title="SargamKeys - Latest Piano Notes"
+          href="/feed.xml"
+        />
+        <script
+          id="website-jsonld"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        />
+        <script
+          id="org-jsonld"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${montserrat.variable} antialiased overflow-x-hidden`}

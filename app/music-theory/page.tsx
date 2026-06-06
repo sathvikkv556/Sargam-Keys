@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
 
 export const metadata: Metadata = {
   title: 'Music Theory: Zero to Hero | Piano Course | SargamKeys',
@@ -102,8 +103,59 @@ const curriculum = [
 
 
 export default function MusicTheoryHub() {
+  const courseJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Course',
+    name: 'Music Theory: Zero to Hero',
+    description: 'A modern, step-by-step path to mastering the piano from absolute zero.',
+    provider: {
+      '@type': 'Organization',
+      name: 'SargamKeys',
+      sameAs: 'https://sargamkeys.in'
+    },
+    coursePrerequisites: 'None',
+    educationalLevel: 'Beginner to Advanced',
+    hasCourseInstance: {
+      '@type': 'CourseInstance',
+      courseMode: 'Online',
+      courseWorkload: 'PT10H'
+    }
+  };
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://sargamkeys.in'
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Music Theory',
+        item: 'https://sargamkeys.in/music-theory'
+      }
+    ]
+  };
+
   return (
     <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#0A0A0A]">
+      <script
+        id="course-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(courseJsonLd) }}
+      />
+      <script
+        id="breadcrumb-theory-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <div className="container mx-auto px-4 pt-8">
+        <Breadcrumbs />
+      </div>
       {/* Hero Section */}
       <div className="relative overflow-hidden border-b bg-white dark:bg-black py-16 md:py-24">
         <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 blur-3xl opacity-20 pointer-events-none">

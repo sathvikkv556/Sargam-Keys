@@ -3,10 +3,12 @@ import { notFound } from 'next/navigation';
 import { getSongBySlug, getSongs } from '@/lib/actions/song';
 import { SongNotes } from '@/components/SongNotes';
 import { SongCard } from '@/components/SongCard';
+import { RelatedSongs } from '@/components/RelatedSongs';
 import { PianoScale } from '@/components/PianoScale';
+import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Music, Mic, Film, Scale, Key as MusicKey, BookOpen, ChevronRight } from 'lucide-react';
+import { Music, Mic, Film, Scale, Key as MusicKey, BookOpen, ChevronRight, Play } from 'lucide-react';
 import { createPageMetadata } from '@/lib/seo';
 import { SongActions } from '@/components/SongActions';
 import { CommentSection } from '@/components/CommentSection';
@@ -166,16 +168,6 @@ export default async function SongPage({ params }: PageProps) {
 
   const song = response.data;
   
-  // Fetch related songs (same category)
-  const relatedResponse = await getSongs(
-    { 
-      category: typeof song.category === 'object' ? (song.category as any)._id : song.category,
-      _id: { $ne: song._id },
-      status: 'Published'
-    },
-    { limit: 4 }
-  );
-
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'MusicComposition',
@@ -184,12 +176,91 @@ export default async function SongPage({ params }: PageProps) {
     composer: song.composer ? { '@type': 'Person', name: song.composer } : undefined,
     genre: typeof song.category === 'object' ? (song.category as any).name : undefined,
     keywords: song.tags.join(','),
+    author: {
+      '@type': 'Person',
+      name: 'Sathvik KV',
+      url: 'https://sargamkeys.in/about',
+      jobTitle: 'Founder & Pianist',
+      knowsAbout: ['Piano', 'Music Theory', 'Sargam Notes'],
+      sameAs: [
+        'https://www.youtube.com/@Sathvik_Keys'
+      ]
+    }
+  };
+
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: `${song.title} Piano Notes`,
+    description: song.seoDescription,
+    image: song.thumbnail || 'https://sargamkeys.in/logo.jpg',
+    author: {
+      '@type': 'Person',
+      name: 'Sathvik KV',
+      url: 'https://sargamkeys.in/about'
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'SargamKeys',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://sargamkeys.in/logo.jpg'
+      }
+    },
+    datePublished: song.createdAt,
+    dateModified: song.updatedAt
+  };
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://sargamkeys.in'
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Notes',
+        item: 'https://sargamkeys.in/notes'
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: song.title,
+        item: `https://sargamkeys.in/notes/${song.slug}`
+      }
+    ]
   };
 
   return (
     <div className="container mx-auto px-4 py-8">
+      {/* JSON-LD for SEO */}
+      <script
+        id={`breadcrumb-jsonld-${song._id}`}
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        id={`song-jsonld-${song._id}`}
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        id={`article-jsonld-${song._id}`}
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+
+      {/* Breadcrumbs for SEO and Navigation */}
+      <Breadcrumbs className="mb-8" />
+
       {/* Analytics Tracking */}
       <AnalyticsTracker songId={song._id.toString()} />
+
       {/* Draft Warning for Admins */}
       {song.status === 'Draft' && (
         <div className="mb-6 rounded-lg bg-yellow-50 p-4 border border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-900/30">
@@ -210,10 +281,6 @@ export default async function SongPage({ params }: PageProps) {
         <div className="mt-4 text-xl font-bold">{song.title}</div>
       </div>
 
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
       <div className="grid gap-8 lg:grid-cols-3">
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-8">
@@ -321,6 +388,38 @@ export default async function SongPage({ params }: PageProps) {
             </div>
           )}
 
+          {/* About the Author */}
+          <section className="rounded-3xl border-2 border-blue-100 dark:border-blue-900/30 bg-blue-50/50 dark:bg-blue-900/10 p-8 md:p-10">
+            <div className="flex flex-col md:flex-row gap-8 items-center md:items-start text-center md:text-left">
+              <div className="w-24 h-24 md:w-32 md:h-32 rounded-3xl bg-white dark:bg-slate-800 shadow-xl overflow-hidden shrink-0 border-4 border-white dark:border-slate-800">
+                <img src="/logo.jpg" alt="Sathvik KV" className="w-full h-full object-cover" />
+              </div>
+              <div className="space-y-4">
+                <div className="space-y-1">
+                  <h3 className="text-2xl font-black tracking-tight">About the Author</h3>
+                  <p className="text-blue-600 dark:text-blue-400 font-bold uppercase tracking-widest text-xs">Sathvik KV • Founder of SargamKeys</p>
+                </div>
+                <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
+                  Sathvik KV is a self-taught pianist from India with over 10 years of piano-playing experience. He is the founder of SargamKeys, where he publishes piano notes and keyboard notations for popular songs. He also runs the Sathvik Keys YouTube channel, sharing piano-related content with music learners and enthusiasts.
+                </p>
+                <div className="flex flex-wrap justify-center md:justify-start gap-4">
+                  <Button asChild variant="outline" size="sm" className="rounded-full gap-2 border-blue-200 dark:border-blue-800 hover:bg-blue-600 hover:text-white transition-all">
+                    <Link href="https://www.youtube.com/@Sathvik_Keys" target="_blank">
+                      <Play className="h-4 w-4" />
+                      YouTube Channel
+                    </Link>
+                  </Button>
+                  <Button asChild variant="ghost" size="sm" className="rounded-full gap-2 hover:bg-blue-100 dark:hover:bg-blue-900/30">
+                    <Link href="/about">
+                      Full Story
+                      <ChevronRight className="h-4 w-4" />
+                    </Link>
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </section>
+
           {/* Comment Section */}
           <CommentSection songId={song._id} isAdmin={isAdmin} />
         </div>
@@ -358,21 +457,13 @@ export default async function SongPage({ params }: PageProps) {
                 </Button>
               </CardContent>
             </Card>
-
-            {/* Related Songs */}
-            {relatedResponse.success && relatedResponse.data && relatedResponse.data.songs.length > 0 && (
-              <div className="space-y-4">
-                <h3 className="text-xl font-bold">Related Songs</h3>
-                <div className="grid gap-4">
-                  {relatedResponse.data.songs.map((relatedSong) => (
-                    <SongCard key={relatedSong._id} song={relatedSong} />
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </div>
+
+      {/* Automated Internal Linking System */}
+      <Separator className="my-16" />
+      <RelatedSongs song={song} />
     </div>
   );
 }

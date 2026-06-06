@@ -195,3 +195,93 @@ export const getSongBySlug = cache(async (slug: string, isAdmin: boolean = false
     return { success: false, error: error.message };
   }
 });
+
+/**
+ * Fetches related songs based on various criteria for internal linking
+ */
+export async function getRelatedSongsByCriteria(
+  songId: string,
+  criteria: {
+    scale?: string;
+    singer?: string;
+    composer?: string;
+    category?: string;
+    difficulty?: string;
+  },
+  limit: number = 4
+): Promise<APIResponse<Record<string, SongType[]>>> {
+  try {
+    await connectDB();
+    const results: Record<string, SongType[]> = {};
+    
+    const baseQuery = { 
+      _id: { $ne: songId },
+      status: 'Published' 
+    };
+
+    // Parallel execution for different criteria
+    const promises = [];
+
+    if (criteria.scale) {
+      promises.push(
+        Song.find({ ...baseQuery, scale: criteria.scale })
+          .limit(limit)
+          .sort({ views: -1 })
+          .populate('category')
+          .lean()
+          .then(data => results.byScale = JSON.parse(JSON.stringify(data)))
+      );
+    }
+
+    if (criteria.singer) {
+      promises.push(
+        Song.find({ ...baseQuery, singer: criteria.singer })
+          .limit(limit)
+          .sort({ views: -1 })
+          .populate('category')
+          .lean()
+          .then(data => results.bySinger = JSON.parse(JSON.stringify(data)))
+      );
+    }
+
+    if (criteria.composer) {
+      promises.push(
+        Song.find({ ...baseQuery, composer: criteria.composer })
+          .limit(limit)
+          .sort({ views: -1 })
+          .populate('category')
+          .lean()
+          .then(data => results.byComposer = JSON.parse(JSON.stringify(data)))
+      );
+    }
+
+    if (criteria.category) {
+      promises.push(
+        Song.find({ ...baseQuery, category: criteria.category })
+          .limit(limit)
+          .sort({ views: -1 })
+          .populate('category')
+          .lean()
+          .then(data => results.byCategory = JSON.parse(JSON.stringify(data)))
+      );
+    }
+
+    if (criteria.difficulty) {
+      promises.push(
+        Song.find({ ...baseQuery, difficulty: criteria.difficulty })
+          .limit(limit)
+          .sort({ views: -1 })
+          .populate('category')
+          .lean()
+          .then(data => results.byDifficulty = JSON.parse(JSON.stringify(data)))
+      );
+    }
+
+    await Promise.all(promises);
+
+    return { success: true, data: results };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}
+

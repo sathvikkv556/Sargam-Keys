@@ -74,7 +74,7 @@ export function InteractiveHero() {
           </span>
         </motion.div>
 
-        <h1 className="mb-8 text-6xl font-black tracking-tighter sm:text-8xl lg:text-9xl leading-[0.9]">
+        <h1 className="mb-8 text-5xl font-black tracking-tighter sm:text-8xl lg:text-9xl leading-[0.9]">
           {["Play", "Your", "Soul"].map((word, i) => (
             <motion.span
               key={i}
@@ -92,7 +92,7 @@ export function InteractiveHero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5, duration: 1 }}
-          className="mx-auto mb-16 max-w-2xl text-xl text-slate-600 dark:text-slate-400 font-medium leading-relaxed"
+          className="mx-auto mb-10 md:mb-16 max-w-2xl text-lg md:text-xl text-slate-600 dark:text-slate-400 font-medium leading-relaxed"
         >
           Master the keys with a world-class collection of <span className="text-blue-600 dark:text-blue-400 font-bold underline decoration-blue-500/30 underline-offset-4">free</span> piano notes and theory. 
           <span className="text-blue-500 dark:text-blue-400 block mt-2">Where music meets modern technology.</span>
@@ -107,37 +107,18 @@ export function InteractiveHero() {
           <form action="/search" className="relative group perspective-1000">
             <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full blur-xl opacity-20 group-hover:opacity-60 transition duration-1000"></div>
             <div className="relative flex items-center">
-              <Search className="absolute left-7 h-6 w-6 text-slate-400 dark:text-slate-500 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors" />
+              <Search className="absolute left-5 md:left-7 h-5 w-5 md:h-6 md:w-6 text-slate-400 dark:text-slate-500 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors" />
               <Input 
                 name="q"
-                placeholder="Search songs, artists, or theory..." 
-                className="h-20 pl-16 pr-44 text-xl rounded-full bg-white dark:bg-slate-900/80 border-slate-200 dark:border-white/5 focus:border-blue-500/50 shadow-3xl transition-all backdrop-blur-2xl text-slate-900 dark:text-white"
+                placeholder="Search songs..." 
+                aria-label="Search songs, artists, or theory"
+                className="h-16 md:h-20 pl-12 md:pl-16 pr-32 md:pr-44 text-lg md:text-xl rounded-full bg-white dark:bg-slate-900/80 border-slate-200 dark:border-white/5 focus:border-blue-500/50 shadow-3xl transition-all backdrop-blur-2xl text-slate-900 dark:text-white"
               />
-              <Button type="submit" className="absolute right-3 h-14 rounded-full px-10 bg-blue-600 hover:bg-blue-500 font-black text-xl shadow-2xl shadow-blue-500/40 group-hover:scale-105 transition-transform active:scale-95">
+              <Button type="submit" className="absolute right-2 md:right-3 h-12 md:h-14 rounded-full px-6 md:px-10 bg-blue-600 hover:bg-blue-500 font-black text-lg md:text-xl shadow-2xl shadow-blue-500/40 group-hover:scale-105 transition-transform active:scale-95">
                 Explore
               </Button>
             </div>
           </form>
-        </motion.div>
-
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2.2 }}
-          className="mt-16 flex flex-wrap justify-center gap-12 items-center"
-        >
-           <div className="flex items-center gap-3 text-slate-600 dark:text-slate-500 group cursor-pointer">
-              <div className="p-3 rounded-full bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-white/5 group-hover:border-blue-500/50 transition-all">
-                <Radio className="h-5 w-5 group-hover:text-blue-600 dark:group-hover:text-blue-400" />
-              </div>
-              <span className="text-sm font-bold tracking-widest uppercase">Live Lessons</span>
-           </div>
-           <div className="flex items-center gap-3 text-slate-600 dark:text-slate-500 group cursor-pointer">
-              <div className="p-3 rounded-full bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-white/5 group-hover:border-indigo-500/50 transition-all">
-                <Music className="h-5 w-5 group-hover:text-indigo-600 dark:group-hover:text-indigo-400" />
-              </div>
-              <span className="text-sm font-bold tracking-widest uppercase">Sheet Music</span>
-           </div>
         </motion.div>
       </div>
 

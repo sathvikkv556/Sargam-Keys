@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
 import { 
   ArrowLeft, 
   ChevronRight, 
@@ -34,8 +35,6 @@ async function getSongPracticeRecommendations(lessonId: string) {
   } else if (lessonId === 'natural-minor-scales' || lessonId === 'harmonic-minor-scales') {
     query.scale = { $regex: /minor/i };
   } else if (lessonId === 'bollywood-scale-secrets') {
-    // We don't have a direct raag field, but we can search categories or tags if needed
-    // For now, let's just get some popular bollywood songs
     query.tags = { $in: ['Bollywood', 'Hindi'] };
   } else if (lessonId === 'triads-101' || lessonId === 'chord-progressions') {
     query.chords = { $exists: true, $ne: '' };
@@ -63,9 +62,22 @@ export default async function LessonPage({ params }: PageProps) {
 
   if (!lesson) notFound();
 
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    'itemListElement': [
+      { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://sargamkeys.in/' },
+      { '@type': 'ListItem', 'position': 2, 'name': 'Music Theory', 'item': 'https://sargamkeys.in/music-theory' },
+      { '@type': 'ListItem', 'position': 3, 'name': lesson.title, 'item': `https://sargamkeys.in/music-theory/${slug}` }
+    ]
+  };
+
+  const recommendedSongs = await getSongPracticeRecommendations(slug);
+
   return (
     <div className="min-h-screen bg-white dark:bg-zinc-950 pb-20">
       <AnalyticsTracker songId={`theory_${slug}`} />
+      
       {/* Lesson Header */}
       <div className="border-b bg-slate-50/50 dark:bg-zinc-900/50 sticky top-0 z-10 backdrop-blur-md">
         <div className="container mx-auto px-4 py-4">
@@ -84,7 +96,7 @@ export default async function LessonPage({ params }: PageProps) {
               </div>
             </div>
             <div className="flex items-center gap-2">
-               <Badge variant="outline" className="hidden sm:flex">15% Complete</Badge>
+               <Badge variant="outline" className="hidden sm:flex">Learning</Badge>
                {lesson.nextLessonId && (
                  <Button size="sm" className="bg-blue-600 hover:bg-blue-700" asChild>
                    <Link href={`/music-theory/${lesson.nextLessonId}`}>
@@ -97,7 +109,9 @@ export default async function LessonPage({ params }: PageProps) {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-8">
+        <Breadcrumbs className="max-w-3xl mx-auto mb-8" />
+        
         <div className="max-w-3xl mx-auto">
           {/* Intro */}
           <div className="space-y-6 mb-12">
@@ -267,34 +281,29 @@ export default async function LessonPage({ params }: PageProps) {
             })}
           </div>
 
-          {/* Practice with Songs (New Section) */}
-          {await (async () => {
-            const recommendedSongs = await getSongPracticeRecommendations(slug);
-            if (recommendedSongs.length === 0) return null;
-            
-            return (
-              <div className="mt-20 space-y-8">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                  <div className="space-y-1">
-                    <h2 className="text-3xl font-bold flex items-center gap-3">
-                      <Music className="h-8 w-8 text-blue-600" />
-                      Apply Your Knowledge
-                    </h2>
-                    <p className="text-muted-foreground">Practice what you just learned with these songs</p>
-                  </div>
-                  <Button variant="outline" asChild>
-                    <Link href="/notes">Browse All Songs</Link>
-                  </Button>
+          {/* Practice with Songs */}
+          {recommendedSongs.length > 0 && (
+            <div className="mt-20 space-y-8">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div className="space-y-1">
+                  <h2 className="text-3xl font-bold flex items-center gap-3">
+                    <Music className="h-8 w-8 text-blue-600" />
+                    Apply Your Knowledge
+                  </h2>
+                  <p className="text-muted-foreground">Practice what you just learned with these songs</p>
                 </div>
-                
-                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                  {recommendedSongs.map((song: any) => (
-                    <SongCard key={song._id.toString()} song={song} />
-                  ))}
-                </div>
+                <Button variant="outline" asChild>
+                  <Link href="/notes">Browse All Songs</Link>
+                </Button>
               </div>
-            );
-          })()}
+              
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {recommendedSongs.map((song: any) => (
+                  <SongCard key={song._id.toString()} song={song} />
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Next Lesson Footer */}
           {lesson.nextLessonId && (
@@ -316,6 +325,12 @@ export default async function LessonPage({ params }: PageProps) {
           )}
         </div>
       </div>
+
+      <script
+        id={`breadcrumb-jsonld-${slug}`}
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
     </div>
   );
 }

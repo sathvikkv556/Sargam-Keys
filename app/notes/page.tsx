@@ -10,6 +10,8 @@ import { Music, BookOpen, Sparkles } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Link from 'next/link';
 
+import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
+
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -30,7 +32,8 @@ export default async function AllNotesPage() {
   const notes = notesResponse.success ? notesResponse.data?.notes || [] : [];
 
   return (
-    <div className="container mx-auto px-4 py-12">
+    <div className="container mx-auto px-4 py-8">
+      <Breadcrumbs className="mb-8" />
       <div className="mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
         <div>
           <h1 className="text-4xl font-extrabold tracking-tight">Library</h1>

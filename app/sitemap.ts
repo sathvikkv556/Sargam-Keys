@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next';
 import { getSongs } from '@/lib/actions/song';
 import { getCategories } from '@/lib/actions/category';
+import { lessons } from '@/lib/music-theory-data';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://sargamkeys.in';
@@ -15,7 +16,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const songUrls = songs.map((song) => ({
     url: `${baseUrl}/notes/${song.slug}`,
-    lastModified: new Date(song.updatedAt),
+    lastModified: song.updatedAt ? new Date(song.updatedAt) : new Date(song.createdAt),
     changeFrequency: 'weekly' as const,
     priority: 0.8,
   }));
@@ -23,8 +24,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const categoryUrls = categories.map((category) => ({
     url: `${baseUrl}/categories/${category.slug}`,
     lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.6,
+  }));
+
+  const theoryUrls = Object.keys(lessons).map((slug) => ({
+    url: `${baseUrl}/music-theory/${slug}`,
+    lastModified: new Date(),
     changeFrequency: 'monthly' as const,
-    priority: 0.5,
+    priority: 0.7,
   }));
 
   const staticUrls = [
@@ -39,6 +47,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       changeFrequency: 'daily' as const,
       priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/music-theory`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
     },
     {
       url: `${baseUrl}/categories`,
@@ -78,5 +92,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  return [...staticUrls, ...songUrls, ...categoryUrls];
+  return [...staticUrls, ...songUrls, ...categoryUrls, ...theoryUrls];
 }

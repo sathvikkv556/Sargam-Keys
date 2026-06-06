@@ -6,6 +6,7 @@ import { notFound } from 'next/navigation';
 import { Music } from 'lucide-react';
 import { Metadata } from 'next';
 import { createPageMetadata } from '@/lib/seo';
+import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -45,8 +46,57 @@ export default async function CategoryPage({ params }: PageProps) {
 
   const songs = response.success ? response.data?.songs || [] : [];
 
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://sargamkeys.in'
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Categories',
+        item: 'https://sargamkeys.in/categories'
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: category.name,
+        item: `https://sargamkeys.in/categories/${category.slug}`
+      }
+    ]
+  };
+
+  const itemListJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    itemListElement: songs.map((song, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      url: `https://sargamkeys.in/notes/${song.slug}`,
+      name: song.title
+    }))
+  };
+
   return (
-    <div className="container mx-auto px-4 py-12">
+    <div className="container mx-auto px-4 py-8">
+      {/* JSON-LD for SEO */}
+      <script
+        id={`breadcrumb-jsonld-${category._id}`}
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        id={`itemlist-jsonld-${category._id}`}
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
+      />
+      
+      <Breadcrumbs className="mb-8" />
       <div className="mb-12">
         <div className="flex items-center gap-4">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground">

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ImagePlus, X, Image as ImageIcon } from 'lucide-react';
 import Image from 'next/image';
+import Script from 'next/script';
 
 interface ImageUploadProps {
   value: string;
@@ -73,10 +74,9 @@ export function ImageUpload({ value, onChange, onRemove }: ImageUploadProps) {
       </div>
       
       {/* Cloudinary Widget Script */}
-      <script
+      <Script
         src="https://upload-widget.cloudinary.com/global/all.js"
-        type="text/javascript"
-        async
+        strategy="afterInteractive"
       />
     </div>
   );

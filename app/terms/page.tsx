@@ -11,71 +11,117 @@ export const metadata: Metadata = {
 export default function TermsPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
-      <h1 className="mb-8 text-4xl font-bold">Terms of Service</h1>
+      <div className="mb-12 text-center">
+        <h1 className="mb-4 text-4xl font-black tracking-tighter md:text-6xl">Terms of Service</h1>
+        <p className="text-muted-foreground font-medium">Last Updated: June 6, 2026</p>
+      </div>
       
-      <div className="prose prose-blue dark:prose-invert max-w-none space-y-6">
-        <p>Last updated: {new Date().toLocaleDateString()}</p>
-
-        <section>
-          <h2 className="text-2xl font-bold">1. Agreement to Terms</h2>
-          <p>
-            By accessing or using SargamKeys, you agree to be bound by these Terms of Service. If you disagree with any part of the terms, then you may not access the service.
+      <div className="prose prose-slate dark:prose-invert max-w-none space-y-12">
+        <section className="space-y-4">
+          <h2 className="text-3xl font-black tracking-tight border-b pb-2">Agreement to Terms</h2>
+          <p className="text-xl leading-relaxed text-slate-600 dark:text-slate-400">
+            Upon using the SargamKeys website, you agree to abide by the following terms and conditions. Should you disagree with any terms and conditions, please refrain from using SargamKeys.
           </p>
         </section>
 
-        <section>
-          <h2 className="text-2xl font-bold">2. Intellectual Property</h2>
+        <section className="space-y-4">
+          <h2 className="text-3xl font-black tracking-tight border-b pb-2">Introduction</h2>
           <p>
-            The Service and its original content (excluding piano notes provided for educational purposes that may be based on existing compositions), features, and functionality are and will remain the exclusive property of SargamKeys and its licensors.
-          </p>
-          <p>
-            Piano notes and music theory guides provided on this site are for educational and personal use only. Redistribution or commercial use without permission is strictly prohibited.
+            SargamKeys is an educational website providing arrangements of piano and keyboard notes to help users study songs. The information published on this site has no other purpose than being an informative educational tool.
           </p>
         </section>
 
-        <section>
-          <h2 className="text-2xl font-bold">3. User Accounts</h2>
+        <section className="space-y-6">
+          <h2 className="text-3xl font-black tracking-tight border-b pb-2">Copyrights & Usage</h2>
           <p>
-            When you create an account with us, you must provide information that is accurate, complete, and current at all times. Failure to do so constitutes a breach of the Terms, which may result in immediate termination of your account on our Service.
+            Except as noted below, SargamKeys' designs, content, and arrangement of piano keys are copyrighted and are property of SargamKeys.
+          </p>
+          
+          <div className="grid gap-8 md:grid-cols-2 mt-6">
+            <div className="space-y-4 p-6 rounded-2xl bg-green-50 dark:bg-green-900/10 border border-green-100 dark:border-green-900/30">
+              <h3 className="text-xl font-bold text-green-800 dark:text-green-300 flex items-center gap-2">
+                Allowed Usage
+              </h3>
+              <ul className="list-disc pl-5 space-y-2 text-green-700 dark:text-green-400">
+                <li>Browse through the website</li>
+                <li>Learn songs using note arrangement</li>
+                <li>Distribute links to SargamKeys pages</li>
+              </ul>
+            </div>
+
+            <div className="space-y-4 p-6 rounded-2xl bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/30">
+              <h3 className="text-xl font-bold text-red-800 dark:text-red-300 flex items-center gap-2">
+                Prohibited Actions
+              </h3>
+              <ul className="list-disc pl-5 space-y-2 text-red-700 dark:text-red-400">
+                <li>Republish any copyrighted material</li>
+                <li>Create a copy of SargamKeys webpages</li>
+                <li>Profit from or sell copyrighted content</li>
+                <li>Reproduce content to another platform</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section className="space-y-4">
+          <h2 className="text-3xl font-black tracking-tight border-b pb-2">Educational Purposes</h2>
+          <p>
+            The piano keys provided on SargamKeys are purely an educational aid, created to assist musicians in understanding song melodies. 
+            SargamKeys is <strong>not</strong> in possession of any official song sheets, lyrics, or audio files for distribution.
           </p>
         </section>
 
-        <section>
-          <h2 className="text-2xl font-bold">4. Links To Other Web Sites</h2>
+        <section className="space-y-4">
+          <h2 className="text-3xl font-black tracking-tight border-b pb-2">Ownership of Songs</h2>
           <p>
-            Our Service may contain links to third-party web sites or services that are not owned or controlled by SargamKeys.
-          </p>
-          <p>
-            SargamKeys has no control over, and assumes no responsibility for, the content, privacy policies, or practices of any third party web sites or services. You further acknowledge and agree that SargamKeys shall not be responsible or liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with use of or reliance on any such content, goods or services available on or through any such web sites or services.
+            The copyright of songs, singer names, album names, film names, or trademarks belong to their respective owners. 
+            Names are mentioned for learning purposes only. Musical arrangements belong to their respective writers except for those specifically arranged by SargamKeys.
           </p>
         </section>
 
-        <section>
-          <h2 className="text-2xl font-bold">5. Termination</h2>
+        <section className="space-y-4">
+          <h2 className="text-3xl font-black tracking-tight border-b pb-2">Accuracy & Liability</h2>
+          <div className="space-y-4">
+            <p>
+              While every effort is taken to provide accurate piano keys, no warranties are made concerning their accuracy, sufficiency, or usefulness. 
+              SargamKeys does not assume responsibility for verification of information.
+            </p>
+            <p>
+              In no way shall SargamKeys be held accountable for any losses arising due to the usage or non-availability of the site or content. 
+              Content is published on an "as-is" basis without warranty.
+            </p>
+          </div>
+        </section>
+
+        <section className="space-y-4">
+          <h2 className="text-3xl font-black tracking-tight border-b pb-2">Third-Party Websites</h2>
           <p>
-            We may terminate or suspend access to our Service immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms.
+            Links to external websites not under our control may be available. 
+            No responsibility is taken regarding these sites' contents, policies, or procedures.
           </p>
         </section>
 
-        <section>
-          <h2 className="text-2xl font-bold">6. Limitation of Liability</h2>
+        <section className="space-y-4">
+          <h2 className="text-3xl font-black tracking-tight border-b pb-2">Policy Updates</h2>
           <p>
-            In no event shall SargamKeys, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your access to or use of or inability to access or use the Service.
+            Terms and conditions may be altered at any time without prior notice. 
+            Revised terms will be published here, and continued use of SargamKeys signifies your acceptance of modified terms.
           </p>
         </section>
 
-        <section>
-          <h2 className="text-2xl font-bold">7. Changes</h2>
-          <p>
-            We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material we will try to provide at least 30 days notice prior to any new terms taking effect. What constitutes a material change will be determined at our sole discretion.
+        <section className="rounded-3xl bg-slate-900 text-white p-8 md:p-12 text-center space-y-6">
+          <h2 className="text-3xl font-black tracking-tight">Questions?</h2>
+          <p className="text-slate-400 max-w-2xl mx-auto">
+            Should you have any further questions about our terms of service, reach out to us at:
           </p>
-        </section>
-
-        <section>
-          <h2 className="text-2xl font-bold">8. Contact Us</h2>
-          <p>
-            If you have any questions about these Terms, please contact us at <strong>ksathvik485@gmail.com</strong>.
-          </p>
+          <div className="space-y-2">
+            <p className="text-2xl font-black">Sathvik KV</p>
+            <p className="text-blue-400">Founder, SargamKeys</p>
+            <a href="mailto:ksathvik485@gmail.com" className="text-xl hover:text-white transition-colors">
+              ksathvik485@gmail.com
+            </a>
+            <p className="text-sm text-slate-500 mt-4">https://sargamkeys.in</p>
+          </div>
         </section>
       </div>
     </div>

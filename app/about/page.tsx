@@ -1,8 +1,11 @@
 import { Metadata } from 'next';
+import { Mail, Play, Music, BookOpen, Star, Users, ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'About SargamKeys | Our Mission & Story',
-  description: 'Learn about SargamKeys, our mission to make piano learning accessible, and the technology behind our platform.',
+  description: 'Learn about SargamKeys, founded by Sathvik KV, and our mission to make piano learning accessible and beginner-friendly.',
   alternates: {
     canonical: '/about',
   },
@@ -10,149 +13,170 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
-      {/* Header */}
-      <div className="mb-12 text-center">
-        <h1 className="mb-4 text-4xl font-bold text-gray-900 dark:text-white">
-          About SargamKeys
-        </h1>
-        <p className="text-lg text-gray-600 dark:text-gray-400">
-          Learn the story behind our piano learning platform
-        </p>
-      </div>
-
-      {/* Main Content */}
-      <div className="space-y-8">
-        {/* Mission */}
-        <section>
-          <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
-            Our Mission
-          </h2>
-          <p className="text-gray-700 dark:text-gray-300">
-            SargamKeys is dedicated to making piano music theory accessible to everyone. We believe that learning piano notes, scales, and music theory should be simple, structured, and enjoyable. Our mission is to provide comprehensive resources that help musicians at all levels master the fundamentals of piano and music theory.
+    <div className="flex flex-col min-h-screen">
+      {/* Hero Section */}
+      <section className="relative py-20 bg-slate-900 text-white overflow-hidden">
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
+        <div className="container mx-auto px-4 relative z-10 text-center space-y-6">
+          <h1 className="text-4xl md:text-7xl font-black tracking-tighter">About SargamKeys</h1>
+          <p className="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto font-medium">
+            Master the piano with clear, accurate, and beginner-friendly note arrangements.
           </p>
-        </section>
+        </div>
+      </section>
 
-        {/* What We Offer */}
-        <section>
-          <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
-            What We Offer
-          </h2>
-          <ul className="space-y-3 text-gray-700 dark:text-gray-300">
-            <li className="flex gap-3">
-              <span className="text-2xl">🎵</span>
-              <span>Comprehensive piano notes and scales documentation</span>
-            </li>
-            <li className="flex gap-3">
-              <span className="text-2xl">🎼</span>
-              <span>Detailed chord progressions and voicing guides</span>
-            </li>
-            <li className="flex gap-3">
-              <span className="text-2xl">📚</span>
-              <span>In-depth music theory explanations</span>
-            </li>
-            <li className="flex gap-3">
-              <span className="text-2xl">🎹</span>
-              <span>Progressive learning paths for all skill levels</span>
-            </li>
-            <li className="flex gap-3">
-              <span className="text-2xl">🌙</span>
-              <span>Beautiful dark mode for comfortable learning</span>
-            </li>
-          </ul>
-        </section>
-
-        {/* Features */}
-        <section>
-          <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
-            Key Features
-          </h2>
-          <div className="grid gap-6 sm:grid-cols-2">
-            {[
-              {
-                title: 'Organized Categories',
-                description: 'Content organized by scales, chords, progressions, techniques, and music theory',
-              },
-              {
-                title: 'Difficulty Levels',
-                description: 'Resources tailored for beginners, intermediate, and advanced musicians',
-              },
-              {
-                title: 'Responsive Design',
-                description: 'Access learning materials on any device, anytime, anywhere',
-              },
-              {
-                title: 'Dark Mode Support',
-                description: 'Comfortable learning experience with automatic theme detection',
-              },
-            ].map((feature, idx) => (
-              <div
-                key={idx}
-                className="rounded-lg border border-gray-200 bg-gray-50 p-6 dark:border-gray-800 dark:bg-gray-800"
-              >
-                <h3 className="mb-2 font-semibold text-gray-900 dark:text-white">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400">
-                  {feature.description}
+      {/* Founder Story */}
+      <section className="py-20 bg-white dark:bg-slate-950">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto flex flex-col md:flex-row gap-12 items-center">
+            <div className="flex-1 space-y-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-sm font-bold uppercase tracking-wider">
+                <Music className="h-4 w-4" />
+                <span>Founder's Story</span>
+              </div>
+              <h2 className="text-3xl md:text-5xl font-black tracking-tight">Introduction</h2>
+              <div className="prose prose-lg dark:prose-invert text-slate-600 dark:text-slate-400">
+                <p>
+                  My name is <strong>Sathvik KV</strong>, and I am the founder of SargamKeys. As a self-taught pianist, I have been playing the piano for over a decade now.
+                </p>
+                <p>
+                  SargamKeys came to me as an idea after noticing how difficult it could be to find proper piano notes. Throughout the past 10 years of learning music, especially learning songs by ear, I noticed that many of the internet sources of note arrangement were either incorrect, incomplete, or not beginner-friendly.
+                </p>
+                <p>
+                  I founded this website to ensure that aspiring pianists and other people have access to clear and accurate note arrangements, allowing them to learn and master songs easily.
                 </p>
               </div>
-            ))}
+            </div>
+            <div className="w-full md:w-1/3 aspect-square rounded-3xl bg-slate-100 dark:bg-slate-900 overflow-hidden relative group">
+               <img src="/logo.jpg" alt="Sathvik KV" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
+               <div className="absolute inset-0 bg-blue-600/10 mix-blend-multiply" />
+            </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Technology */}
-        <section>
-          <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
-            Built With Modern Technology
-          </h2>
-          <p className="mb-4 text-gray-700 dark:text-gray-300">
-            SargamKeys is built using cutting-edge web technologies:
-          </p>
-          <ul className="grid gap-3 text-gray-700 dark:text-gray-300 sm:grid-cols-2">
-            <li className="flex gap-2">
-              <span>✓</span>
-              <span>Next.js 15 with App Router</span>
-            </li>
-            <li className="flex gap-2">
-              <span>✓</span>
-              <span>TypeScript for type safety</span>
-            </li>
-            <li className="flex gap-2">
-              <span>✓</span>
-              <span>TailwindCSS for styling</span>
-            </li>
-            <li className="flex gap-2">
-              <span>✓</span>
-              <span>MongoDB with Mongoose</span>
-            </li>
-            <li className="flex gap-2">
-              <span>✓</span>
-              <span>Dark mode with next-themes</span>
-            </li>
-            <li className="flex gap-2">
-              <span>✓</span>
-              <span>Optimized for SEO</span>
-            </li>
-          </ul>
-        </section>
+      {/* Musical Background */}
+      <section className="py-20 bg-slate-50 dark:bg-slate-900/20">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto space-y-12">
+            <div className="text-center space-y-4">
+              <h2 className="text-3xl md:text-5xl font-black tracking-tight">Musical Background</h2>
+              <p className="text-xl text-slate-600 dark:text-slate-400">
+                I have been interested in melodies for more than a decade. In addition to managing this website, I have a YouTube channel where I post videos related to piano.
+              </p>
+              <div className="pt-4">
+                <Button asChild size="lg" className="rounded-full bg-red-600 hover:bg-red-700 h-14 px-8 gap-2">
+                  <Link href="https://www.youtube.com/@Sathvik_Keys" target="_blank">
+                    <Play className="h-5 w-5" />
+                    Visit Sathvik Keys on YouTube
+                  </Link>
+                </Button>
+              </div>
+            </div>
 
-        {/* Contact */}
-        <section className="rounded-lg bg-blue-50 p-8 dark:bg-blue-900">
-          <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
-            Get in Touch
-          </h2>
-          <p className="mb-6 text-gray-700 dark:text-gray-300">
-            Have questions, suggestions, or want to contribute? We&apos;d love to hear from you!
+            <div className="grid md:grid-cols-2 gap-8 pt-8">
+              <div className="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/5 space-y-4 shadow-xl shadow-slate-200/50 dark:shadow-none">
+                <div className="h-12 w-12 rounded-2xl bg-blue-600 flex items-center justify-center text-white">
+                  <Star className="h-6 w-6" />
+                </div>
+                <h3 className="text-2xl font-black">What You Can Find Here</h3>
+                <ul className="space-y-3 text-slate-600 dark:text-slate-400">
+                  <li className="flex items-start gap-2">
+                    <span className="text-blue-600 font-bold">•</span>
+                    <span>Piano notes for Bollywood and Hindi songs</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-blue-600 font-bold">•</span>
+                    <span>Keyboard notes for songs in regional languages (Tamil, Telugu, Kannada, Malayalam)</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-blue-600 font-bold">•</span>
+                    <span>Information on the song scale and key</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-blue-600 font-bold">•</span>
+                    <span>Notes suitable for beginners</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-blue-600 font-bold">•</span>
+                    <span>Notation that is easy to understand and read</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-blue-600 font-bold">•</span>
+                    <span>A library of over 100 regularly updated songs</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/5 space-y-4 shadow-xl shadow-slate-200/50 dark:shadow-none">
+                <div className="h-12 w-12 rounded-2xl bg-indigo-600 flex items-center justify-center text-white">
+                  <BookOpen className="h-6 w-6" />
+                </div>
+                <h3 className="text-2xl font-black">Purpose of SargamKeys</h3>
+                <p className="text-slate-600 dark:text-slate-400">
+                  Not everyone needs to spend months studying theory before learning to play piano. For many, it would be better if there was a simpler way to learn.
+                </p>
+                <p className="text-slate-600 dark:text-slate-400">
+                  My purpose in creating SargamKeys was to facilitate quick but efficient song learning with an emphasis on practicality. Everything that I publish here is arranged in a beginner-friendly fashion.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Audience */}
+      <section className="py-20 bg-white dark:bg-slate-950">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center space-y-12">
+            <h2 className="text-3xl md:text-5xl font-black tracking-tight">Who Is This For?</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {[
+                { icon: <Users className="h-6 w-6" />, label: "Beginners" },
+                { icon: <Music className="h-6 w-6" />, label: "Self-Taught" },
+                { icon: <BookOpen className="h-6 w-6" />, label: "Students" },
+                { icon: <Star className="h-6 w-6" />, label: "Teachers" }
+              ].map((item, i) => (
+                <div key={i} className="flex flex-col items-center gap-4 p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 transition-all hover:scale-105">
+                  <div className="h-12 w-12 rounded-full bg-white dark:bg-slate-800 flex items-center justify-center shadow-md">
+                    {item.icon}
+                  </div>
+                  <span className="font-bold uppercase tracking-wider text-sm">{item.label}</span>
+                </div>
+              ))}
+            </div>
+            <div className="pt-12 space-y-6">
+               <h3 className="text-3xl font-black">Looking Forward</h3>
+               <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+                 My goal for the future is to continue developing this website by providing a comprehensive library of note arrangements for piano learners across the globe.
+               </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section className="py-20 bg-blue-600 text-white">
+        <div className="container mx-auto px-4 text-center space-y-10">
+          <h2 className="text-4xl md:text-6xl font-black tracking-tighter">Get in Touch!</h2>
+          <p className="text-xl md:text-2xl text-blue-100 max-w-2xl mx-auto">
+            If you have a song request, a suggestion, or just a few words of encouragement, feel free to reach out.
           </p>
-          <a
-            href="mailto:ksathvik485@gmail.com"
-            className="inline-block rounded-lg bg-blue-600 px-6 py-2 text-white transition-colors hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
-          >
-            Contact Us
-          </a>
-        </section>
-      </div>
+          <div className="flex flex-col md:flex-row justify-center gap-6">
+            <Button asChild size="lg" className="h-16 px-10 rounded-full bg-white text-blue-600 hover:bg-slate-100 text-lg font-black gap-2">
+              <a href="mailto:ksathvik485@gmail.com">
+                <Mail className="h-5 w-5" />
+                ksathvik485@gmail.com
+              </a>
+            </Button>
+          </div>
+          <div className="pt-10 border-t border-white/20 max-w-lg mx-auto">
+             <p className="font-bold text-xl uppercase tracking-widest mb-2">Sathvik KV</p>
+             <p className="text-blue-200">Founder of SargamKeys</p>
+             <p className="text-blue-200">Self-Taught Pianist | Over 10 Years of Experience</p>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

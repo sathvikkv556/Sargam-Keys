@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Music, Mail, Play, Shield, MapPin } from 'lucide-react';
 
 /**
  * Footer component with links and copyright
@@ -6,126 +7,107 @@ import Link from 'next/link';
 export function Footer() {
   const currentYear = new Date().getFullYear();
 
+  const footerLinks = [
+    {
+      title: 'Resources',
+      links: [
+        { label: 'All Notes', href: '/notes' },
+        { label: 'Music Theory', href: '/music-theory' },
+        { label: 'Categories', href: '/categories' },
+        { label: 'Submit Notes', href: '/notes/new' },
+      ],
+    },
+    {
+      title: 'Company',
+      links: [
+        { label: 'About Us', href: '/about' },
+        { label: 'Contact', href: '/contact' },
+        { label: 'Search', href: '/search' },
+      ],
+    },
+    {
+      title: 'Legal',
+      links: [
+        { label: 'Privacy Policy', href: '/privacy' },
+        { label: 'Terms & Conditions', href: '/terms' },
+        { label: 'Disclaimer', href: '/disclaimer' },
+      ],
+    },
+  ];
+
   return (
-    <footer className="border-t border-gray-200 bg-gray-50 dark:border-gray-800 dark:bg-gray-900">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid gap-8 md:grid-cols-4">
-          {/* About */}
-          <div>
-            <h3 className="mb-4 font-semibold text-gray-900 dark:text-white">
-              SargamKeys
-            </h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              Learn piano notes and music theory at your own pace. Perfect for
-              beginners and advanced musicians.
+    <footer className="border-t border-slate-200 bg-slate-50 dark:border-white/5 dark:bg-slate-950 transition-colors" aria-labelledby="footer-heading">
+      <h2 id="footer-heading" className="sr-only">Footer</h2>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid gap-12 lg:grid-cols-4 md:grid-cols-2">
+          {/* Brand Column */}
+          <div className="space-y-6">
+            <Link href="/" className="flex items-center gap-2 group" aria-label="SargamKeys Home">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white shadow-lg group-hover:scale-110 transition-transform">
+                <Music className="h-6 w-6" />
+              </div>
+              <span className="text-2xl font-black tracking-tighter">SargamKeys</span>
+            </Link>
+            <p className="text-slate-600 dark:text-slate-400 font-medium leading-relaxed text-sm">
+              Master the piano with a world-class collection of free piano notes and practical music theory lessons. Perfect for beginners and enthusiasts.
             </p>
+            <div className="flex items-center gap-4">
+               <a 
+                href="https://www.youtube.com/@Sathvik_Keys" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="h-10 w-10 flex items-center justify-center rounded-full bg-slate-200 dark:bg-white/5 hover:bg-red-600 hover:text-white transition-all"
+                aria-label="YouTube Channel"
+               >
+                 <Play className="h-5 w-5" />
+               </a>
+               <a 
+                href="mailto:ksathvik485@gmail.com"
+                className="h-10 w-10 flex items-center justify-center rounded-full bg-slate-200 dark:bg-white/5 hover:bg-blue-600 hover:text-white transition-all"
+                aria-label="Email Contact"
+               >
+                 <Mail className="h-5 w-5" />
+               </a>
+            </div>
           </div>
 
-          {/* Resources */}
-          <div>
-            <h4 className="mb-4 font-semibold text-gray-900 dark:text-white">
-              Resources
-            </h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link
-                  href="/notes"
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-                >
-                  All Notes
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/categories"
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-                >
-                  Categories
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/search"
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-                >
-                  Search
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Company */}
-          <div>
-            <h4 className="mb-4 font-semibold text-gray-900 dark:text-white">
-              Company
-            </h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link
-                  href="/about"
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-                >
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/contact"
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-                >
-                  Contact
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/privacy"
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-                >
-                  Privacy Policy
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Legal */}
-          <div>
-            <h4 className="mb-4 font-semibold text-gray-900 dark:text-white">
-              Legal
-            </h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link
-                  href="/terms"
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-                >
-                  Terms & Conditions
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/privacy"
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-                >
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/disclaimer"
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-                >
-                  Disclaimer
-                </Link>
-              </li>
-            </ul>
-          </div>
+          {/* Link Columns */}
+          {footerLinks.map((section) => (
+            <div key={section.title} className="space-y-6">
+              <h3 className="text-sm font-black uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">
+                {section.title}
+              </h3>
+              <ul className="space-y-4">
+                {section.links.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      className="text-sm text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 font-bold transition-colors flex items-center gap-2 group"
+                    >
+                      <span className="h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-700 group-hover:bg-blue-600 dark:group-hover:bg-blue-400 transition-all" />
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
 
-        {/* Copyright */}
-        <div className="border-t border-gray-200 dark:border-gray-800 mt-8 pt-8">
-          <p className="text-center text-sm text-gray-600 dark:text-gray-400">
+        <div className="mt-16 pt-8 border-t border-slate-200 dark:border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+          <p className="text-xs font-medium text-slate-500">
             &copy; {currentYear} SargamKeys. All rights reserved.
           </p>
+          <div className="flex items-center gap-8 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+             <div className="flex items-center gap-2">
+               <MapPin className="h-3 w-3" />
+               <span>India</span>
+             </div>
+             <div className="flex items-center gap-2">
+               <Shield className="h-3 w-3" />
+               <span>SSL Secure</span>
+             </div>
+          </div>
         </div>
       </div>
     </footer>
