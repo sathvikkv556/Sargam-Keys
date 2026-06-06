@@ -9,9 +9,10 @@ interface AnalyticsTrackerProps {
 
 export default function AnalyticsTracker({ songId }: AnalyticsTrackerProps) {
   const analyticsIdRef = useRef<string | null>(null);
-  const startTimeRef = useRef<number>(Date.now());
+  const startTimeRef = useRef<number>(0);
 
   useEffect(() => {
+    startTimeRef.current = Date.now();
     // Initial page view log
     const trackPageView = async () => {
       // Check if session ID exists in sessionStorage

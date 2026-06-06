@@ -98,17 +98,11 @@ export default async function AllNotesPage() {
 
           <Separator className="my-8" />
 
-          {notes.length > 0 ? (
+          {notes.length > 0 && (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {notes.map((note) => (
                 <NoteCard key={note._id} note={note} />
               ))}
-            </div>
-          ) : (
-            <div className="flex flex-col items-center justify-center py-20 text-center border rounded-3xl bg-muted/20">
-              <Sparkles className="mb-4 h-12 w-12 text-muted-foreground" />
-              <h2 className="text-2xl font-bold">Theory guides coming soon</h2>
-              <p className="text-muted-foreground">We are working on comprehensive guides for scales and chords.</p>
             </div>
           )}
         </TabsContent>

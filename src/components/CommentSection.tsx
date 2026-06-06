@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Comment, APIResponse } from '@/types';
 import { createComment, getCommentsBySongId } from '@/lib/actions/comment';
 import { Button } from '@/components/ui/button';
@@ -26,18 +26,18 @@ export function CommentSection({ songId, isAdmin }: CommentSectionProps) {
     content: ''
   });
 
-  const fetchComments = async () => {
+  const fetchComments = useCallback(async () => {
     setLoading(true);
     const response = await getCommentsBySongId(songId, isAdmin);
     if (response.success && response.data) {
       setComments(response.data);
     }
     setLoading(false);
-  };
+  }, [songId, isAdmin]);
 
   useEffect(() => {
     fetchComments();
-  }, [songId, isAdmin]);
+  }, [fetchComments]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

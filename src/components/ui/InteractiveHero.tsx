@@ -1,24 +1,25 @@
 'use client';
 
 import React, { useRef, useEffect, useState } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
-import { Search, Sparkles, Music, Play, Radio } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Search, Sparkles, Music } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 
 export function InteractiveHero() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({
         x: (e.clientX / window.innerWidth - 0.5) * 40,
         y: (e.clientY / window.innerHeight - 0.5) * 40,
       });
     };
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
@@ -34,27 +35,26 @@ export function InteractiveHero() {
   ];
 
   return (
-    <section ref={containerRef} className="relative min-h-[100vh] flex items-center justify-center overflow-hidden bg-white dark:bg-slate-950 px-4 py-20 text-slate-900 dark:text-white perspective-1000">
-      {/* Dynamic Background */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-transparent to-purple-50/50 dark:from-blue-900/40 dark:to-purple-900/40" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-600/5 rounded-full blur-[150px] animate-pulse" />
+    <section ref={containerRef} className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-white dark:bg-slate-950 px-4 py-20 text-slate-900 dark:text-white">
+      {/* Dynamic Background - Using CSS for better performance */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-transparent to-purple-50/50 dark:from-blue-900/20 dark:to-purple-900/20" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-600/5 rounded-full blur-[150px] opacity-50 transition-opacity duration-1000" />
       </div>
 
-      {/* Musical Galaxy - Responsive Notations */}
-      {notations.map((note, i) => (
+      {/* Musical Galaxy - Only animate if mounted to prevent hydration mismatch and simplify initial render */}
+      {isMounted && notations.map((note, i) => (
         <motion.div
           key={i}
-          initial={{ opacity: 0, scale: 0.5 }}
+          initial={{ opacity: 0 }}
           animate={{ 
             opacity: 1, 
-            scale: 1,
             x: mousePosition.x * note.depth,
             y: mousePosition.y * note.depth,
             rotate: mousePosition.x * 0.1
           }}
-          transition={{ duration: 1, type: "spring", stiffness: 50 }}
-          className={`absolute pointer-events-none select-none font-serif ${note.size} ${note.color} blur-[1px]`}
+          transition={{ duration: 1, delay: i * 0.1 }}
+          className={`absolute pointer-events-none select-none font-serif ${note.size} ${note.color} blur-[1px] hidden sm:block`}
           style={{ top: note.top, left: note.left }}
         >
           {note.icon === " musical-note" ? <Music className="h-full w-full opacity-20" /> : note.icon}
@@ -62,74 +62,52 @@ export function InteractiveHero() {
       ))}
 
       <div className="container relative z-10 mx-auto max-w-5xl text-center">
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="mb-8 inline-flex items-center gap-2 rounded-full bg-slate-900/5 dark:bg-white/5 px-6 py-2 text-sm font-semibold backdrop-blur-xl border border-slate-900/10 dark:border-white/10 shadow-2xl"
-        >
-          <Sparkles className="h-4 w-4 text-yellow-500 animate-spin-slow" />
+        <div className="mb-8 inline-flex items-center gap-2 rounded-full bg-slate-900/5 dark:bg-white/5 px-6 py-2 text-sm font-semibold backdrop-blur-xl border border-slate-900/10 dark:border-white/10 shadow-sm">
+          <Sparkles className="h-4 w-4 text-yellow-500" />
           <span className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent uppercase tracking-widest">
             The Ultimate Piano Experience
           </span>
-        </motion.div>
+        </div>
 
         <h1 className="mb-8 text-5xl font-black tracking-tighter sm:text-8xl lg:text-9xl leading-[0.9]">
-          {["Play", "Your", "Soul"].map((word, i) => (
-            <motion.span
-              key={i}
-              initial={{ opacity: 0, rotateX: -90 }}
-              animate={{ opacity: 1, rotateX: 0 }}
-              transition={{ delay: 0.5 + i * 0.2, duration: 0.8, type: "spring" }}
-              className="inline-block bg-gradient-to-b from-slate-900 via-slate-900 to-slate-900/40 dark:from-white dark:via-white dark:to-white/30 bg-clip-text text-transparent px-2"
-            >
-              {word}{" "}
-            </motion.span>
-          ))}
+          <span className="inline-block bg-gradient-to-b from-slate-900 via-slate-900 to-slate-900/40 dark:from-white dark:via-white dark:to-white/30 bg-clip-text text-transparent px-2">Play </span>
+          <span className="inline-block bg-gradient-to-b from-slate-900 via-slate-900 to-slate-900/40 dark:from-white dark:via-white dark:to-white/30 bg-clip-text text-transparent px-2">Your </span>
+          <span className="inline-block bg-gradient-to-b from-slate-900 via-slate-900 to-slate-900/40 dark:from-white dark:via-white dark:to-white/30 bg-clip-text text-transparent px-2">Soul</span>
         </h1>
         
-        <motion.p 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5, duration: 1 }}
-          className="mx-auto mb-10 md:mb-16 max-w-2xl text-lg md:text-xl text-slate-600 dark:text-slate-400 font-medium leading-relaxed"
-        >
+        <p className="mx-auto mb-10 md:mb-16 max-w-2xl text-lg md:text-xl text-slate-600 dark:text-slate-400 font-medium leading-relaxed">
           Master the keys with a world-class collection of <span className="text-blue-600 dark:text-blue-400 font-bold underline decoration-blue-500/30 underline-offset-4">free</span> piano notes and theory. 
           <span className="text-blue-500 dark:text-blue-400 block mt-2">Where music meets modern technology.</span>
-        </motion.p>
+        </p>
         
-        <motion.div 
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.8, duration: 0.8 }}
-          className="mx-auto max-w-2xl"
-        >
-          <form action="/search" className="relative group perspective-1000">
-            <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full blur-xl opacity-20 group-hover:opacity-60 transition duration-1000"></div>
+        <div className="mx-auto max-w-2xl">
+          <form action="/search" className="relative group" role="search">
+            <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full blur-xl opacity-20 group-hover:opacity-40 transition duration-500"></div>
             <div className="relative flex items-center">
-              <Search className="absolute left-5 md:left-7 h-5 w-5 md:h-6 md:w-6 text-slate-400 dark:text-slate-500 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors" />
+              <Search className="absolute left-5 md:left-7 h-5 w-5 md:h-6 md:w-6 text-slate-400 dark:text-slate-500 group-hover:text-blue-600 transition-colors" aria-hidden="true" />
               <Input 
                 name="q"
-                placeholder="Search songs..." 
-                aria-label="Search songs, artists, or theory"
-                className="h-16 md:h-20 pl-12 md:pl-16 pr-32 md:pr-44 text-lg md:text-xl rounded-full bg-white dark:bg-slate-900/80 border-slate-200 dark:border-white/5 focus:border-blue-500/50 shadow-3xl transition-all backdrop-blur-2xl text-slate-900 dark:text-white"
+                placeholder="Search songs, artists, or theory..." 
+                aria-label="Search piano notes and music theory"
+                className="h-16 md:h-20 pl-12 md:pl-16 pr-32 md:pr-44 text-lg md:text-xl rounded-full bg-white dark:bg-slate-900/80 border-slate-200 dark:border-white/5 focus:border-blue-500/50 shadow-lg transition-all backdrop-blur-2xl text-slate-900 dark:text-white"
+                required
               />
-              <Button type="submit" className="absolute right-2 md:right-3 h-12 md:h-14 rounded-full px-6 md:px-10 bg-blue-600 hover:bg-blue-500 font-black text-lg md:text-xl shadow-2xl shadow-blue-500/40 group-hover:scale-105 transition-transform active:scale-95">
+              <Button 
+                type="submit" 
+                className="absolute right-2 md:right-3 h-12 md:h-14 rounded-full px-6 md:px-10 bg-blue-600 hover:bg-blue-500 font-black text-lg md:text-xl shadow-xl transition-transform active:scale-95"
+                aria-label="Search"
+              >
                 Explore
               </Button>
             </div>
           </form>
-        </motion.div>
+        </div>
       </div>
 
       {/* Animated Scroll Indicator */}
-      <motion.div 
-        animate={{ y: [0, 10, 0] }}
-        transition={{ repeat: Infinity, duration: 2 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 w-6 h-10 border-2 border-slate-200 dark:border-white/20 rounded-full flex justify-center p-1"
-      >
-        <div className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
-      </motion.div>
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-6 h-10 border-2 border-slate-200 dark:border-white/20 rounded-full flex justify-center p-1">
+        <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce" />
+      </div>
     </section>
   );
 }

@@ -25,7 +25,10 @@ export default function AnalyticsChart({ timeline, stats }: AnalyticsChartProps)
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
+    const frame = requestAnimationFrame(() => {
+      setIsMounted(true);
+    });
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   const maxViews = Math.max(...timeline.map((d: any) => d.count), 1);

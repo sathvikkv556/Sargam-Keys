@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { 
   LayoutDashboard, 
   Music, 
@@ -42,9 +43,11 @@ export default async function AdminLayout({ children }: { children: ReactNode })
         <div className="flex h-16 items-center border-b px-6 dark:border-slate-800">
           <Link href="/" className="flex items-center gap-3 group transition-all duration-300">
             <div className="relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-blue-600 to-indigo-700 shadow-lg shadow-blue-500/20 group-hover:shadow-blue-500/40 transition-all">
-              <img 
+              <Image 
                 src="/logo.jpg" 
                 alt="SargamKeys Logo" 
+                width={32}
+                height={32}
                 className="h-full w-full object-cover"
               />
             </div>

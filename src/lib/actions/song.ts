@@ -137,58 +137,6 @@ export const getSongBySlug = cache(async (slug: string, isAdmin: boolean = false
       return { success: false, error: 'Song not found', notFound: true };
     }
     
-    // Increment views only if not admin previewing AND in production
-    if (!isAdmin && process.env.NODE_ENV === 'production') {
-      try {
-        const headersList = await headers();
-        const host = headersList.get('host') || '';
-        
-        // Strictly exclude localhost/127.0.0.1 to avoid polluting production data
-        const isLocalhost = host.includes('localhost') || host.includes('127.0.0.1');
-
-        if (!isLocalhost) {
-          // Increment global counter
-          song.views += 1;
-          await song.save();
-
-          // Log individual view for analytics
-          const ip = headersList.get('x-forwarded-for') || 'unknown';
-          const userAgent = headersList.get('user-agent') || 'unknown';
-          const referrer = headersList.get('referer') || 'direct';
-          
-          // Categorize source
-          let source = 'direct';
-          if (referrer && referrer !== 'direct') {
-            const refLower = referrer.toLowerCase();
-            if (refLower.includes('google.com')) {
-              source = 'google';
-            } else if (refLower.includes('facebook.com') || refLower.includes('fb.me')) {
-              source = 'facebook';
-            } else if (refLower.includes('twitter.com') || refLower.includes('t.co') || refLower.includes('x.com')) {
-              source = 'twitter';
-            } else if (refLower.includes('youtube.com')) {
-              source = 'youtube';
-            } else if (refLower.includes(process.env.NEXT_PUBLIC_APP_URL || '')) {
-              source = 'internal';
-            } else {
-              source = 'other';
-            }
-          }
-
-          await Analytics.create({
-            songId: song._id,
-            ip,
-            userAgent,
-            referrer,
-            source,
-          });
-        }
-      } catch (saveError) {
-        console.error('Error incrementing views or logging analytics:', saveError);
-        // Don't fail the whole request if view increment fails
-      }
-    }
-    
     return { success: true, data: JSON.parse(JSON.stringify(song)) };
   } catch (error: any) {
     console.error('getSongBySlug error:', error);

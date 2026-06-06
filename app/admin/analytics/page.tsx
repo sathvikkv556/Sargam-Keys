@@ -24,7 +24,7 @@ import {
 import AnalyticsChart from '@/components/admin/AnalyticsChart';
 import AnalyticsSongList from '@/components/admin/AnalyticsSongList';
 
-import { formatDate, formatTime } from '@/lib/utils';
+import { formatTime } from '@/lib/utils';
 import { Users, Timer, BarChart, BookOpen } from 'lucide-react';
 
 export const metadata: Metadata = {

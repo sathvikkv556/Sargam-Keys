@@ -16,11 +16,14 @@ export function ImageUpload({ value, onChange, onRemove }: ImageUploadProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    const frame = requestAnimationFrame(() => {
+      setMounted(true);
+    });
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   const onUpload = () => {
-    // @ts-ignore
+    // @ts-expect-error - Cloudinary widget is loaded via script tag
     const widget = window.cloudinary.createUploadWidget(
       {
         cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,

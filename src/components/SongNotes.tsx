@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { 
   Plus, 
@@ -42,7 +42,7 @@ export function SongNotes({ initialNotes }: { initialNotes: string }) {
   // Metronome State
   const [isPlaying, setIsPlaying] = useState(false);
   const [bpm, setBpm] = useState(100);
-  const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const playClick = () => {
     const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -63,31 +63,30 @@ export function SongNotes({ initialNotes }: { initialNotes: string }) {
 
   const toggleMetronome = () => {
     if (isPlaying) {
-      if (timer) clearInterval(timer);
+      if (timerRef.current) clearInterval(timerRef.current);
+      timerRef.current = null;
       setIsPlaying(false);
     } else {
       const interval = 60000 / bpm;
       playClick(); // Play first beat immediately
-      const newTimer = setInterval(playClick, interval);
-      setTimer(newTimer);
+      timerRef.current = setInterval(playClick, interval);
       setIsPlaying(true);
     }
   };
 
   // Update metronome if BPM changes while playing
-  React.useEffect(() => {
+  useEffect(() => {
     if (isPlaying) {
-      if (timer) clearInterval(timer);
+      if (timerRef.current) clearInterval(timerRef.current);
       const interval = 60000 / bpm;
-      const newTimer = setInterval(playClick, interval);
-      setTimer(newTimer);
+      timerRef.current = setInterval(playClick, interval);
     }
     return () => {
-      if (timer) clearInterval(timer);
+      if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [bpm]);
+  }, [bpm, isPlaying]);
 
-  const getDisplayNotes = () => {
+  const displayNotes = React.useMemo(() => {
     if (!isSargam) return notes;
 
     const noteRegex = /[A-G][#b]?/g;
@@ -102,49 +101,7 @@ export function SongNotes({ initialNotes }: { initialNotes: string }) {
       }
       return SARGAM_MAP[normalized] || match;
     });
-  };
-
-  const displayNotes = getDisplayNotes();
-
-  const renderHighlightedNotes = (text: string) => {
-    if (!text) return null;
-
-    // Regex to match Western notes (A-G with optional # or b, followed by optional digit)
-    // or Sargam notes (Sa, re, Re, ga, Ga, Ma, ma, Pa, dha, Dha, ni, Ni)
-    const regex = isSargam 
-      ? /(Sa|re|Re|ga|Ga|Ma|ma|Pa|dha|Dha|ni|Ni)/g
-      : /([A-G][#b]?\d?)/g;
-
-    const parts = text.split(regex);
-    
-    return parts.map((part, i) => {
-      // Check if this part is a note
-      let isNote = false;
-      
-      if (isSargam) {
-        isNote = Object.values(SARGAM_MAP).includes(part);
-      } else {
-        // Handle Western notes with or without octaves
-        const baseNote = part.replace(/\d/, '');
-        const hasOctave = /\d/.test(part);
-        
-        isNote = NOTES_ORDER.includes(baseNote) || 
-                 (baseNote.length === 2 && baseNote[1] === 'b' && NOTES_ORDER.includes(baseNote[0]));
-      }
-      
-      if (isNote) {
-        return (
-          <span 
-            key={i} 
-            className="px-0.5 mx-[1px] rounded bg-sky-400/10 dark:bg-sky-400/20 text-sky-800 dark:text-sky-200 font-bold transition-colors"
-          >
-            {part}
-          </span>
-        );
-      }
-      return <span key={i}>{part}</span>;
-    });
-  };
+  }, [notes, isSargam]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(displayNotes);
@@ -294,7 +251,7 @@ export function SongNotes({ initialNotes }: { initialNotes: string }) {
           className="whitespace-pre-wrap font-mono leading-relaxed transition-all min-h-[200px] bg-slate-50/50 dark:bg-slate-900/50 rounded-lg p-4 md:p-6"
           style={{ fontSize: `${fontSize}px` }}
         >
-          {renderHighlightedNotes(displayNotes)}
+          {displayNotes}
         </div>
       </div>
 

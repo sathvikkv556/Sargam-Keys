@@ -20,7 +20,7 @@ export function MusicTheoryFeature() {
     {
       icon: <Award className="h-6 w-6 text-purple-500" />,
       title: "Song Structure",
-      description: "Analyze your favorite hits from a theorist's view."
+      description: "Analyze your favorite hits from a theorist&apos;s view."
     }
   ];
 
@@ -47,7 +47,7 @@ export function MusicTheoryFeature() {
             </h2>
             
             <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0">
-              Don't just memorize notes. Understand the "why" behind every melody. Our comprehensive course takes you from absolute beginner to advanced composer.
+              Don&apos;t just memorize notes. Understand the &quot;why&quot; behind every melody. Our comprehensive course takes you from absolute beginner to advanced composer.
             </p>
 
             <div className="grid sm:grid-cols-3 gap-4 md:gap-6 pt-4">

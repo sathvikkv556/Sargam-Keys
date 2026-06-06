@@ -20,9 +20,9 @@ import Song from '@/models/Song';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import Image from 'next/image';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 3600; // Revalidate every hour
 
 // Helper to get theory recommendations based on song attributes
 function getTheoryRecommendations(song: any) {
@@ -147,12 +147,12 @@ export default async function SongPage({ params }: PageProps) {
           {response.error || 'A temporary error occurred while fetching the song notes. Please try refreshing the page.'}
         </p>
         <div className="flex justify-center gap-4">
-          <a 
+          <Link 
             href="/notes"
             className="px-4 py-2 border rounded-md hover:bg-muted transition-colors"
           >
             Back to Library
-          </a>
+          </Link>
           <button 
             onClick={() => {
               if (typeof window !== 'undefined') window.location.reload();
@@ -274,7 +274,13 @@ export default async function SongPage({ params }: PageProps) {
       {/* Print-only Branded Header */}
       <div className="print-header">
         <div className="flex items-center gap-2 mb-1">
-          <img src="/logo.jpg" alt="SargamKeys" className="h-8 w-8 object-contain" />
+          <Image 
+            src="/logo.jpg" 
+            alt="SargamKeys" 
+            width={32}
+            height={32}
+            className="object-contain" 
+          />
           <h1 className="text-2xl font-bold m-0">SargamKeys</h1>
         </div>
         <p className="text-sm">Learn Piano Notes & Music Theory • www.sargamkeys.in</p>
@@ -391,8 +397,13 @@ export default async function SongPage({ params }: PageProps) {
           {/* About the Author */}
           <section className="rounded-3xl border-2 border-blue-100 dark:border-blue-900/30 bg-blue-50/50 dark:bg-blue-900/10 p-8 md:p-10">
             <div className="flex flex-col md:flex-row gap-8 items-center md:items-start text-center md:text-left">
-              <div className="w-24 h-24 md:w-32 md:h-32 rounded-3xl bg-white dark:bg-slate-800 shadow-xl overflow-hidden shrink-0 border-4 border-white dark:border-slate-800">
-                <img src="/logo.jpg" alt="Sathvik KV" className="w-full h-full object-cover" />
+              <div className="w-24 h-24 md:w-32 md:h-32 rounded-3xl bg-white dark:bg-slate-800 shadow-xl overflow-hidden shrink-0 border-4 border-white dark:border-slate-800 relative">
+                <Image 
+                  src="/logo.jpg" 
+                  alt="Sathvik KV" 
+                  fill
+                  className="object-cover" 
+                />
               </div>
               <div className="space-y-4">
                 <div className="space-y-1">

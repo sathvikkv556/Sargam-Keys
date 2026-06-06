@@ -1,7 +1,8 @@
 import { Metadata } from 'next';
-import { Mail, Play, Music, BookOpen, Star, Users, ArrowRight } from 'lucide-react';
+import { Mail, Play, Music, BookOpen, Star, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export const metadata: Metadata = {
   title: 'About SargamKeys | Our Mission & Story',
@@ -48,7 +49,12 @@ export default function AboutPage() {
               </div>
             </div>
             <div className="w-full md:w-1/3 aspect-square rounded-3xl bg-slate-100 dark:bg-slate-900 overflow-hidden relative group">
-               <img src="/logo.jpg" alt="Sathvik KV" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
+               <Image 
+                 src="/logo.jpg" 
+                 alt="Sathvik KV" 
+                 fill
+                 className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500" 
+               />
                <div className="absolute inset-0 bg-blue-600/10 mix-blend-multiply" />
             </div>
           </div>
