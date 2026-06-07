@@ -7,6 +7,7 @@ import { Music } from 'lucide-react';
 import { Metadata } from 'next';
 import { createPageMetadata } from '@/lib/seo';
 import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
+import { Separator } from '@/components/ui/separator';
 
 interface PageProps {
   params: Promise<{ slug: string }>;

@@ -1,14 +1,13 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getSongBySlug, getSongs } from '@/lib/actions/song';
+import { getSongBySlug } from '@/lib/actions/song';
 import { SongNotes } from '@/components/SongNotes';
-import { SongCard } from '@/components/SongCard';
 import { RelatedSongs } from '@/components/RelatedSongs';
 import { PianoScale } from '@/components/PianoScale';
 import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Music, Mic, Film, Scale, Key as MusicKey, BookOpen, ChevronRight, Play } from 'lucide-react';
+import { Mic, Film, Scale, Key as MusicKey, BookOpen, ChevronRight, Play } from 'lucide-react';
 import { createPageMetadata } from '@/lib/seo';
 import { SongActions } from '@/components/SongActions';
 import { CommentSection } from '@/components/CommentSection';
