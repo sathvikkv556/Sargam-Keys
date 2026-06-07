@@ -22,9 +22,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   return createPageMetadata(
-    `${category.name} Piano Notes`,
-    category.description || `Explore the best piano notes for ${category.name} songs. Complete library of notes, chords and scales.`,
-    [category.name, 'piano notes', 'music theory'],
+    `${category.name} Piano Notes | Sargam & Keyboard Notations`,
+    category.description || `Explore the best piano notes for ${category.name} songs. Complete library of notes, chords, and Sargam notations at SargamKeys.`,
+    [category.name, 'piano notes', 'music theory', 'sargam notes', 'keyboard notes'],
     `/categories/${category.slug}`
   );
 }
@@ -96,23 +96,25 @@ export default async function CategoryPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
       />
       
-      <Breadcrumbs className="mb-8" />
-      <div className="mb-12">
-        <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground">
-            <Music className="h-6 w-6" />
+      <Breadcrumbs className="mb-12" />
+      <div className="mb-16 max-w-4xl">
+        <div className="flex flex-col md:flex-row md:items-center gap-6">
+          <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-3xl bg-blue-600 text-white shadow-xl shadow-blue-600/20">
+            <Music className="h-10 w-10" />
           </div>
-          <div>
-            <h1 className="text-3xl font-extrabold tracking-tight md:text-4xl">
+          <div className="space-y-2">
+            <h1 className="text-4xl font-black tracking-tight md:text-6xl text-slate-900 dark:text-white">
               {category.name} Piano Notes
             </h1>
-            <p className="text-muted-foreground">{category.description || `Explore the best piano notes for ${category.name} songs.`}</p>
+            <p className="text-xl text-muted-foreground font-medium leading-relaxed">{category.description || `Explore the best piano notes for ${category.name} songs. Learn to play your favorite hits on keyboard with our accurate notations.`}</p>
           </div>
         </div>
       </div>
 
+      <Separator className="mb-12" />
+
       {songs.length > 0 ? (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {songs.map((song) => (
             <SongCard key={song._id} song={song} />
           ))}

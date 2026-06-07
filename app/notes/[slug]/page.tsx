@@ -103,13 +103,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
     const song = response.data;
     const moviePart = song.movie ? ` (${song.movie})` : '';
-    const pageTitle = song.seoTitle || `${song.title} Piano Notes${moviePart} - ${song.scale} Scale`;
-    const pageDescription = song.seoDescription || `Learn how to play ${song.title}${song.movie ? ` from the movie ${song.movie}` : ''} on piano with our easy-to-follow notes in ${song.scale} scale. Perfect for beginners and keyboard players.`;
+    const pageTitle = song.seoTitle || `${song.title} Piano Notes${moviePart} | Easy Keyboard & Sargam Notes`;
+    const pageDescription = song.seoDescription || `Get the most accurate ${song.title} piano notes${song.movie ? ` from ${song.movie}` : ''}. Learn how to play this song on keyboard with easy ${song.scale} scale notations, including Sargam (Sa Re Ga Ma) version. Perfect for beginners.`;
 
     const seo = createPageMetadata(
       pageTitle,
       pageDescription,
-      song.seoKeywords || [song.title, 'piano notes', song.movie || '', 'keyboard notes', 'sargam notes', `${song.scale} scale`],
+      song.seoKeywords || [song.title, 'piano notes', song.movie || '', 'keyboard notes', 'sargam notes', `${song.scale} scale`, 'how to play', 'bollywood piano notes'],
       `/notes/${song.slug}`
     );
 
@@ -118,7 +118,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       openGraph: {
         ...seo.openGraph,
         type: 'article',
-        images: song.thumbnail ? [{ url: song.thumbnail }] : undefined,
+        images: song.thumbnail ? [{ url: song.thumbnail }] : [{ url: 'https://sargamkeys.in/logo.jpg' }],
       },
     };
   } catch (error) {
@@ -167,6 +167,22 @@ export default async function SongPage({ params }: PageProps) {
   }
 
   const song = response.data;
+
+  // Generate dynamic FAQs for SEO
+  const faqs = [
+    {
+      question: `What scale is ${song.title} played in?`,
+      answer: `${song.title} is played in the ${song.scale} scale. You can see the visual keyboard representation of this scale above the notes.`
+    },
+    {
+      question: `Is ${song.title} piano notes suitable for beginners?`,
+      answer: `Yes, these notes are classified as ${song.difficulty} difficulty. We provide both Western (CDE) and Sargam (SaReGa) notations to make it easy for beginners to learn.`
+    },
+    {
+      question: `Who is the singer of ${song.title}?`,
+      answer: song.singer ? `The song ${song.title} is sung by ${song.singer}.` : `The song ${song.title} is featured in our piano notes library.`
+    }
+  ];
   
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -176,23 +192,23 @@ export default async function SongPage({ params }: PageProps) {
     composer: song.composer ? { '@type': 'Person', name: song.composer } : undefined,
     genre: typeof song.category === 'object' ? (song.category as any).name : undefined,
     keywords: song.tags.join(','),
+    url: `https://sargamkeys.in/notes/${song.slug}`,
     author: {
       '@type': 'Person',
       name: 'Sathvik KV',
       url: 'https://sargamkeys.in/about',
-      jobTitle: 'Founder & Pianist',
-      knowsAbout: ['Piano', 'Music Theory', 'Sargam Notes'],
-      sameAs: [
-        'https://www.youtube.com/@Sathvik_Keys'
-      ]
     }
   };
 
   const articleJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',
-    headline: `${song.title} Piano Notes`,
-    description: song.seoDescription,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://sargamkeys.in/notes/${song.slug}`
+    },
+    headline: `${song.title} Piano Notes | Easy Keyboard & Sargam Notes`,
+    description: song.seoDescription || `Learn how to play ${song.title} on piano with our easy-to-follow notes.`,
     image: song.thumbnail || 'https://sargamkeys.in/logo.jpg',
     author: {
       '@type': 'Person',
@@ -209,6 +225,19 @@ export default async function SongPage({ params }: PageProps) {
     },
     datePublished: song.createdAt,
     dateModified: song.updatedAt
+  };
+
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map(faq => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer
+      }
+    }))
   };
 
   const breadcrumbJsonLd = {
@@ -254,6 +283,11 @@ export default async function SongPage({ params }: PageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
+      <script
+        id={`faq-jsonld-${song._id}`}
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
 
       {/* Breadcrumbs for SEO and Navigation */}
       <Breadcrumbs className="mb-8" />
@@ -289,86 +323,98 @@ export default async function SongPage({ params }: PageProps) {
 
       <div className="grid gap-8 lg:grid-cols-3">
         {/* Main Content */}
-        <div className="lg:col-span-2 space-y-8">
+        <div className="lg:col-span-2 space-y-12">
           {/* Header */}
           <div className="space-y-4">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="flex flex-wrap items-center gap-2">
-                <Badge variant="outline">{typeof song.category === 'object' ? (song.category as any).name : 'Song'}</Badge>
+                <Badge variant="outline" className="bg-blue-50 dark:bg-blue-900/20">{typeof song.category === 'object' ? (song.category as any).name : 'Song'}</Badge>
                 <Badge variant="secondary">{song.difficulty}</Badge>
               </div>
               <SongActions title={song.title} />
             </div>
-            <h1 className="text-3xl font-extrabold tracking-tight md:text-4xl lg:text-5xl">
+            <h1 className="text-3xl font-black tracking-tight md:text-5xl lg:text-6xl text-slate-900 dark:text-white">
               {song.title} Piano Notes
             </h1>
-            <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+            <p className="text-xl text-muted-foreground font-medium leading-relaxed max-w-2xl">
+              Learn how to play {song.title} {song.movie ? `from ${song.movie}` : ''} on piano and keyboard with our accurate notes and {song.scale} scale guide.
+            </p>
+            <div className="flex flex-wrap gap-4 text-sm font-semibold text-slate-600 dark:text-slate-400">
               {song.movie && (
-                <div className="flex items-center gap-1">
-                  <Film className="h-4 w-4" />
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800">
+                  <Film className="h-4 w-4 text-blue-600" />
                   <span>Movie: {song.movie}</span>
                 </div>
               )}
-              {song.album && (
-                <div className="flex items-center gap-1">
-                  <Music className="h-4 w-4" />
-                  <span>Album: {song.album}</span>
-                </div>
-              )}
               {song.singer && (
-                <div className="flex items-center gap-1">
-                  <Mic className="h-4 w-4" />
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800">
+                  <Mic className="h-4 w-4 text-blue-600" />
                   <span>Singer: {song.singer}</span>
                 </div>
               )}
-              {song.composer && (
-                <div className="flex items-center gap-1">
-                  <Music className="h-4 w-4" />
-                  <span>Composer: {song.composer}</span>
-                </div>
-              )}
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800">
+                <Scale className="h-4 w-4 text-blue-600" />
+                <span>Scale: {song.scale}</span>
+              </div>
             </div>
           </div>
 
           <Separator />
 
-          {/* Scale Visualizer (Unique Feature) */}
-          <PianoScale scale={song.scale} />
+          {/* Scale Visualizer */}
+          <div className="space-y-6">
+            <h2 className="text-2xl font-black flex items-center gap-3">
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white text-sm">01</span>
+              Understand the Scale
+            </h2>
+            <PianoScale scale={song.scale} />
+          </div>
 
-          {/* Song Details Grid */}
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            <div className="flex flex-col gap-1 rounded-lg border bg-muted/30 p-3">
-              <div className="flex items-center gap-1 text-xs text-muted-foreground uppercase font-semibold">
-                <Scale className="h-3 w-3" />
-                Scale
-              </div>
-              <span className="font-medium">{song.scale}</span>
-            </div>
-            <div className="flex flex-col gap-1 rounded-lg border bg-muted/30 p-3">
-              <div className="flex items-center gap-1 text-xs text-muted-foreground uppercase font-semibold">
-                <MusicKey className="h-3 w-3" />
-                Key
-              </div>
-              <span className="font-medium">{song.key}</span>
-            </div>
-            <div className="flex flex-col gap-1 rounded-lg border bg-muted/30 p-3 text-center md:text-left">
-               <div className="flex items-center gap-1 text-xs text-muted-foreground uppercase font-semibold">
-                <Music className="h-3 w-3" />
-                Difficulty
-              </div>
-              <span className="font-medium">{song.difficulty}</span>
+          {/* How to Play Section (NEW for SEO) */}
+          <div className="rounded-2xl border-2 border-slate-100 dark:border-slate-800 p-8 space-y-4 bg-slate-50/50 dark:bg-slate-900/50">
+            <h2 className="text-2xl font-black">How to use these {song.title} Piano Notes?</h2>
+            <div className="prose prose-slate dark:prose-invert max-w-none">
+              <p>
+                To play <strong>{song.title}</strong> on your piano or keyboard, first identify the <strong>{song.scale}</strong> scale shown above. 
+                We provide two versions of notations:
+              </p>
+              <ul>
+                <li><strong>Western Notes:</strong> Uses C, D, E, F, G, A, B notations (standard for keyboard).</li>
+                <li><strong>Sargam Notes:</strong> Uses Sa, Re, Ga, Ma, Pa, Dha, Ni notations (perfect for Indian Classical and Bollywood style).</li>
+              </ul>
+              <p>
+                Simply use the toggle button below the notes to switch between Western and Sargam versions instantly.
+              </p>
             </div>
           </div>
 
           {/* Notes Section */}
-          <div className="space-y-4">
-            <h2 className="text-2xl font-bold flex items-center gap-2">
-              <Music className="h-6 w-6 text-primary" />
-              Piano Notes
-            </h2>
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-3xl font-black flex items-center gap-3">
+                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white text-sm">02</span>
+                Piano Notes & Notations
+              </h2>
+            </div>
             <SongNotes 
               initialNotes={song.notes} 
             />
+          </div>
+
+          {/* FAQ Section (NEW for SEO) */}
+          <div className="space-y-6">
+             <h2 className="text-2xl font-black flex items-center gap-3">
+                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white text-sm">03</span>
+                Frequently Asked Questions
+              </h2>
+              <div className="grid gap-4">
+                {faqs.map((faq, index) => (
+                  <div key={index} className="rounded-xl border p-6 bg-card">
+                    <h3 className="text-lg font-bold mb-2">{faq.question}</h3>
+                    <p className="text-muted-foreground">{faq.answer}</p>
+                  </div>
+                ))}
+              </div>
           </div>
 
           {/* Chords Section */}
@@ -376,9 +422,9 @@ export default async function SongPage({ params }: PageProps) {
             <div className="space-y-4">
               <h2 className="text-2xl font-bold flex items-center gap-2">
                 <MusicKey className="h-6 w-6 text-primary" />
-                Chords
+                Piano Chords for {song.title}
               </h2>
-              <div className="whitespace-pre-wrap font-mono leading-relaxed rounded-xl border bg-card p-6">
+              <div className="whitespace-pre-wrap font-mono leading-relaxed rounded-xl border bg-card p-6 text-lg">
                 {song.chords}
               </div>
             </div>
@@ -387,8 +433,8 @@ export default async function SongPage({ params }: PageProps) {
           {/* Lyrics Section */}
           {song.lyrics && (
             <div className="space-y-4">
-              <h2 className="text-2xl font-bold">Lyrics</h2>
-              <div className="prose prose-gray dark:prose-invert max-w-none rounded-xl border p-6 bg-card whitespace-pre-wrap font-sans">
+              <h2 className="text-2xl font-bold">{song.title} Song Lyrics</h2>
+              <div className="prose prose-gray dark:prose-invert max-w-none rounded-xl border p-8 bg-card whitespace-pre-wrap font-sans text-lg italic leading-relaxed">
                 {song.lyrics}
               </div>
             </div>
