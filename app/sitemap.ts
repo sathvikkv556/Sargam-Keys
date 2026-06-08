@@ -1,18 +1,21 @@
 import { MetadataRoute } from 'next';
 import { getSongs } from '@/lib/actions/song';
 import { getCategories } from '@/lib/actions/category';
+import { getNotes } from '@/lib/actions/note';
 import { lessons } from '@/lib/music-theory-data';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://sargamkeys.in';
 
-  const [songsResponse, categoriesResponse] = await Promise.all([
+  const [songsResponse, categoriesResponse, notesResponse] = await Promise.all([
     getSongs({ status: 'Published' }, { limit: 1000 }),
     getCategories(),
+    getNotes({}, { limit: 1000 }),
   ]);
 
   const songs = songsResponse.success ? songsResponse.data?.songs || [] : [];
   const categories = categoriesResponse.success ? categoriesResponse.data || [] : [];
+  const notes = notesResponse.success ? notesResponse.data?.notes || [] : [];
 
   const songUrls = songs.map((song) => ({
     url: `${baseUrl}/notes/${song.slug}`,
@@ -28,9 +31,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  const theoryUrls = Object.keys(lessons).map((slug) => ({
+  const lessonUrls = Object.keys(lessons).map((slug) => ({
     url: `${baseUrl}/music-theory/${slug}`,
     lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }));
+
+  const noteUrls = notes.map((note) => ({
+    url: `${baseUrl}/theory/${note._id}`,
+    lastModified: note.updatedAt ? new Date(note.updatedAt) : new Date(note.createdAt),
     changeFrequency: 'monthly' as const,
     priority: 0.7,
   }));
@@ -79,6 +89,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.6,
     },
     {
+      url: `${baseUrl}/dmca`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly' as const,
+      priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/disclaimer`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly' as const,
+      priority: 0.3,
+    },
+    {
       url: `${baseUrl}/privacy`,
       lastModified: new Date(),
       changeFrequency: 'yearly' as const,
@@ -92,5 +114,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  return [...staticUrls, ...songUrls, ...categoryUrls, ...theoryUrls];
+  return [...staticUrls, ...songUrls, ...categoryUrls, ...lessonUrls, ...noteUrls];
 }

@@ -99,7 +99,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: "6cee508-your-actual-verification-if-available", // Updated placeholder or keep same if unknown
+    google: "google8b4339d916b3e2c7", 
   },
   category: "music",
   other: {
