@@ -20,6 +20,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
+import { AdBanner } from '@/components/common/AdBanner';
 
 export const revalidate = 3600; // Revalidate every hour
 
@@ -291,6 +292,16 @@ export default async function SongPage({ params }: PageProps) {
       {/* Breadcrumbs for SEO and Navigation */}
       <Breadcrumbs className="mb-8" />
 
+      {/* Top Banner Ad */}
+      <div className="mb-8">
+        <div className="hidden md:block">
+          <AdBanner adKey="a68e4f2aac739253ca980317b9643826" height={90} width={728} />
+        </div>
+        <div className="md:hidden">
+          <AdBanner adKey="dbfc58175e3dacb79ad0de521f47f571" height={50} width={320} />
+        </div>
+      </div>
+
       {/* Analytics Tracking */}
       <AnalyticsTracker songId={song._id.toString()} />
 
@@ -476,6 +487,9 @@ export default async function SongPage({ params }: PageProps) {
             </div>
           </section>
 
+          {/* Native Ad Placement */}
+          <AdBanner adKey="6aa54cbfe81da50764bd200356ec8a93" type="native" />
+
           {/* Comment Section */}
           <CommentSection songId={song._id} isAdmin={isAdmin} />
         </div>
@@ -483,6 +497,14 @@ export default async function SongPage({ params }: PageProps) {
         {/* Sidebar */}
         <div className="space-y-8">
           <div className="sticky top-24 space-y-8">
+            {/* Sidebar Ads */}
+            <div className="space-y-4">
+              <AdBanner adKey="5902f1f8db9c3e8e891852c621b7f9fa" height={250} width={300} />
+              <div className="flex justify-center">
+                <AdBanner adKey="56ffceeeb3ad208288f80807a2cceee5" height={300} width={160} />
+              </div>
+            </div>
+
             {/* Music Theory Recommendations */}
             <Card className="border-blue-200 bg-blue-50/30 dark:border-blue-900/30 dark:bg-blue-900/10">
               <CardHeader className="pb-3">

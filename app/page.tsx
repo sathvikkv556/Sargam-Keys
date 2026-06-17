@@ -8,6 +8,7 @@ import { Metadata } from 'next';
 import { MusicTheoryFeature } from '@/components/MusicTheoryFeature';
 import { InteractiveHero } from '@/components/ui/InteractiveHero';
 import { TiltCard } from '@/components/ui/TiltCard';
+import { AdBanner } from '@/components/common/AdBanner';
 
 export const metadata: Metadata = {
   title: 'SargamKeys - Premium Piano Notes & Music Theory Library',
@@ -32,6 +33,16 @@ export default async function HomePage() {
     <div className="flex flex-col gap-0 pb-12">
       {/* Ultra-Premium Interactive Hero */}
       <InteractiveHero />
+
+      {/* Top Banner Ad */}
+      <div className="container mx-auto px-4 mt-8 -mb-8">
+        <div className="hidden md:block">
+          <AdBanner adKey="a68e4f2aac739253ca980317b9643826" height={90} width={728} />
+        </div>
+        <div className="md:hidden">
+          <AdBanner adKey="dbfc58175e3dacb79ad0de521f47f571" height={50} width={320} />
+        </div>
+      </div>
 
       {/* Trending Songs Section */}
       {trendingSongs.length > 0 && (
@@ -58,9 +69,19 @@ export default async function HomePage() {
         </section>
       )}
 
+      {/* Native Ad Placement */}
+      <div className="container mx-auto px-4">
+        <AdBanner adKey="6aa54cbfe81da50764bd200356ec8a93" type="native" />
+      </div>
+
       {/* Flagship Music Theory Section */}
       <div className="bg-slate-50 dark:bg-slate-900/20">
         <MusicTheoryFeature />
+      </div>
+
+      {/* Sidebar-style Ad Placement */}
+      <div className="container mx-auto px-4">
+        <AdBanner adKey="5902f1f8db9c3e8e891852c621b7f9fa" height={250} width={300} />
       </div>
 
       {/* Latest Uploads */}
