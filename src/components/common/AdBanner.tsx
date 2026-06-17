@@ -14,42 +14,51 @@ export function AdBanner({ adKey, height, width, format = 'iframe', type = 'bann
   const bannerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (bannerRef.current && !bannerRef.current.firstChild) {
-      try {
-        if (type === 'banner') {
-          const conf = document.createElement('script');
-          const script = document.createElement('script');
-          script.type = 'text/javascript';
-          script.src = `https://www.highperformanceformat.com/${adKey}/invoke.js`;
-          script.async = true;
-          
-          conf.innerHTML = `
-            atOptions = {
-              'key' : '${adKey}',
-              'format' : '${format}',
-              'height' : ${height},
-              'width' : ${width},
-              'params' : {}
-            };
-          `;
+    // Only run on client side and if ref exists
+    if (typeof window === 'undefined' || !bannerRef.current) return;
 
-          bannerRef.current.append(conf);
-          bannerRef.current.append(script);
-        } else if (type === 'native') {
-          const script = document.createElement('script');
-          script.async = true;
-          script.setAttribute('data-cfasync', 'false');
-          script.src = `https://pl29418313.effectivecpmnetwork.com/${adKey}/invoke.js`;
-          
-          const container = document.createElement('div');
-          container.id = `container-${adKey}`;
-          
-          bannerRef.current.append(script);
-          bannerRef.current.append(container);
-        }
-      } catch (error) {
-        console.error('AdBanner Error:', error);
+    // Clear existing content to avoid double injection if props change
+    bannerRef.current.innerHTML = '';
+
+    try {
+      if (type === 'banner') {
+        // Create configuration script
+        const confScript = document.createElement('script');
+        confScript.type = 'text/javascript';
+        confScript.innerHTML = `
+          atOptions = {
+            'key' : '${adKey}',
+            'format' : '${format}',
+            'height' : ${height},
+            'width' : ${width},
+            'params' : {}
+          };
+        `;
+        
+        // Create invocation script
+        const invokeScript = document.createElement('script');
+        invokeScript.type = 'text/javascript';
+        invokeScript.src = `https://www.highperformanceformat.com/${adKey}/invoke.js`;
+        invokeScript.async = true;
+
+        bannerRef.current.appendChild(confScript);
+        bannerRef.current.appendChild(invokeScript);
+      } else if (type === 'native') {
+        // Create container first
+        const container = document.createElement('div');
+        container.id = `container-${adKey}`;
+        bannerRef.current.appendChild(container);
+
+        // Create script
+        const script = document.createElement('script');
+        script.async = true;
+        script.setAttribute('data-cfasync', 'false');
+        script.src = `https://pl29418313.effectivecpmnetwork.com/${adKey}/invoke.js`;
+        
+        bannerRef.current.appendChild(script);
       }
+    } catch (error) {
+      console.error('AdBanner Error:', error);
     }
   }, [adKey, height, width, format, type]);
 
