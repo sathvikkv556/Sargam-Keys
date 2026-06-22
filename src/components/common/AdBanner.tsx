@@ -11,51 +11,77 @@ interface AdBannerProps {
 }
 
 export function AdBanner({ adKey, height, width, format = 'iframe', type = 'banner' }: AdBannerProps) {
-  const bannerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Only run on client side and if ref exists
-    if (typeof window === 'undefined' || !bannerRef.current) return;
+    // Only run on client side and if container exists
+    if (typeof window === 'undefined' || !containerRef.current) return;
 
-    // Clear existing content to avoid double injection if props change
-    bannerRef.current.innerHTML = '';
+    // Clear existing content to avoid double injection or residual ads
+    containerRef.current.innerHTML = '';
 
     try {
       if (type === 'banner') {
-        // Create configuration script
-        const confScript = document.createElement('script');
-        confScript.type = 'text/javascript';
-        confScript.innerHTML = `
-          atOptions = {
-            'key' : '${adKey}',
-            'format' : '${format}',
-            'height' : ${height},
-            'width' : ${width},
-            'params' : {}
-          };
-        `;
-        
-        // Create invocation script
-        const invokeScript = document.createElement('script');
-        invokeScript.type = 'text/javascript';
-        invokeScript.src = `https://www.highperformanceformat.com/${adKey}/invoke.js`;
-        invokeScript.async = true;
+        // Create an isolated iframe for the banner
+        const iframe = document.createElement('iframe');
+        iframe.width = String(width || '');
+        iframe.height = String(height || '');
+        iframe.style.border = 'none';
+        iframe.style.overflow = 'hidden';
+        iframe.style.display = 'block';
+        iframe.setAttribute('scrolling', 'no');
+        iframe.title = `Ad-${adKey}`;
 
-        bannerRef.current.appendChild(confScript);
-        bannerRef.current.appendChild(invokeScript);
+        containerRef.current.appendChild(iframe);
+
+        // Write the ad code inside the isolated iframe document
+        const doc = iframe.contentDocument || iframe.contentWindow?.document;
+        if (doc) {
+          doc.open();
+          doc.write(`
+            <!DOCTYPE html>
+            <html>
+              <head>
+                <style>
+                  body {
+                    margin: 0;
+                    padding: 0;
+                    overflow: hidden;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    background: transparent;
+                  }
+                </style>
+              </head>
+              <body>
+                <script type="text/javascript">
+                  window.atOptions = {
+                    'key' : '${adKey}',
+                    'format' : '${format}',
+                    'height' : ${height},
+                    'width' : ${width},
+                    'params' : {}
+                  };
+                </script>
+                <script type="text/javascript" src="https://www.highperformanceformat.com/${adKey}/invoke.js"></script>
+              </body>
+            </html>
+          `);
+          doc.close();
+        }
       } else if (type === 'native') {
-        // Create container first
+        // Keep the native code execution path as-is since it doesn't conflict
         const container = document.createElement('div');
         container.id = `container-${adKey}`;
-        bannerRef.current.appendChild(container);
+        containerRef.current.appendChild(container);
 
-        // Create script
         const script = document.createElement('script');
         script.async = true;
         script.setAttribute('data-cfasync', 'false');
         script.src = `https://pl29418313.effectivecpmnetwork.com/${adKey}/invoke.js`;
         
-        bannerRef.current.appendChild(script);
+        containerRef.current.appendChild(script);
       }
     } catch (error) {
       console.error('AdBanner Error:', error);
@@ -74,7 +100,7 @@ export function AdBanner({ adKey, height, width, format = 'iframe', type = 'bann
       }}
     >
       <div 
-        ref={bannerRef}
+        ref={containerRef}
         className="w-full h-full flex justify-center items-center"
       />
     </div>
