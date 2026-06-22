@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
+import { PageAdLayout } from '@/components/common/AdPlacements';
 import { 
   ArrowLeft, 
   ChevronRight, 
@@ -115,7 +116,8 @@ export default async function LessonPage({ params }: PageProps) {
       <div className="container mx-auto px-4 py-8">
         <Breadcrumbs className="max-w-3xl mx-auto mb-8" />
         
-        <div className="max-w-3xl mx-auto">
+        <PageAdLayout>
+          <div className="max-w-3xl mx-auto">
           {/* Intro */}
           <div className="space-y-6 mb-12">
             <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">{lesson.title}</h1>
@@ -327,6 +329,7 @@ export default async function LessonPage({ params }: PageProps) {
             </div>
           )}
         </div>
+        </PageAdLayout>
       </div>
 
       <script

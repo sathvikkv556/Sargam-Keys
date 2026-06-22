@@ -20,7 +20,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
-import { AdBanner } from '@/components/common/AdBanner';
+import { LeaderboardAd, RectangleAd, SkyscraperAd, NativeAd } from '@/components/common/AdPlacements';
 
 export const revalidate = 3600; // Revalidate every hour
 
@@ -294,12 +294,7 @@ export default async function SongPage({ params }: PageProps) {
 
       {/* Top Banner Ad */}
       <div className="mb-8">
-        <div className="hidden md:block">
-          <AdBanner adKey="a68e4f2aac739253ca980317b9643826" height={90} width={728} />
-        </div>
-        <div className="md:hidden">
-          <AdBanner adKey="dbfc58175e3dacb79ad0de521f47f571" height={50} width={320} />
-        </div>
+        <LeaderboardAd />
       </div>
 
       {/* Analytics Tracking */}
@@ -380,22 +375,9 @@ export default async function SongPage({ params }: PageProps) {
             <PianoScale scale={song.scale} />
           </div>
 
-          {/* How to Play Section (NEW for SEO) */}
-          <div className="rounded-2xl border-2 border-slate-100 dark:border-slate-800 p-8 space-y-4 bg-slate-50/50 dark:bg-slate-900/50">
-            <h2 className="text-2xl font-black">How to use these {song.title} Piano Notes?</h2>
-            <div className="prose prose-slate dark:prose-invert max-w-none">
-              <p>
-                To play <strong>{song.title}</strong> on your piano or keyboard, first identify the <strong>{song.scale}</strong> scale shown above. 
-                We provide two versions of notations:
-              </p>
-              <ul>
-                <li><strong>Western Notes:</strong> Uses C, D, E, F, G, A, B notations (standard for keyboard).</li>
-                <li><strong>Sargam Notes:</strong> Uses Sa, Re, Ga, Ma, Pa, Dha, Ni notations (perfect for Indian Classical and Bollywood style).</li>
-              </ul>
-              <p>
-                Simply use the toggle button below the notes to switch between Western and Sargam versions instantly.
-              </p>
-            </div>
+          {/* Mid-content Leaderboard Ad */}
+          <div className="my-6">
+            <LeaderboardAd />
           </div>
 
           {/* Notes Section */}
@@ -450,6 +432,11 @@ export default async function SongPage({ params }: PageProps) {
             </div>
           )}
 
+          {/* In-content Rectangle Ad */}
+          <div className="my-6">
+            <RectangleAd />
+          </div>
+
           {/* About the Author */}
           <section className="rounded-3xl border-2 border-blue-100 dark:border-blue-900/30 bg-blue-50/50 dark:bg-blue-900/10 p-8 md:p-10">
             <div className="flex flex-col md:flex-row gap-8 items-center md:items-start text-center md:text-left">
@@ -488,7 +475,7 @@ export default async function SongPage({ params }: PageProps) {
           </section>
 
           {/* Native Ad Placement */}
-          <AdBanner adKey="6aa54cbfe81da50764bd200356ec8a93" type="native" />
+          <NativeAd />
 
           {/* Comment Section */}
           <CommentSection songId={song._id} isAdmin={isAdmin} />
@@ -499,10 +486,10 @@ export default async function SongPage({ params }: PageProps) {
           <div className="sticky top-24 space-y-8">
             {/* Sidebar Ads */}
             <div className="space-y-4">
-              <AdBanner adKey="5902f1f8db9c3e8e891852c621b7f9fa" height={250} width={300} />
-              <div className="flex justify-center">
-                <AdBanner adKey="56ffceeeb3ad208288f80807a2cceee5" height={300} width={160} />
-              </div>
+              <RectangleAd />
+              <SkyscraperAd />
+              <RectangleAd />
+              <SkyscraperAd />
             </div>
 
             {/* Music Theory Recommendations */}
@@ -537,6 +524,11 @@ export default async function SongPage({ params }: PageProps) {
             </Card>
           </div>
         </div>
+      </div>
+
+      {/* Bottom Leaderboard Ad */}
+      <div className="my-8">
+        <LeaderboardAd />
       </div>
 
       {/* Automated Internal Linking System */}

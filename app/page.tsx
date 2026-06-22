@@ -8,7 +8,7 @@ import { Metadata } from 'next';
 import { MusicTheoryFeature } from '@/components/MusicTheoryFeature';
 import { InteractiveHero } from '@/components/ui/InteractiveHero';
 import { TiltCard } from '@/components/ui/TiltCard';
-import { AdBanner } from '@/components/common/AdBanner';
+import { LeaderboardAd, RectangleAd, SkyscraperAd, NativeAd } from '@/components/common/AdPlacements';
 
 export const metadata: Metadata = {
   title: 'SargamKeys - Premium Piano Notes & Music Theory Library',
@@ -36,12 +36,7 @@ export default async function HomePage() {
 
       {/* Top Banner Ad */}
       <div className="container mx-auto px-4 mt-8 -mb-8">
-        <div className="hidden md:block">
-          <AdBanner adKey="a68e4f2aac739253ca980317b9643826" height={90} width={728} />
-        </div>
-        <div className="md:hidden">
-          <AdBanner adKey="dbfc58175e3dacb79ad0de521f47f571" height={50} width={320} />
-        </div>
+        <LeaderboardAd />
       </div>
 
       {/* Trending Songs Section */}
@@ -71,7 +66,7 @@ export default async function HomePage() {
 
       {/* Native Ad Placement */}
       <div className="container mx-auto px-4">
-        <AdBanner adKey="6aa54cbfe81da50764bd200356ec8a93" type="native" />
+        <NativeAd />
       </div>
 
       {/* Flagship Music Theory Section */}
@@ -80,8 +75,9 @@ export default async function HomePage() {
       </div>
 
       {/* Sidebar-style Ad Placement */}
-      <div className="container mx-auto px-4">
-        <AdBanner adKey="5902f1f8db9c3e8e891852c621b7f9fa" height={250} width={300} />
+      <div className="container mx-auto px-4 flex flex-col md:flex-row gap-6 justify-center items-center my-8">
+        <RectangleAd />
+        <SkyscraperAd />
       </div>
 
       {/* Latest Uploads */}
@@ -106,6 +102,15 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Mid-page Leaderboard & Ads */}
+      <div className="container mx-auto px-4 my-8">
+        <LeaderboardAd />
+      </div>
+      <div className="container mx-auto px-4 flex flex-col md:flex-row gap-6 justify-center items-center my-8">
+        <RectangleAd />
+        <SkyscraperAd />
+      </div>
 
       {/* Categories Grid - High Fidelity */}
       {categories.length > 0 && (
@@ -162,6 +167,11 @@ export default async function HomePage() {
           </div>
         </TiltCard>
       </section>
+
+      {/* Bottom Leaderboard Ad */}
+      <div className="container mx-auto px-4 my-8">
+        <LeaderboardAd />
+      </div>
     </div>
   );
 }

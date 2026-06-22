@@ -88,20 +88,23 @@ export function AdBanner({ adKey, height, width, format = 'iframe', type = 'bann
     }
   }, [adKey, height, width, format, type]);
 
-  const minHeight = height ? `${height}px` : 'auto';
+  const minHeight = height ? `${height + 20}px` : 'auto';
   const minWidth = width ? `${width}px` : '100%';
 
   return (
     <div 
-      className="flex justify-center items-center w-full overflow-hidden my-6 bg-gray-50/50 dark:bg-slate-900/50 rounded-lg print:hidden" 
+      className="flex flex-col justify-center items-center w-full overflow-hidden my-6 bg-slate-50/40 dark:bg-slate-900/40 border border-slate-200/50 dark:border-slate-800/50 rounded-2xl backdrop-blur-sm print:hidden relative group hover:border-blue-500/30 transition-all duration-300" 
       style={{ 
         minHeight, 
         minWidth,
       }}
     >
+      <div className="absolute top-1 right-3 text-[9px] uppercase tracking-wider text-muted-foreground/50 select-none pointer-events-none font-semibold">
+        Advertisement
+      </div>
       <div 
         ref={containerRef}
-        className="w-full h-full flex justify-center items-center"
+        className="w-full h-full flex justify-center items-center py-2.5"
       />
     </div>
   );
