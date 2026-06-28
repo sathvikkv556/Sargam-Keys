@@ -172,18 +172,17 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
         />
-        <Script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7760317183284359"
-          crossOrigin="anonymous"
-          strategy="afterInteractive"
-        />
-        <Script
-          src="https://pl29418314.effectivecpmnetwork.com/24/ac/41/24ac41d1fe524774abb9ee291efe4819.js"
-          strategy="afterInteractive"
-        />
-        <cript src="https://pl30105076.effectivecpmnetwork.com/a6/76/e1/a676e15bfbac9961f11d0eba7c5f0f50.js"></script>
+      
 
+<Script
+  src="https://pl29418314.effectivecpmnetwork.com/24/ac/41/24ac41d1fe524774abb9ee291efe4819.js"
+  strategy="afterInteractive"
+/>
+
+<Script
+  src="https://pl30105076.effectivecpmnetwork.com/a6/76/e1/a676e15bfbac9961f11d0eba7c5f0f50.js"
+  strategy="afterInteractive"
+/>
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden`}
