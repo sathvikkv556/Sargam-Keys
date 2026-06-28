@@ -12,7 +12,6 @@ const nextConfig: NextConfig = {
   },
   // Enable strict mode and future Web Vitals monitoring
   reactStrictMode: true,
-  swcMinify: true,
   // Optionally extend with next-seo defaults (handled in layout)
 };
 

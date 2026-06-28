@@ -1,4 +1,4 @@
-import { withAuth } from "next-auth/middleware"
+import { withAuth } from "next-auth/middleware";
 
 export default withAuth(
   function middleware(req) {
@@ -9,6 +9,6 @@ export default withAuth(
       authorized: ({ token }) => token?.role === "admin",
     },
   }
-)
+);
 
-export const config = { matcher: ["/admin/:path*"] }
+export const config = { matcher: ["/admin/:path*"] };
