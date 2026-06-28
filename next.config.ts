@@ -1,5 +1,5 @@
 import type { NextConfig } from "next";
-import { withSX } from "next-sx"; // placeholder for any plugin if needed
+
 
 const nextConfig: NextConfig = {
   images: {
