@@ -8,7 +8,6 @@ import { Metadata } from 'next';
 import { MusicTheoryFeature } from '@/components/MusicTheoryFeature';
 import { InteractiveHero } from '@/components/ui/InteractiveHero';
 import { TiltCard } from '@/components/ui/TiltCard';
-import { LeaderboardAd, RectangleAd, SkyscraperAd, NativeAd } from '@/components/common/AdPlacements';
 
 export const metadata: Metadata = {
   title: 'SargamKeys - Premium Piano Notes & Music Theory Library',
@@ -33,11 +32,6 @@ export default async function HomePage() {
     <div className="flex flex-col gap-0 pb-12">
       {/* Ultra-Premium Interactive Hero */}
       <InteractiveHero />
-
-      {/* Top Banner Ad */}
-      <div className="container mx-auto px-4 mt-8 -mb-8">
-        <LeaderboardAd />
-      </div>
 
       {/* Trending Songs Section */}
       {trendingSongs.length > 0 && (
@@ -64,20 +58,9 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* Native Ad Placement */}
-      <div className="container mx-auto px-4">
-        <NativeAd />
-      </div>
-
       {/* Flagship Music Theory Section */}
       <div className="bg-slate-50 dark:bg-slate-900/20">
         <MusicTheoryFeature />
-      </div>
-
-      {/* Sidebar-style Ad Placement */}
-      <div className="container mx-auto px-4 flex flex-col md:flex-row gap-6 justify-center items-center my-8">
-        <RectangleAd />
-        <SkyscraperAd />
       </div>
 
       {/* Latest Uploads */}
@@ -102,15 +85,6 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* Mid-page Leaderboard & Ads */}
-      <div className="container mx-auto px-4 my-8">
-        <LeaderboardAd />
-      </div>
-      <div className="container mx-auto px-4 flex flex-col md:flex-row gap-6 justify-center items-center my-8">
-        <RectangleAd />
-        <SkyscraperAd />
-      </div>
 
       {/* Categories Grid - High Fidelity */}
       {categories.length > 0 && (
@@ -167,11 +141,7 @@ export default async function HomePage() {
           </div>
         </TiltCard>
       </section>
-
-      {/* Bottom Leaderboard Ad */}
-      <div className="container mx-auto px-4 my-8">
-        <LeaderboardAd />
-      </div>
     </div>
   );
 }
+

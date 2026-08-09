@@ -20,7 +20,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
-import { LeaderboardAd, RectangleAd, SkyscraperAd, NativeAd } from '@/components/common/AdPlacements';
 
 export const revalidate = 3600; // Revalidate every hour
 
@@ -103,13 +102,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
     const song = response.data;
     const moviePart = song.movie ? ` (${song.movie})` : '';
-    const pageTitle = song.seoTitle || `${song.title} Piano Notes${moviePart} | Easy Keyboard & Sargam Notes`;
-    const pageDescription = song.seoDescription || `Get the most accurate ${song.title} piano notes${song.movie ? ` from ${song.movie}` : ''}. Learn how to play this song on keyboard with easy ${song.scale} scale notations, including Sargam (Sa Re Ga Ma) version. Perfect for beginners.`;
+    const pageTitle = song.seoTitle || `${song.title} Piano Notes & Chords${moviePart} | SargamKeys`;
+    const pageDescription = song.seoDescription || `Learn how to play ${song.title}${song.movie ? ` from ${song.movie}` : ''} on piano and keyboard. Complete sheet notes, Western and Sargam notations, chords, and scale guide in ${song.scale}.`;
 
     const seo = createPageMetadata(
       pageTitle,
       pageDescription,
-      song.seoKeywords || [song.title, 'piano notes', song.movie || '', 'keyboard notes', 'sargam notes', `${song.scale} scale`, 'how to play', 'bollywood piano notes'],
+      song.seoKeywords || [song.title, 'piano notes', song.movie || '', 'keyboard notes', 'sargam notes', `${song.scale} scale`],
       `/notes/${song.slug}`
     );
 
@@ -292,11 +291,6 @@ export default async function SongPage({ params }: PageProps) {
       {/* Breadcrumbs for SEO and Navigation */}
       <Breadcrumbs className="mb-8" />
 
-      {/* Top Banner Ad */}
-      <div className="mb-8">
-        <LeaderboardAd />
-      </div>
-
       {/* Analytics Tracking */}
       <AnalyticsTracker songId={song._id.toString()} />
 
@@ -375,11 +369,6 @@ export default async function SongPage({ params }: PageProps) {
             <PianoScale scale={song.scale} />
           </div>
 
-          {/* Mid-content Leaderboard Ad */}
-          <div className="my-6">
-            <LeaderboardAd />
-          </div>
-
           {/* Notes Section */}
           <div className="space-y-6">
             <div className="flex items-center justify-between">
@@ -393,10 +382,71 @@ export default async function SongPage({ params }: PageProps) {
             />
           </div>
 
-          {/* FAQ Section (NEW for SEO) */}
+          {/* How to Play & Practice Guide */}
+          <div className="space-y-6">
+            <h2 className="text-2xl font-black flex items-center gap-3">
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white text-sm">03</span>
+              How to Play & Practice Guide
+            </h2>
+            <div className="grid gap-6 md:grid-cols-2">
+              <div className="rounded-2xl border p-6 bg-card space-y-3">
+                <h3 className="font-bold text-lg flex items-center gap-2">
+                  <span>🎹</span> Starting Hand Position & Posture
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Before playing {song.title}, place your right hand over the {song.scale} scale root position. Keep your wrists level and fingers curved naturally (as if holding a small ball) to maintain flexibility across octave shifts.
+                </p>
+              </div>
+
+              <div className="rounded-2xl border p-6 bg-card space-y-3">
+                <h3 className="font-bold text-lg flex items-center gap-2">
+                  <span>⏱️</span> Metronome Practice Strategy
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Start practicing at a comfortable tempo (50-60 BPM) using the built-in metronome tool above. Gradually increase the tempo by 5 BPM once you play the passage smoothly without pauses.
+                </p>
+              </div>
+
+              <div className="rounded-2xl border p-6 bg-card space-y-3">
+                <h3 className="font-bold text-lg flex items-center gap-2">
+                  <span>🎵</span> Key & Scale Structure
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  This melody is in the <strong>{song.scale}</strong> scale. Understanding the scale formula makes recognizing and memorizing note progressions much easier.
+                </p>
+                <div className="pt-2">
+                  <Link 
+                    href={song.scale.toLowerCase().includes('minor') ? "/music-theory/natural-minor-scales" : "/music-theory/major-scales-intro"}
+                    className="text-xs font-bold text-blue-600 hover:underline inline-flex items-center gap-1"
+                  >
+                    Learn the {song.scale} Scale Formula <ChevronRight className="h-3.5 w-3.5" />
+                  </Link>
+                </div>
+              </div>
+
+              <div className="rounded-2xl border p-6 bg-card space-y-3">
+                <h3 className="font-bold text-lg flex items-center gap-2">
+                  <span>💡</span> Notation Tips ({song.difficulty})
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Use the <strong>Western (C D E)</strong> or <strong>Sargam (Sa Re Ga)</strong> button above depending on your preference. For {song.difficulty.toLowerCase()} level, master the right-hand melody first before adding left-hand chords.
+                </p>
+                <div className="pt-2">
+                  <Link 
+                    href="/music-theory/meet-your-keyboard" 
+                    className="text-xs font-bold text-blue-600 hover:underline inline-flex items-center gap-1"
+                  >
+                    Explore Music Theory Course <ChevronRight className="h-3.5 w-3.5" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* FAQ Section */}
           <div className="space-y-6">
              <h2 className="text-2xl font-black flex items-center gap-3">
-                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white text-sm">03</span>
+                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white text-sm">04</span>
                 Frequently Asked Questions
               </h2>
               <div className="grid gap-4">
@@ -431,11 +481,6 @@ export default async function SongPage({ params }: PageProps) {
               </div>
             </div>
           )}
-
-          {/* In-content Rectangle Ad */}
-          <div className="my-6">
-            <RectangleAd />
-          </div>
 
           {/* About the Author */}
           <section className="rounded-3xl border-2 border-blue-100 dark:border-blue-900/30 bg-blue-50/50 dark:bg-blue-900/10 p-8 md:p-10">
@@ -474,9 +519,6 @@ export default async function SongPage({ params }: PageProps) {
             </div>
           </section>
 
-          {/* Native Ad Placement */}
-          <NativeAd />
-
           {/* Comment Section */}
           <CommentSection songId={song._id} isAdmin={isAdmin} />
         </div>
@@ -484,14 +526,6 @@ export default async function SongPage({ params }: PageProps) {
         {/* Sidebar */}
         <div className="space-y-8">
           <div className="sticky top-24 space-y-8">
-            {/* Sidebar Ads */}
-            <div className="space-y-4">
-              <RectangleAd />
-              <SkyscraperAd />
-              <RectangleAd />
-              <SkyscraperAd />
-            </div>
-
             {/* Music Theory Recommendations */}
             <Card className="border-blue-200 bg-blue-50/30 dark:border-blue-900/30 dark:bg-blue-900/10">
               <CardHeader className="pb-3">
@@ -524,11 +558,6 @@ export default async function SongPage({ params }: PageProps) {
             </Card>
           </div>
         </div>
-      </div>
-
-      {/* Bottom Leaderboard Ad */}
-      <div className="my-8">
-        <LeaderboardAd />
       </div>
 
       {/* Automated Internal Linking System */}

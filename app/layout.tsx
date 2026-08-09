@@ -174,15 +174,6 @@ export default function RootLayout({
         />
       
 
-<Script
-  src="https://pl29418314.effectivecpmnetwork.com/24/ac/41/24ac41d1fe524774abb9ee291efe4819.js"
-  strategy="afterInteractive"
-/>
-
-<Script
-  src="https://pl30105076.effectivecpmnetwork.com/a6/76/e1/a676e15bfbac9961f11d0eba7c5f0f50.js"
-  strategy="afterInteractive"
-/>
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden`}

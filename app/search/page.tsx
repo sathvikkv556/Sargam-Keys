@@ -3,8 +3,12 @@ import { Suspense } from 'react';
 import { SearchPageClient } from '@/components/search/SearchPageClient';
 
 export const metadata: Metadata = {
-  title: 'Search Piano Notes | Bollywood & Hindi Songs | SargamKeys',
-  description: 'Search for piano notes of your favorite Bollywood, Pop, and Classical songs. Filter by difficulty, category, and scale.',
+  title: 'Search Piano Notes | SargamKeys',
+  description: 'Search for piano notes of your favorite songs by category, scale, and difficulty.',
+  robots: {
+    index: false,
+    follow: true,
+  },
   alternates: {
     canonical: '/search',
   },
