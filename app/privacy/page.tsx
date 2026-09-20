@@ -115,6 +115,14 @@ export default function PrivacyPage() {
           </p>
         </section>
 
+        <section className="space-y-4">
+          <h2 className="text-3xl font-black tracking-tight border-b pb-2">Amazon Associates Disclosure</h2>
+          <p>
+            SargamKeys is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for sites to earn advertising fees by advertising and linking to Amazon.in. 
+            As an Amazon Associate, we earn from qualifying purchases. This means that if you click on an affiliate link and make a purchase, we may receive a small commission at no extra cost to you.
+          </p>
+        </section>
+
         <section className="space-y-4 bg-amber-50 dark:bg-amber-900/10 p-6 rounded-2xl border border-amber-100 dark:border-amber-900/30">
           <h2 className="text-2xl font-black tracking-tight flex items-center gap-2">
             Children's Privacy

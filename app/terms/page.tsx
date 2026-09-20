@@ -102,6 +102,13 @@ export default function TermsPage() {
         </section>
 
         <section className="space-y-4">
+          <h2 className="text-3xl font-black tracking-tight border-b pb-2">Affiliate Links & Commissions</h2>
+          <p>
+            Some links on SargamKeys may be affiliate links, including Amazon Associate links. If you click on these links and make a purchase, we may earn a small commission at no additional cost to you. We only recommend products or services that we believe will add value to our users. However, we do not guarantee the quality, accuracy, or availability of products purchased through third-party websites.
+          </p>
+        </section>
+
+        <section className="space-y-4">
           <h2 className="text-3xl font-black tracking-tight border-b pb-2">Policy Updates</h2>
           <p>
             Terms and conditions may be altered at any time without prior notice. 

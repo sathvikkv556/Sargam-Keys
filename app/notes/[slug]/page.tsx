@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation';
 import { getSongBySlug } from '@/lib/actions/song';
 import { SongNotes } from '@/components/SongNotes';
 import { RelatedSongs } from '@/components/RelatedSongs';
+import { AmazonRecommendation } from '@/components/AmazonRecommendation';
+import { AmazonAffiliateBar } from '@/components/AmazonAffiliateBar';
 import { PianoScale } from '@/components/PianoScale';
 import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
 import { Badge } from '@/components/ui/badge';
@@ -482,6 +484,8 @@ export default async function SongPage({ params }: PageProps) {
             </div>
           )}
 
+          <AmazonRecommendation />
+
           {/* About the Author */}
           <section className="rounded-3xl border-2 border-blue-100 dark:border-blue-900/30 bg-blue-50/50 dark:bg-blue-900/10 p-8 md:p-10">
             <div className="flex flex-col md:flex-row gap-8 items-center md:items-start text-center md:text-left">
@@ -563,6 +567,8 @@ export default async function SongPage({ params }: PageProps) {
       {/* Automated Internal Linking System */}
       <Separator className="my-16" />
       <RelatedSongs song={song} />
+      
+      <AmazonAffiliateBar />
     </div>
   );
 }
