@@ -45,7 +45,7 @@ export default async function HomePage() {
                   <TrendingUp className="h-4 w-4" />
                   <span>The Most Played</span>
                 </div>
-                <h2 className="text-3xl md:text-6xl font-black tracking-tight">Trending Notes</h2>
+                <h2 className="text-3xl md:text-6xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">Trending Notes</h2>
               </div>
               <Button variant="outline" asChild className="rounded-full h-12 px-8 border-2 font-bold hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all w-full md:w-auto">
                 <Link href="/notes?sort=views">Catalog</Link>
@@ -74,7 +74,7 @@ export default async function HomePage() {
                 <Clock className="h-4 w-4" />
                 <span>New Arrivals</span>
               </div>
-              <h2 className="text-3xl md:text-6xl font-black tracking-tight">Freshly Composed</h2>
+              <h2 className="text-3xl md:text-6xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">Freshly Composed</h2>
             </div>
             <Button variant="ghost" asChild className="rounded-full h-12 px-8 font-bold hover:bg-slate-100 dark:hover:bg-white/5 w-full md:w-auto">
               <Link href="/notes">See All New</Link>
@@ -96,7 +96,7 @@ export default async function HomePage() {
           <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-600/10 rounded-full blur-[120px]" />
 
           <div className="container mx-auto px-4 text-center mb-12 md:mb-20 relative z-10">
-             <h2 className="text-3xl md:text-7xl font-black tracking-tighter mb-6">Explore Genres</h2>
+             <h2 className="text-3xl md:text-7xl font-black tracking-tighter mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60">Explore Genres</h2>
              <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto">From Bollywood classics to modern pop hits, find notes for every mood.</p>
           </div>
           <div className="container mx-auto px-4 relative z-10">
