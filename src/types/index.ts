@@ -28,6 +28,7 @@ export interface Song {
   difficulty: Difficulty;
   scale: string;
   key: string;
+  tempo?: number;
   category: string | Category;
   tags: string[];
   thumbnail?: string;

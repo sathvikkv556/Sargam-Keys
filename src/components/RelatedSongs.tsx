@@ -29,13 +29,22 @@ export async function RelatedSongs({ song }: RelatedSongsProps) {
 
   const { byScale, bySinger, byComposer, byCategory, byDifficulty } = response.data;
 
+  const seenIds = new Set<string>();
+  
+  const filterAndTrack = (songList: Song[] | undefined) => {
+    if (!songList) return [];
+    const filtered = songList.filter(s => !seenIds.has(s._id.toString()));
+    filtered.forEach(s => seenIds.add(s._id.toString()));
+    return filtered;
+  };
+
   // Filter out criteria that didn't return any songs
   const sections = [
-    { title: `More ${song.scale} Songs`, icon: <Music className="h-5 w-5" />, songs: byScale, href: `/notes?scale=${song.scale}` },
-    { title: `Songs by ${song.singer}`, icon: <Mic className="h-5 w-5" />, songs: bySinger, href: `/notes?singer=${song.singer}` },
-    { title: `Composed by ${song.composer}`, icon: <User className="h-5 w-5" />, songs: byComposer, href: `/notes?composer=${song.composer}` },
-    { title: `More in ${categoryName}`, icon: <Layers className="h-5 w-5" />, songs: byCategory, href: `/categories/${typeof song.category === 'object' ? (song.category as Category).slug : ''}` },
-    { title: `Other ${song.difficulty} Notes`, icon: <Gauge className="h-5 w-5" />, songs: byDifficulty, href: `/notes?difficulty=${song.difficulty}` },
+    { title: `More ${song.scale} Songs`, icon: <Music className="h-5 w-5" />, songs: filterAndTrack(byScale), href: `/notes?scale=${song.scale}` },
+    { title: `Songs by ${song.singer}`, icon: <Mic className="h-5 w-5" />, songs: filterAndTrack(bySinger), href: `/notes?singer=${song.singer}` },
+    { title: `Composed by ${song.composer}`, icon: <User className="h-5 w-5" />, songs: filterAndTrack(byComposer), href: `/notes?composer=${song.composer}` },
+    { title: `More in ${categoryName}`, icon: <Layers className="h-5 w-5" />, songs: filterAndTrack(byCategory), href: `/categories/${typeof song.category === 'object' ? (song.category as Category).slug : ''}` },
+    { title: `Other ${song.difficulty} Notes`, icon: <Gauge className="h-5 w-5" />, songs: filterAndTrack(byDifficulty), href: `/notes?difficulty=${song.difficulty}` },
   ].filter(section => section.songs && section.songs.length > 0);
 
   if (sections.length === 0) return null;

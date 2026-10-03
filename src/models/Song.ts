@@ -12,6 +12,7 @@ export interface ISong extends Document {
   chords?: string;
   difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
   scale: string;
+  tempo?: number;
   key: string;
   category: mongoose.Types.ObjectId;
   tags: string[];
@@ -43,6 +44,7 @@ const songSchema = new Schema<ISong>(
       default: 'Beginner',
     },
     scale: { type: String, required: true },
+    tempo: { type: Number },
     key: { type: String, required: true },
     category: { type: Schema.Types.ObjectId, ref: 'Category', required: true },
     tags: [{ type: String }],

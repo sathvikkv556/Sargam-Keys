@@ -178,12 +178,15 @@ export default async function SongPage({ params }: PageProps) {
     {
       question: `Is ${song.title} piano notes suitable for beginners?`,
       answer: `Yes, these notes are classified as ${song.difficulty} difficulty. We provide both Western (CDE) and Sargam (SaReGa) notations to make it easy for beginners to learn.`
-    },
-    {
-      question: `Who is the singer of ${song.title}?`,
-      answer: song.singer ? `The song ${song.title} is sung by ${song.singer}.` : `The song ${song.title} is featured in our piano notes library.`
     }
   ];
+
+  if (song.singer) {
+    faqs.push({
+      question: `Who is the singer of ${song.title}?`,
+      answer: `The song ${song.title} is sung by ${song.singer}.`
+    });
+  }
   
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -405,7 +408,7 @@ export default async function SongPage({ params }: PageProps) {
                   <span>⏱️</span> Metronome Practice Strategy
                 </h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  Start practicing at a comfortable tempo (50-60 BPM) using the built-in metronome tool above. Gradually increase the tempo by 5 BPM once you play the passage smoothly without pauses.
+                  Start practicing at a comfortable tempo ({song.tempo ? `${song.tempo - 20}-${song.tempo}` : "50-60"} BPM) using the built-in metronome tool above. Gradually increase the tempo by 5 BPM once you play the passage smoothly without pauses{song.tempo ? ` until you reach the original tempo of ${song.tempo} BPM` : ""}.
                 </p>
               </div>
 
@@ -474,15 +477,7 @@ export default async function SongPage({ params }: PageProps) {
             </div>
           )}
 
-          {/* Lyrics Section */}
-          {song.lyrics && (
-            <div className="space-y-4">
-              <h2 className="text-2xl font-bold">{song.title} Song Lyrics</h2>
-              <div className="prose prose-gray dark:prose-invert max-w-none rounded-xl border p-8 bg-card whitespace-pre-wrap font-sans text-lg italic leading-relaxed">
-                {song.lyrics}
-              </div>
-            </div>
-          )}
+
 
           <AmazonRecommendation />
 

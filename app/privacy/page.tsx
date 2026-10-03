@@ -99,9 +99,11 @@ export default function PrivacyPage() {
               <h3 className="text-xl font-bold mb-2">Advertisement</h3>
               <p>
                 SargamKeys uses <strong>Google AdSense</strong> to display advertisements. 
-                Google, as a third-party vendor, uses cookies to serve ads on our site. 
+                Third-party vendors, including Google, use cookies to serve ads based on a user's prior visits to our website or other websites. 
                 Google's use of advertising cookies enables it and its partners to serve ads to our users based on their visit to our site and/or other sites on the Internet. 
                 Users may opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">Google Ads Settings</a>.
+                Alternatively, you can opt out of a third-party vendor's use of cookies for personalized advertising by visiting <a href="https://www.aboutads.info" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">www.aboutads.info</a>.
+                For more information on how Google uses data when you use our partners' sites or apps, please visit <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">How Google uses information from sites or apps that use our services</a>.
               </p>
             </div>
           </div>

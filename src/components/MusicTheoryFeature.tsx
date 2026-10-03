@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { BookOpen, Award, Layers, Zap, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { lessons } from '@/lib/music-theory-data';
 
 export function MusicTheoryFeature() {
   const features = [
@@ -23,6 +24,8 @@ export function MusicTheoryFeature() {
       description: "Analyze your favorite hits from a theorist&apos;s view."
     }
   ];
+
+  const lessonCount = Object.keys(lessons).length;
 
   return (
     <section className="relative overflow-hidden py-16 md:py-24">
@@ -89,7 +92,7 @@ export function MusicTheoryFeature() {
                   </div>
                   <div className="space-y-2">
                     <h3 className="text-2xl font-bold text-white">Full Theory Roadmap</h3>
-                    <p className="text-blue-200/70">24 Lessons • 12 Worksheets • Lifetime Access</p>
+                    <p className="text-blue-200/70">{lessonCount} Lessons • 12 Worksheets • Lifetime Access</p>
                   </div>
                   <div className="flex justify-center gap-2">
                     {[1, 2, 3, 4, 5].map(i => (

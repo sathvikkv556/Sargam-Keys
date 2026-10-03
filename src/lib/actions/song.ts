@@ -8,10 +8,14 @@ import Category from '@/models/Category';
 import Analytics from '@/models/Analytics';
 import { Song as SongType, APIResponse } from '@/types';
 import { slugify } from '@/lib/utils';
-import { headers } from 'next/headers';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 
 export async function createSong(data: Partial<SongType>): Promise<APIResponse<SongType>> {
   try {
+    const session = await getServerSession(authOptions);
+    const isAdmin = (session?.user as any)?.role === 'admin';
+
     await connectDB();
     
     if (!data.title) throw new Error('Title is required');
@@ -21,6 +25,7 @@ export async function createSong(data: Partial<SongType>): Promise<APIResponse<S
     const song = await Song.create({
       ...data,
       slug,
+      status: isAdmin ? (data.status || 'Draft') : 'Draft',
     });
 
     revalidatePath('/');

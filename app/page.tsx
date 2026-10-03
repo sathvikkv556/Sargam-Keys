@@ -127,7 +127,7 @@ export default async function HomePage() {
             <div className="relative z-10 max-w-4xl mx-auto space-y-8 md:space-y-10">
               <h2 className="text-4xl md:text-8xl font-black tracking-tighter leading-tight md:leading-none">Share Your <br/>Musical Magic</h2>
               <p className="mx-auto max-w-2xl text-slate-600 dark:text-slate-400 text-lg md:text-2xl leading-relaxed">
-                Be part of the largest community of piano enthusiasts. Contribute your <span className="text-blue-600 dark:text-blue-400 font-bold">free</span> notes and inspire millions.
+                Join our growing community of piano enthusiasts. Contribute your <span className="text-blue-600 dark:text-blue-400 font-bold">free</span> notes and help others learn.
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4 md:gap-8 pt-6">
                 <Button size="lg" asChild className="h-16 md:h-20 px-10 md:px-14 rounded-full bg-blue-600 text-white hover:bg-blue-700 hover:scale-105 active:scale-95 text-lg md:text-xl font-black transition-all shadow-2xl shadow-blue-600/20">

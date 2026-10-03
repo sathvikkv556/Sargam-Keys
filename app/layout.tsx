@@ -25,7 +25,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://sargamkeys.in"),
   title: {
-    default: "SargamKeys - Premium Piano Notes & Music Theory Library",
+    default: "SargamKeys - Piano Notes & Music Theory Library",
     template: "%s | SargamKeys",
   },
   description:
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
   },
   manifest: "/manifest.json",
   openGraph: {
-    title: "SargamKeys - Premium Piano Notes & Music Theory",
+    title: "SargamKeys - Piano Notes & Music Theory",
     description:
       "Learn piano notes and keyboard notes for Bollywood and Hindi songs. Comprehensive guides for beginners.",
     url: "https://sargamkeys.in",
@@ -127,7 +127,7 @@ export default function RootLayout({
     "@type": "WebSite",
     "name": "SargamKeys",
     "url": "https://sargamkeys.in",
-    "description": "Premium Piano Notes & Music Theory Library",
+    "description": "Piano Notes & Music Theory Library",
     "potentialAction": {
       "@type": "SearchAction",
       "target": "https://sargamkeys.in/search?q={search_term_string}",
