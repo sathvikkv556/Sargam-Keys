@@ -13,7 +13,7 @@ export default function PrivacyPage() {
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
       <div className="mb-12 text-center">
         <h1 className="mb-4 text-4xl font-black tracking-tighter md:text-6xl">Privacy Policy</h1>
-        <p className="text-muted-foreground font-medium">Updated On: June 6, 2026</p>
+        <p className="text-muted-foreground font-medium">Updated On: October 3, 2026</p>
       </div>
       
       <div className="prose prose-slate dark:prose-invert max-w-none space-y-12">

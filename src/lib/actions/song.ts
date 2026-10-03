@@ -31,6 +31,7 @@ export async function createSong(data: Partial<SongType>): Promise<APIResponse<S
     revalidatePath('/');
     revalidatePath('/notes');
     revalidatePath('/admin/songs');
+    revalidatePath('/notes/[slug]', 'page');
     
     return { success: true, data: JSON.parse(JSON.stringify(song)) };
   } catch (error: any) {
@@ -54,6 +55,7 @@ export async function updateSong(id: string, data: Partial<SongType>): Promise<A
     revalidatePath('/');
     revalidatePath('/notes');
     revalidatePath('/sitemap.xml');
+    revalidatePath('/notes/[slug]', 'page');
     if (song.category) {
       const categorySlug = typeof song.category === 'object' ? (song.category as any).slug : null;
       if (categorySlug) {

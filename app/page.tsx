@@ -9,8 +9,10 @@ import { MusicTheoryFeature } from '@/components/MusicTheoryFeature';
 import { InteractiveHero } from '@/components/ui/InteractiveHero';
 import { TiltCard } from '@/components/ui/TiltCard';
 
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
-  title: 'SargamKeys - Premium Piano Notes & Music Theory Library',
+  title: 'SargamKeys - Free Piano Notes & Music Theory Library',
   description: 'Master the piano with free, accurate notes for Bollywood, Pop, and Classical songs. Explore comprehensive music theory guides, scales, chords, and keyboard notations at SargamKeys.',
   alternates: {
     canonical: '/',
